@@ -9,6 +9,14 @@ public class CameraSwitch : MonoBehaviour
     public GameObject cam2;
     public GameObject cam3;
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            switchCam();
+        }
+    }
+
     // Activate next camera if previous is activated
     public void switchCam()
     {
@@ -34,4 +42,6 @@ public class CameraSwitch : MonoBehaviour
             cam3.SetActive(false);
         }
     }
+
+
 }
