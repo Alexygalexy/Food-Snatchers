@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class FoodSpawn : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    private List<GameObject> spawnPlaces = new List<GameObject>();
+    [SerializeField]
+    private List<GameObject> foods = new List<GameObject>();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private float timer;
+
+
+
+    
 }
