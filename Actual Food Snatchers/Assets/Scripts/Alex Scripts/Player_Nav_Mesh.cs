@@ -14,7 +14,7 @@ public class Player_Nav_Mesh : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
-    private void Update()
+    public void Update()
     {
         navMeshAgent.destination = movePositionTransform.position;
     }
