@@ -668,6 +668,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5494489781883337664, guid: 7d65bec1b70a22644a24c8b2d8e644d2,
+        type: 3}
+      propertyPath: player1_scoreText
+      value: 
+      objectReference: {fileID: 570003242}
+    - target: {fileID: 5494489781883337664, guid: 7d65bec1b70a22644a24c8b2d8e644d2,
+        type: 3}
+      propertyPath: player2_scoreText
+      value: 
+      objectReference: {fileID: 1176312761}
     - target: {fileID: 5494489781883337666, guid: 7d65bec1b70a22644a24c8b2d8e644d2,
         type: 3}
       propertyPath: m_Enabled
@@ -926,7 +936,7 @@ GameObject:
   - component: {fileID: 1176312762}
   - component: {fileID: 1176312761}
   m_Layer: 5
-  m_Name: Player1_ScoreText (1)
+  m_Name: Player2_ScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2046,6 +2056,16 @@ PrefabInstance:
       propertyPath: scoreText
       value: 
       objectReference: {fileID: 570003242}
+    - target: {fileID: 5494489781883337664, guid: ffe0fb938a93be24593c00e7d64e1e95,
+        type: 3}
+      propertyPath: player1_scoreText
+      value: 
+      objectReference: {fileID: 570003242}
+    - target: {fileID: 5494489781883337664, guid: ffe0fb938a93be24593c00e7d64e1e95,
+        type: 3}
+      propertyPath: player2_scoreText
+      value: 
+      objectReference: {fileID: 1176312761}
     - target: {fileID: 5494489781883337666, guid: ffe0fb938a93be24593c00e7d64e1e95,
         type: 3}
       propertyPath: movePositionTransform
