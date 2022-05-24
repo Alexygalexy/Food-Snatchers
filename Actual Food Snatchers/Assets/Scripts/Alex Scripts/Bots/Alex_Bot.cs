@@ -17,6 +17,9 @@ public class Alex_Bot : AI_System
 
     #region Main Methods
 
-    //
+    //protected override void OnTriggerEnter(Collider other)
+    //{
+    //    base.OnTriggerEnter(other);
+    //}
     #endregion
 }
