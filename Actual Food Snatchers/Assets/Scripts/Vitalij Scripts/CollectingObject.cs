@@ -19,10 +19,12 @@ public class CollectingObject : MonoBehaviour
     // Changes this GameObject's tag, so that this GameObject stop looking for other GameObjects
     void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.tag == "Food")
         {
-            other.transform.parent = player.transform;
-            other.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1, player.transform.position.z);
+            // other.transform.parent = player.transform;
+            // other.transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1, player.transform.position.z);
             AddPoints();
+            Destroy(other.gameObject);
             player.gameObject.tag = "Passive";
         }
     }

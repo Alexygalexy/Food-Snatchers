@@ -8,6 +8,13 @@ TagManager:
   - Passive
   - Stealing
   - Child
+  - FxTemporaire
+  - Food
+  - Blueberry
+  - Banana
+  - Apple
+  - Grapes
+  - Orange
   layers:
   - Default
   - TransparentFX
