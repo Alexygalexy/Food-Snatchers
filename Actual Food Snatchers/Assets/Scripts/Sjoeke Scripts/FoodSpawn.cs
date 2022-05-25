@@ -32,21 +32,21 @@ public class FoodSpawn : MonoBehaviour
     {
         while (GameOn)
         {
-            foodIndex1 = Random.Range(0, 4);
-            foodIndex2 = Random.Range(0, 4);
-            foodIndex3 = Random.Range(0, 4);
+            foodIndex1 = Random.Range(0, foods.Count);
+            foodIndex2 = Random.Range(0, foods.Count);
+            foodIndex3 = Random.Range(0, foods.Count);
 
-            tableIndex1 = Random.Range(0, 33);
-            tableIndex2 = Random.Range(0, 33);
-            tableIndex3 = Random.Range(0, 33);
+            tableIndex1 = Random.Range(0, spawnPlaces.Count);
+            tableIndex2 = Random.Range(0, spawnPlaces.Count);
+            tableIndex3 = Random.Range(0, spawnPlaces.Count);
 
             while (tableIndex2 == tableIndex1)
             {
-                tableIndex2 = Random.Range(0, 34);
+                tableIndex2 = Random.Range(0, spawnPlaces.Count);
             }
             while (tableIndex3 == tableIndex1 || tableIndex3 == tableIndex2)
             {
-                tableIndex3 = Random.Range(0, 34);
+                tableIndex3 = Random.Range(0, spawnPlaces.Count);
             }
 
             Instantiate(foods[foodIndex1], new Vector3(spawnPlaces[tableIndex1].transform.position.x, spawnPlaces[tableIndex1].transform.position.y + tableYOffset, spawnPlaces[tableIndex1].transform.position.z), Quaternion.identity);
