@@ -9,6 +9,11 @@ public class FoodSpawn : MonoBehaviour
     [SerializeField]
     private List<GameObject> foods = new List<GameObject>();
 
+    private int[] foodIndex = new int [3];
+    private int[] tableIndex = new int[3];
+    //private List<int> foodIndex = new List<int>();
+    //private List<int> tableIndex = new List<int>();
+
     private float tableYOffset = 1.6f;
 
     private bool GameOn = true;
@@ -32,26 +37,29 @@ public class FoodSpawn : MonoBehaviour
     {
         while (GameOn)
         {
-            foodIndex1 = Random.Range(0, foods.Count);
-            foodIndex2 = Random.Range(0, foods.Count);
-            foodIndex3 = Random.Range(0, foods.Count);
-
-            tableIndex1 = Random.Range(0, spawnPlaces.Count);
-            tableIndex2 = Random.Range(0, spawnPlaces.Count);
-            tableIndex3 = Random.Range(0, spawnPlaces.Count);
-
-            while (tableIndex2 == tableIndex1)
+            for (int i = 0; i < foodIndex.Length; i++)
             {
-                tableIndex2 = Random.Range(0, spawnPlaces.Count);
-            }
-            while (tableIndex3 == tableIndex1 || tableIndex3 == tableIndex2)
-            {
-                tableIndex3 = Random.Range(0, spawnPlaces.Count);
-            }
+                foodIndex[i] = Random.Range(0, foods.Count);
+                tableIndex[i] = Random.Range(0, spawnPlaces.Count);
 
-            Instantiate(foods[foodIndex1], new Vector3(spawnPlaces[tableIndex1].transform.position.x, spawnPlaces[tableIndex1].transform.position.y + tableYOffset, spawnPlaces[tableIndex1].transform.position.z), Quaternion.identity);
-            Instantiate(foods[foodIndex2], new Vector3(spawnPlaces[tableIndex2].transform.position.x, spawnPlaces[tableIndex2].transform.position.y + tableYOffset, spawnPlaces[tableIndex2].transform.position.z), Quaternion.identity);
-            Instantiate(foods[foodIndex3], new Vector3(spawnPlaces[tableIndex3].transform.position.x, spawnPlaces[tableIndex3].transform.position.y + tableYOffset, spawnPlaces[tableIndex3].transform.position.z), Quaternion.identity);
+                if (i == 1)
+                {
+                    while (tableIndex[i] == tableIndex[i - 1])
+                    {
+                        tableIndex[i] = Random.Range(0, spawnPlaces.Count);
+                    }
+                }
+                if (i == 2)
+                {
+                    while (tableIndex[i] == tableIndex[i - 2] || tableIndex[i] == tableIndex[i - 1])
+                    {
+                        tableIndex[i] = Random.Range(0, spawnPlaces.Count);
+                    }
+                }
+
+                GameObject newFood = Instantiate(foods[foodIndex[i]], new Vector3(spawnPlaces[tableIndex[i]].transform.position.x, spawnPlaces[tableIndex[i]].transform.position.y + tableYOffset, spawnPlaces[tableIndex[i]].transform.position.z), Quaternion.identity);
+                newFood.transform.parent = spawnPlaces[tableIndex[i]].transform;
+            }
 
             yield return new WaitForSeconds(spawnTimer);
         }
