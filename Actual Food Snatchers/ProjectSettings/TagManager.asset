@@ -15,6 +15,7 @@ TagManager:
   - Apple
   - Grapes
   - Orange
+  - Score
   layers:
   - Default
   - TransparentFX

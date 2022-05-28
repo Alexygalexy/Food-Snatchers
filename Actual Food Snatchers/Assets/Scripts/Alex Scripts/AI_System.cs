@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 public class AI_System : MonoBehaviour
 {
     [Header("Components")]
     private NavMeshAgent navMeshAgent;
     private GameObject player;
+    public TextMeshProUGUI player1_scoreText;
 
     [Header("AI Move Position")]
     [SerializeField] private Transform movePositionTransform;
 
+    public int Score;
 
     protected virtual void Awake()
     {
@@ -21,6 +24,7 @@ public class AI_System : MonoBehaviour
     protected virtual void Update()
     {
         GoToPosition();
+        scoreBoard();
     }
 
     #region Reusable Methods
@@ -32,10 +36,38 @@ public class AI_System : MonoBehaviour
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Food")
+
+        if (other.gameObject.tag == "Apple")
         {
-            Destroy(other.gameObject);
+            Score++;
+            player1_scoreText.text = Score.ToString();
         }
+        else if (other.gameObject.tag == "Banana")
+        {
+            Score += 2;
+            player1_scoreText.text = Score.ToString();
+        }
+        else if (other.gameObject.tag == "Blueberry")
+        {
+            Score += 3;
+            player1_scoreText.text = Score.ToString();
+        }
+        else if (other.gameObject.tag == "Grapes")
+        {
+            Score += 4;
+            player1_scoreText.text = Score.ToString();
+        }
+        else if (other.gameObject.tag == "Orange")
+        {
+            Score += 5;
+            player1_scoreText.text = Score.ToString();
+        }
+
+        Destroy(other.gameObject);
+        // if (other.tag == "Food")
+        // {
+        //     Destroy(other.gameObject);
+        // }
 
     }
 
@@ -46,6 +78,14 @@ public class AI_System : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
+
+    protected virtual void scoreBoard()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+        GameObject.FindGameObjectWithTag("Score").transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 3, player.transform.position.z);
+    }
+
+    
 
     #endregion
 }
