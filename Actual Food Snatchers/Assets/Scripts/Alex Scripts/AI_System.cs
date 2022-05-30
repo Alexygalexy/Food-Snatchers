@@ -10,11 +10,16 @@ public class AI_System : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private GameObject player;
     public TextMeshProUGUI player1_scoreText;
+    [SerializeField] private GameObject ScoreBoard;
+    [SerializeField] private GameObject PlayersLocation;
+    public int Score;
 
     [Header("AI Move Position")]
     [SerializeField] private Transform movePositionTransform;
 
-    public int Score;
+    
+
+    
 
     protected virtual void Awake()
     {
@@ -81,8 +86,7 @@ public class AI_System : MonoBehaviour
 
     protected virtual void scoreBoard()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        GameObject.FindGameObjectWithTag("Score").transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 3, player.transform.position.z);
+        ScoreBoard.transform.position = new Vector3(PlayersLocation.transform.position.x, PlayersLocation.transform.position.y + 3, PlayersLocation.transform.position.z);
     }
 
     
