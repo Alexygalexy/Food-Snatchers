@@ -42,7 +42,8 @@ public class AI_System : MonoBehaviour
     protected virtual void OnTriggerEnter(Collider other)
     {
 
-
+        // Adds a different amount of point depending on the food collected
+        // New points are shown on Scoreboard
         switch (other.gameObject.tag)
         {
             case "Apple":
