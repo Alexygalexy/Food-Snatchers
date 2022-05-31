@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 public class AI_System : MonoBehaviour
 {
@@ -14,10 +15,15 @@ public class AI_System : MonoBehaviour
 
     [Header("AI Gather Food")]
     [SerializeField] private float detectRadius;
-    private bool nextFood = true;
+    //private bool nextFood = true;
 
-    [SerializeField] private List<GameObject> foodList = new List<GameObject>();
+    //[SerializeField] private List<GameObject> foodList = new List<GameObject>();
 
+    [Header("Player Score UI")]
+    [SerializeField] private TextMeshProUGUI player1_scoreText;
+    [SerializeField] private GameObject ScoreBoard;
+    [SerializeField] private Transform PlayersLocation;
+    [SerializeField] private int Score;
 
 
 
@@ -25,12 +31,14 @@ public class AI_System : MonoBehaviour
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
 
-        StartCoroutine(DetectionRoutine());
+        //StartCoroutine(DetectionRoutine());
     }
 
     protected virtual void Update()
     {
         GoToPosition();
+
+        scoreBoard();
     }
 
     protected virtual IEnumerator DetectionRoutine()
@@ -48,8 +56,36 @@ public class AI_System : MonoBehaviour
     {
         if (other.tag == "Food")
         {
-            nextFood = true;
-            foodList.Remove(other.gameObject);
+            //nextFood = true;
+            //foodList.Remove(other.gameObject);
+
+            // Adds a different amount of point depending on the food collected
+            // New points are shown on Scoreboard
+            // Collected food object gets destroyed
+            switch (other.gameObject.tag)
+            {
+                case "Apple":
+                    Score++;
+                    break;
+
+                case "Banana":
+                    Score += 2;
+                    break;
+
+                case "Blueberry":
+                    Score += 3;
+                    break;
+
+                case "Grapes":
+                    Score += 4;
+                    break;
+
+                case "Orange":
+                    Score += 5;
+                    break;
+            }
+            player1_scoreText.text = Score.ToString();
+
             Destroy(other.gameObject);
 
         }
@@ -94,21 +130,27 @@ public class AI_System : MonoBehaviour
         //}
 
 
-        foreach (GameObject target in foodList)
-        {
-            float foodDistance = Vector3.Distance(transform.position, target.transform.position);
+        //foreach (GameObject target in foodList)
+        //{
+        //    float foodDistance = Vector3.Distance(transform.position, target.transform.position);
 
-            if (foodDistance < detectRadius)
-            {
-                Debug.Log("Detected Food " + foodList);
-                if (nextFood)
-                {
-                    movePositionTransform.position = target.transform.position;
-                    nextFood = false;
-                }
-            }
-        }
+        //    if (foodDistance < detectRadius)
+        //    {
+        //        Debug.Log("Detected Food " + foodList);
+        //        if (nextFood)
+        //        {
+        //            movePositionTransform.position = target.transform.position;
+        //            nextFood = false;
+        //        }
+        //    }
+        //}
 
+    }
+
+    protected virtual void scoreBoard()
+    {
+        // Positions scoreboard above player's head
+        ScoreBoard.transform.position = new Vector3(PlayersLocation.transform.position.x, PlayersLocation.transform.position.y + 3, PlayersLocation.transform.position.z);
     }
 
     #endregion
