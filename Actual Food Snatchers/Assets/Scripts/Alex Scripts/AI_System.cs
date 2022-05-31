@@ -42,38 +42,32 @@ public class AI_System : MonoBehaviour
     protected virtual void OnTriggerEnter(Collider other)
     {
 
-        if (other.gameObject.tag == "Apple")
+
+        switch (other.gameObject.tag)
         {
+            case "Apple":
             Score++;
-            player1_scoreText.text = Score.ToString();
+            break;
+
+            case "Banana":
+            Score +=2;
+            break;
+
+            case "Blueberry":
+            Score +=3;
+            break;
+
+            case "Grapes":
+            Score +=4;
+            break;
+
+            case "Orange":
+            Score +=5;
+            break;
         }
-        else if (other.gameObject.tag == "Banana")
-        {
-            Score += 2;
-            player1_scoreText.text = Score.ToString();
-        }
-        else if (other.gameObject.tag == "Blueberry")
-        {
-            Score += 3;
-            player1_scoreText.text = Score.ToString();
-        }
-        else if (other.gameObject.tag == "Grapes")
-        {
-            Score += 4;
-            player1_scoreText.text = Score.ToString();
-        }
-        else if (other.gameObject.tag == "Orange")
-        {
-            Score += 5;
-            player1_scoreText.text = Score.ToString();
-        }
+        player1_scoreText.text = Score.ToString();
 
         Destroy(other.gameObject);
-        // if (other.tag == "Food")
-        // {
-        //     Destroy(other.gameObject);
-        // }
-
     }
 
     protected virtual void OnCollisionEnter(Collision other)
