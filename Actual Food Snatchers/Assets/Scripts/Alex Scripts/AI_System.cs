@@ -54,8 +54,7 @@ public class AI_System : MonoBehaviour
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Food")
-        {
+
             //nextFood = true;
             //foodList.Remove(other.gameObject);
 
@@ -68,27 +67,23 @@ public class AI_System : MonoBehaviour
                     Score++;
                     break;
 
-                case "Banana":
+                case "Tomato":
                     Score += 2;
                     break;
 
-                case "Blueberry":
+                case "Egg":
                     Score += 3;
                     break;
 
-                case "Grapes":
+                case "Chicken":
                     Score += 4;
-                    break;
-
-                case "Orange":
-                    Score += 5;
                     break;
             }
             player1_scoreText.text = Score.ToString();
 
             Destroy(other.gameObject);
 
-        }
+        
 
     }
 
