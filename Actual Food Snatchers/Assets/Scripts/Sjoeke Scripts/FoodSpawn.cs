@@ -11,20 +11,10 @@ public class FoodSpawn : MonoBehaviour
 
     private int[] foodIndex = new int[3];
     private int[] tableIndex = new int[3];
-    //private List<int> foodIndex = new List<int>();
-    //private List<int> tableIndex = new List<int>();
 
     private float tableYOffset = 1.6f;
 
     private bool GameOn = true;
-
-    private int tableIndex1;
-    private int tableIndex2;
-    private int tableIndex3;
-
-    private int foodIndex1;
-    private int foodIndex2;
-    private int foodIndex3;
 
 
     private void Awake()
