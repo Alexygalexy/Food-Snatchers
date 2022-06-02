@@ -19,11 +19,6 @@ public class AI_System : MonoBehaviour
     [Header("AI Move Position")]
     [SerializeField] private Transform movePositionTransform;
 
-    [Header("AI Gather Food")]
-    [SerializeField] private float detectRadius;
-    //private bool nextFood = true;
-
-
     [Header("Player Score UI")]
     [SerializeField] private TextMeshProUGUI player1_scoreText;
     [SerializeField] private GameObject ScoreBoard;
@@ -39,7 +34,6 @@ public class AI_System : MonoBehaviour
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
 
-        //StartCoroutine(DetectionRoutine());
     }
 
     protected virtual void Update()
@@ -49,16 +43,6 @@ public class AI_System : MonoBehaviour
         scoreBoard();
     }
 
-    protected virtual IEnumerator DetectionRoutine()
-    {
-        WaitForSeconds wait = new WaitForSeconds(0.2f);
-
-        while (true)
-        {
-            yield return wait;
-            FoodDetectionCheck();
-        }
-    }
 
     protected virtual void OnTriggerEnter(Collider other)
     {
@@ -89,11 +73,6 @@ public class AI_System : MonoBehaviour
             player1_scoreText.text = Score.ToString();
             onFoodRemove.Invoke(other.gameObject);
         }
-
-        
-
-        
-
     }
 
     protected virtual void OnCollisionEnter(Collision other)
@@ -109,46 +88,6 @@ public class AI_System : MonoBehaviour
     public virtual void GoToPosition()
     {
         navMeshAgent.destination = movePositionTransform.position;
-    }
-
-    protected virtual void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectRadius);
-    }
-
-    protected virtual void FoodDetectionCheck()
-    {
-        //Collider[] rangeChecks = Physics.OverlapSphere(transform.position, detectRadius, foodMask);
-
-        //foreach (Collider target in rangeChecks)
-        //{
-        //    Debug.Log("Detected Food " + rangeChecks);
-        //    Transform transport_target = target.transform;
-        //    if (nextFood)
-        //    {
-        //        movePositionTransform.position = transport_target.position;
-        //        nextFood = false;
-        //    }
-
-        //}
-
-
-        //foreach (GameObject target in foodList)
-        //{
-        //    float foodDistance = Vector3.Distance(transform.position, target.transform.position);
-
-        //    if (foodDistance < detectRadius)
-        //    {
-        //        Debug.Log("Detected Food " + foodList);
-        //        if (nextFood)
-        //        {
-        //            movePositionTransform.position = target.transform.position;
-        //            nextFood = false;
-        //        }
-        //    }
-        //}
-
     }
 
     protected virtual void scoreBoard()
