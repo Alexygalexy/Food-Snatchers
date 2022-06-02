@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 250686529340868957}
   - component: {fileID: 3807025496426383096}
   - component: {fileID: 1383083155581923890}
-  - component: {fileID: 8023818853199176607}
-  m_Layer: 0
-  m_Name: Egg
+  - component: {fileID: -8449491348471674313}
+  m_Layer: 6
+  m_Name: Egg_Prefab
   m_TagString: Egg
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 590339601460548583}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.658642, y: -3.107798, z: 2.1044083}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3, y: 3.5, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4798431728767049079, guid: 2e911352d24825749b0d8a5addee3b61, type: 3}
+  - {fileID: 2100000, guid: d3adf2ea8e562364d97d9c0d5453aa13, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &8023818853199176607
-CapsuleCollider:
+--- !u!135 &-8449491348471674313
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,7 +94,6 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.069473006
-  m_Height: 0.1548646
-  m_Direction: 1
-  m_Center: {x: -0.000000007450581, y: 0.0774323, z: 0.0000000037252903}
+  serializedVersion: 2
+  m_Radius: 0.55
+  m_Center: {x: -0.000000007450581, y: 0.07743229, z: 0.0000000037252903}

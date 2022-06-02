@@ -1,14 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.AI;
 using TMPro;
 
+
+[System.Serializable]
+public class GameObjectEvent : UnityEvent<GameObject>
+{
+
+}
 public class AI_System : MonoBehaviour
 {
     [Header("Components")]
     private NavMeshAgent navMeshAgent;
-    private GameObject player;
 
     [Header("AI Move Position")]
     [SerializeField] private Transform movePositionTransform;
@@ -17,13 +23,15 @@ public class AI_System : MonoBehaviour
     [SerializeField] private float detectRadius;
     //private bool nextFood = true;
 
-    //[SerializeField] private List<GameObject> foodList = new List<GameObject>();
 
     [Header("Player Score UI")]
     [SerializeField] private TextMeshProUGUI player1_scoreText;
     [SerializeField] private GameObject ScoreBoard;
     [SerializeField] private Transform PlayersLocation;
     [SerializeField] private int Score;
+
+    [Header("Events")]
+    public static GameObjectEvent onFoodRemove = new GameObjectEvent();
 
 
 
@@ -55,12 +63,11 @@ public class AI_System : MonoBehaviour
     protected virtual void OnTriggerEnter(Collider other)
     {
 
-            //nextFood = true;
-            //foodList.Remove(other.gameObject);
-
-            // Adds a different amount of point depending on the food collected
-            // New points are shown on Scoreboard
-            // Collected food object gets destroyed
+        // Adds a different amount of point depending on the food collected
+        // New points are shown on Scoreboard
+        // Collected food object gets destroyed
+        if (other.gameObject.layer == LayerMask.NameToLayer("Food"))
+        {
             switch (other.gameObject.tag)
             {
                 case "Apple":
@@ -80,8 +87,10 @@ public class AI_System : MonoBehaviour
                     break;
             }
             player1_scoreText.text = Score.ToString();
+            onFoodRemove.Invoke(other.gameObject);
+        }
 
-            Destroy(other.gameObject);
+        
 
         
 
@@ -89,9 +98,9 @@ public class AI_System : MonoBehaviour
 
     protected virtual void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            //Destroy(other.gameObject);
+            Destroy(other.gameObject);
         }
     }
 

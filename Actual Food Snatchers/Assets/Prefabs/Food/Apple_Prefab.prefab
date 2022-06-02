@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 8935376038294464513}
   - component: {fileID: 6621455163473583307}
   - component: {fileID: -1899583784574214188}
-  m_Layer: 0
-  m_Name: apple
+  m_Layer: 6
+  m_Name: Apple_Prefab
   m_TagString: Apple
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4676106488814206238}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.458641, y: -3.107798, z: 8.294411}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c6275abbe8f602444924ed3217337711, type: 2}
+  - {fileID: 2100000, guid: eb7dfb70bf3c1aa4bbfedbd1c9ff589c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -95,5 +95,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.13419613
-  m_Center: {x: -0.006106835, y: 0.1, z: -0.0029840395}
+  m_Radius: 0.55
+  m_Center: {x: -0.006106835, y: 0.12237646, z: -0.0029840395}

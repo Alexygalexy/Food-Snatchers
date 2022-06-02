@@ -19,6 +19,8 @@ public class FoodSpawn : MonoBehaviour
 
     private void Awake()
     {
+        AI_System.onFoodRemove.AddListener(RemoveFood);
+
         StartCoroutine(foodSpawner(5f));
     }
 
@@ -53,6 +55,11 @@ public class FoodSpawn : MonoBehaviour
 
             yield return new WaitForSeconds(spawnTimer);
         }
+    }
+
+    private void RemoveFood(GameObject food)
+    {
+        Destroy(food);
     }
 
 
