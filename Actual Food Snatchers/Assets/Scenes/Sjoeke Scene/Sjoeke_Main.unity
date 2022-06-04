@@ -4876,39 +4876,39 @@ MonoBehaviour:
   PlayersLocation: {fileID: 328729673}
   Score: 0
   Tables:
-  - {fileID: 1488702702}
-  - {fileID: 1507526661}
-  - {fileID: 2003831736}
-  - {fileID: 887454289}
-  - {fileID: 932630269}
-  - {fileID: 931340502}
-  - {fileID: 5796315}
-  - {fileID: 576987805}
-  - {fileID: 1727847717}
-  - {fileID: 474309930}
-  - {fileID: 605082052}
-  - {fileID: 1470267353}
-  - {fileID: 1522794734}
-  - {fileID: 524612918}
-  - {fileID: 979969307}
-  - {fileID: 764678131}
-  - {fileID: 211368852}
-  - {fileID: 137734062}
-  - {fileID: 42122528}
-  - {fileID: 992166380}
-  - {fileID: 642010526}
-  - {fileID: 843521878}
-  - {fileID: 583236468}
-  - {fileID: 1575486045}
-  - {fileID: 2051922756}
-  - {fileID: 901035035}
-  - {fileID: 2011240101}
-  - {fileID: 824366099}
-  - {fileID: 298573745}
-  - {fileID: 25719802}
-  - {fileID: 407624148}
-  - {fileID: 1477380300}
-  - {fileID: 1256933128}
+  - {fileID: 1488702701}
+  - {fileID: 1507526660}
+  - {fileID: 2003831735}
+  - {fileID: 887454288}
+  - {fileID: 932630268}
+  - {fileID: 931340501}
+  - {fileID: 5796314}
+  - {fileID: 576987804}
+  - {fileID: 1727847716}
+  - {fileID: 474309929}
+  - {fileID: 605082051}
+  - {fileID: 1470267352}
+  - {fileID: 1522794733}
+  - {fileID: 524612917}
+  - {fileID: 979969306}
+  - {fileID: 764678130}
+  - {fileID: 211368851}
+  - {fileID: 137734061}
+  - {fileID: 42122527}
+  - {fileID: 992166379}
+  - {fileID: 642010525}
+  - {fileID: 843521877}
+  - {fileID: 583236467}
+  - {fileID: 1575486044}
+  - {fileID: 2051922755}
+  - {fileID: 901035034}
+  - {fileID: 2011240100}
+  - {fileID: 824366098}
+  - {fileID: 298573744}
+  - {fileID: 25719801}
+  - {fileID: 407624147}
+  - {fileID: 1477380299}
+  - {fileID: 1256933127}
 --- !u!195 &328729669
 NavMeshAgent:
   m_ObjectHideFlags: 0

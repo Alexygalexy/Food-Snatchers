@@ -48,7 +48,7 @@ public class Sjoeke_AI : AI_System
     {
         for (int i = 0; i < Tables.Count; i++)
         {
-            if (go.transform.childCount > 0)
+            if (Tables[i].transform.childCount > 0)
             {
                 Debug.Log("Hello in the first if");/*
                 switch (Tables[i].transform.GetChild(0).tag)
