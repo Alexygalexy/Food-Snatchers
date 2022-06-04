@@ -14,9 +14,12 @@ public class Sjoeke_AI : AI_System
 {
     [SerializeField]
     private List<Foods> SortedAvailableFoods = new List<Foods>();
-    private List<GameObject> AvailableFoods = new List<GameObject>();
+    //private List<GameObject> AvailableFoods = new List<GameObject>();
 
     private int score;
+
+    [SerializeField]
+    private GameObject table;
 
     protected override void Awake()
     {
@@ -25,8 +28,23 @@ public class Sjoeke_AI : AI_System
 
     protected override void Update()
     {
-        //base.Update();
+        base.Update();
+        movePositionTransform = FindFoods();
+    }
 
+    protected List<GameObject> AvailableFoods()
+    {
+        List<GameObject> foods = new List<GameObject>();
+
+        foods.AddRange(GameObject.FindGameObjectsWithTag("Apple"));
+        foods.AddRange(GameObject.FindGameObjectsWithTag("Tomato"));
+        foods.AddRange(GameObject.FindGameObjectsWithTag("Egg"));
+        foods.AddRange(GameObject.FindGameObjectsWithTag("Chicken"));
+
+        foreach (GameObject food in foods)
+            Debug.Log(food);
+
+        return foods;
     }
 
     protected override void OnTriggerEnter(Collider other)
@@ -39,16 +57,24 @@ public class Sjoeke_AI : AI_System
         base.OnCollisionEnter(other);
     }
 
-    private void FindFoods()
+    public override void GoToPosition()
     {
-        AvailableFoods.Add(GameObject.FindGameObjectWithTag("Apple"));
-        AvailableFoods.Add(GameObject.FindGameObjectWithTag("Tomato"));
-        AvailableFoods.Add(GameObject.FindGameObjectWithTag("Egg"));
-        AvailableFoods.Add(GameObject.FindGameObjectWithTag("Chicken"));
-
-        for (int i = 0;  i < AvailableFoods.Count; i++) 
+        if (movePositionTransform)
         {
-            switch (AvailableFoods[i].gameObject.tag)
+            navMeshAgent.destination = movePositionTransform.position;
+        }
+        else
+        {
+            navMeshAgent.destination = transform.position;
+        }
+    }
+
+    protected Transform FindFoods()
+    {
+        foreach (GameObject food in AvailableFoods()) 
+        {
+            Debug.Log("helleo");/*
+            switch (food.gameObject.tag)
             {
                 case "Apple":
                     score = 1;
@@ -67,12 +93,16 @@ public class Sjoeke_AI : AI_System
                     break;                    
             }
             Debug.Log(score);
-            //SortedAvailableFoods.Add(new Foods() { FoodName = food.name, FoodScore = score, FoodTransform = food.transform, FoodPosition = food.transform.position});            
-        }
 
-        //SortedAvailableFoods.Sort(SortByScore);
-        //movePositionTransform = SortedAvailableFoods[0].FoodTransform;
-        //GoToPosition();
+            SortedAvailableFoods.Add(new Foods() { FoodName = food.name, FoodScore = score, FoodTransform = food.transform, FoodPosition = food.transform.position});            */
+        }
+        /*
+        SortedAvailableFoods.Sort(SortByScore);
+        Transform SortedFoodTransform = SortedAvailableFoods[0].FoodTransform;*/
+
+        Transform SortedFoodTransform = table.transform;
+
+        return SortedFoodTransform;
     }
 
     private int SortByScore (Foods food1, Foods food2)

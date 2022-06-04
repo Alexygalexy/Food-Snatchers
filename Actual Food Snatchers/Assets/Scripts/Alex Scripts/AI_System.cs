@@ -14,7 +14,7 @@ public class GameObjectEvent : UnityEvent<GameObject>
 public class AI_System : MonoBehaviour
 {
     [Header("Components")]
-    private NavMeshAgent navMeshAgent;
+    protected NavMeshAgent navMeshAgent;
 
     [Header("AI Move Position")]
     [SerializeField] protected Transform movePositionTransform;
