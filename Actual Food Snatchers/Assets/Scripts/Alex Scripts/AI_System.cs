@@ -17,7 +17,7 @@ public class AI_System : MonoBehaviour
     private NavMeshAgent navMeshAgent;
 
     [Header("AI Move Position")]
-    [SerializeField] private Transform movePositionTransform;
+    [SerializeField] protected Transform movePositionTransform;
 
     [Header("Player Score UI")]
     [SerializeField] private TextMeshProUGUI player1_scoreText;
