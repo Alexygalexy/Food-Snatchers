@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class RayaBot : AI_System
 {
+    protected float smallestDistance1;
+    protected float smallestDistance2;
+    protected Transform ClosestFood;
+    protected Transform ClosestEnemy;
+
     protected override void Awake()
     {
         base.Awake();
@@ -12,12 +17,19 @@ public class RayaBot : AI_System
     protected override void Update()
     {
         base.Update();
-        if (Input.GetMouseButton(1))
+        ClosestFood = FindClosestFood();
+        ClosestEnemy = FindClosestEnemy();
+
+        if (smallestDistance1 < (smallestDistance2 / 1.5f))   //prioritize enemies: if the difference between the two is less than 1/4 go for the enemy
         {
-            Debug.Log(FindClosestFood().name);
+            Debug.Log("My next target: " + ClosestFood.name);
+            movePositionTransform = ClosestFood;
         }
-        
-        movePositionTransform = FindClosestFood();
+        else
+        {
+            Debug.Log("My next target: " + ClosestEnemy.name);
+            movePositionTransform = ClosestEnemy;
+        }
     }
 
     public override void GoToPosition()
@@ -54,6 +66,14 @@ public class RayaBot : AI_System
         return allFood;
     }
 
+    protected List<GameObject> AllPlayers()
+    {
+        List<GameObject> allPlayers = new List<GameObject>();
+        allPlayers.AddRange(GameObject.FindGameObjectsWithTag("Player"));
+        allPlayers.Remove(transform.gameObject);
+        return allPlayers;
+    }
+
     protected Transform FindClosestFood()
     {
         GameObject closestFood = null;
@@ -71,9 +91,34 @@ public class RayaBot : AI_System
                 distance = curDistance;
             }
         }
-
         Transform ClosestFoodTransform = closestFood.transform;
+        smallestDistance1 = distance;
 
         return ClosestFoodTransform;
     }
+
+    protected Transform FindClosestEnemy()
+    {
+        GameObject closestEnemy = null;
+
+        float distance = Mathf.Infinity;
+        Vector3 position = transform.position;
+
+        foreach (GameObject enemy in AllPlayers())
+        {
+            Vector3 diff = enemy.transform.position - position;
+            float curDistance = diff.sqrMagnitude;
+            if (curDistance < distance)
+            {
+                closestEnemy = enemy;
+                distance = curDistance;
+            }
+        }
+        Transform ClosestEnemyTransform = closestEnemy.transform;
+
+        smallestDistance2 = distance;
+
+        return ClosestEnemyTransform;
+    }
+
 }
