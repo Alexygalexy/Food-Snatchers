@@ -14,10 +14,10 @@ public class GameObjectEvent : UnityEvent<GameObject>
 public class AI_System : MonoBehaviour
 {
     [Header("Components")]
-    private NavMeshAgent navMeshAgent;
+    public NavMeshAgent navMeshAgent;
 
     [Header("AI Move Position")]
-    [SerializeField] private Transform movePositionTransform;
+    [SerializeField] public Transform movePositionTransform;
 
     [Header("Player Score UI")]
     [SerializeField] private TextMeshProUGUI player1_scoreText;
