@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class BotStateReusableData
 {
-
+    public Transform alexMovePoint { get; set; }
 }

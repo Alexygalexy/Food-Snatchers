@@ -7,7 +7,7 @@ public class BotMovementState : IState
     protected BotMovementStateMachine stateMachine;
 
     protected Vector3 centre;
-    protected float radius = 10f;
+    protected float radius = 30f;
 
     public BotMovementState(BotMovementStateMachine botMovementStateMachine)
     {
@@ -58,8 +58,10 @@ public class BotMovementState : IState
             {
                 minSqrDistance = sqrDistanceToCenter;
                 nearestCollider = colliders[i];
+                stateMachine.reusableData.alexMovePoint.position = colliders[i].transform.position;
             }
         }
     }
+    
     #endregion
 }

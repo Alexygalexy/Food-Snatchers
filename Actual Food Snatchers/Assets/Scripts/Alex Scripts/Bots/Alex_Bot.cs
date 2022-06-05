@@ -13,6 +13,8 @@ public class Alex_Bot : AI_System
     {
         movementStateMachine = new BotMovementStateMachine(this);
 
+        movementStateMachine.reusableData.alexMovePoint = movePositionTransform;
+
         base.Awake();
     }
 
@@ -24,6 +26,8 @@ public class Alex_Bot : AI_System
     protected override void Update()
     {
         base.Update();
+
+        movePositionTransform = movementStateMachine.reusableData.alexMovePoint;
 
         movementStateMachine.Update();
     }
@@ -44,10 +48,10 @@ public class Alex_Bot : AI_System
     }
 
     #region Main Methods
-
-    //protected override void OnTriggerEnter(Collider other)
-    //{
-    //    base.OnTriggerEnter(other);
-    //}
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 30f);
+    }
     #endregion
 }
