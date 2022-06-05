@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028328, g: 0.22571322, b: 0.30692163, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6591,7 +6591,7 @@ GameObject:
   - component: {fileID: 467960562}
   - component: {fileID: 467960561}
   m_Layer: 5
-  m_Name: ScoreBoard_Alex
+  m_Name: ScoreBoard_Tom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20673,7 +20673,7 @@ GameObject:
   - component: {fileID: 1588824500}
   - component: {fileID: 1588824499}
   m_Layer: 0
-  m_Name: AlexMovePoint
+  m_Name: TomMovePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20750,7 +20750,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1588824498}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.66, y: -3.98, z: -3.04}
+  m_LocalPosition: {x: 12.33, y: 21.82, z: -12.34}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22089,7 +22089,7 @@ GameObject:
   - component: {fileID: 1687556290}
   - component: {fileID: 1687556291}
   m_Layer: 5
-  m_Name: ScoreTextAlex
+  m_Name: ScoreTextTom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26568,10 +26568,10 @@ GameObject:
   - component: {fileID: 2068529998}
   - component: {fileID: 2068529997}
   - component: {fileID: 2068529996}
-  - component: {fileID: 2068529995}
   - component: {fileID: 2068529994}
+  - component: {fileID: 2068530001}
   m_Layer: 7
-  m_Name: Alex_Bot
+  m_Name: Tom_Bot
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26593,24 +26593,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2068529995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2068529993}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c47fdf7a6b96bc4688293ab01ecdb8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movePositionTransform: {fileID: 1588824502}
-  detectRadius: 15
-  player1_scoreText: {fileID: 1687556291}
-  ScoreBoard: {fileID: 467960560}
-  PlayersLocation: {fileID: 2068530000}
-  Score: 0
 --- !u!195 &2068529996
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -26621,7 +26603,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 5.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -26667,7 +26649,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c6275abbe8f602444924ed3217337711, type: 2}
+  - {fileID: 2100000, guid: 56c6685f05d653a418a9033a066719bf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -26713,6 +26695,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &2068530001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2068529993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f3af43c3335c5b46af9813113a2d92c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movePositionTransform: {fileID: 1588824502}
+  player1_scoreText: {fileID: 1687556291}
+  ScoreBoard: {fileID: 467960560}
+  PlayersLocation: {fileID: 2068530000}
+  Score: 0
+  tables: []
+  GameOn: 1
 --- !u!1001 &2073839348
 PrefabInstance:
   m_ObjectHideFlags: 0
