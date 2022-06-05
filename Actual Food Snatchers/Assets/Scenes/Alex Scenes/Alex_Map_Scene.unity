@@ -24680,11 +24680,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movePositionTransform: {fileID: 2051622041}
-  detectRadius: 15
   player1_scoreText: {fileID: 1532626250}
   ScoreBoard: {fileID: 992395429}
   PlayersLocation: {fileID: 1794327486}
   Score: 0
+  <LayerData>k__BackingField:
+    <Food>k__BackingField:
+      serializedVersion: 2
+      m_Bits: 64
 --- !u!195 &1794327482
 NavMeshAgent:
   m_ObjectHideFlags: 0
