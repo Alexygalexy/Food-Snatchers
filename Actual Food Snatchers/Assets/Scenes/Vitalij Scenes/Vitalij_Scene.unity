@@ -11976,8 +11976,8 @@ GameObject:
   - component: {fileID: 917558257}
   - component: {fileID: 917558256}
   - component: {fileID: 917558255}
-  - component: {fileID: 917558254}
   - component: {fileID: 917558253}
+  - component: {fileID: 917558260}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -12001,24 +12001,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &917558254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 917558252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e071016cd7fa26242a91146505957e02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movePositionTransform: {fileID: 2146748349}
-  detectRadius: 0
-  player1_scoreText: {fileID: 138874060}
-  ScoreBoard: {fileID: 1505760358}
-  PlayersLocation: {fileID: 917558259}
-  Score: 0
 --- !u!195 &917558255
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -12121,6 +12103,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &917558260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917558252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47aa4a4494ccc5a4eb09ed4f56f5c739, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movePositionTransform: {fileID: 2146748349}
+  player1_scoreText: {fileID: 138874060}
+  ScoreBoard: {fileID: 1505760358}
+  PlayersLocation: {fileID: 917558259}
+  Score: 0
 --- !u!1001 &924869857
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12730,7 +12729,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movePositionTransform: {fileID: 1279111913}
-  detectRadius: 0
   player1_scoreText: {fileID: 1859545890}
   ScoreBoard: {fileID: 405616750}
   PlayersLocation: {fileID: 957192394}
