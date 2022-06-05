@@ -9,7 +9,7 @@ public class Tom_Bot : AI_System
     [SerializeField]
     private List<GameObject> tables = new List<GameObject>();
     [SerializeField]
-    private bool GameOn = true;
+    //private bool GameOn = true;
 
     protected override void Awake()
     {
@@ -76,10 +76,10 @@ public class Tom_Bot : AI_System
         GameObject best_food = null;
 
         float dist = Mathf.Infinity;
-        float value_apple = 1;
-        float value_tomato = 2;
-        float value_egg = 3;
-        float value_chicken = 4;
+        //float value_apple = 1;
+        //float value_tomato = 2;
+        //float value_egg = 3;
+        //float value_chicken = 4;
 
         Vector3 pos = transform.position;
 
