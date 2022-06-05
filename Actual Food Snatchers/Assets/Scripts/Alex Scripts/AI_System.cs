@@ -14,7 +14,7 @@ public class GameObjectEvent : UnityEvent<GameObject>
 public class AI_System : MonoBehaviour
 {
     [Header("Components")]
-    private NavMeshAgent navMeshAgent;
+    protected NavMeshAgent navMeshAgent;
 
     [Header("AI Move Position")]
     [SerializeField] protected Transform movePositionTransform;
@@ -23,7 +23,7 @@ public class AI_System : MonoBehaviour
     [SerializeField] private TextMeshProUGUI player1_scoreText;
     [SerializeField] private GameObject ScoreBoard;
     [SerializeField] private Transform PlayersLocation;
-    [SerializeField] private int Score;
+    [SerializeField] protected int Score;
 
     [Header("Events")]
     public static GameObjectEvent onFoodRemove = new GameObjectEvent();
