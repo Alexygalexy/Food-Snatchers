@@ -22,12 +22,12 @@ public class RayaBot : AI_System
 
         if (smallestDistance1 < (smallestDistance2 / 1.5f))   //prioritize enemies: if the difference between the two is less than 1/4 go for the enemy
         {
-            Debug.Log("My next target: " + ClosestFood.name);
+            //Debug.Log("My next target: " + ClosestFood.name);
             movePositionTransform = ClosestFood;
         }
         else
         {
-            Debug.Log("My next target: " + ClosestEnemy.name);
+            //Debug.Log("My next target: " + ClosestEnemy.name);
             movePositionTransform = ClosestEnemy;
         }
     }

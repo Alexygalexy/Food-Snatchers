@@ -67,7 +67,7 @@ public class Sjoeke_AI : AI_System
 
         Transform randomFoodTransform = randomFood.transform;
 
-        Debug.Log("Food is " + randomFood);
+        //Debug.Log("Food is " + randomFood);
         
         return randomFoodTransform;
     }/*

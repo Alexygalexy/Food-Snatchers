@@ -23,7 +23,7 @@ public class FoodSpawn : MonoBehaviour
     {
         AI_System.onFoodRemove.AddListener(RemoveFood);
 
-        StartCoroutine(foodSpawner(10f));
+        StartCoroutine(foodSpawner(2.5f));
     }
 
 

@@ -79,7 +79,8 @@ public class AI_System : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            Destroy(other.gameObject);
+            Debug.Log("Touching Player");
+            //Destroy(other.gameObject);
         }
     }
 
