@@ -11,7 +11,11 @@ public class RayaBot : AI_System
 
     protected float chanceToSnatch;
 
-    protected GameObject enemy;
+    protected bool ready = true, pause = false;
+
+    protected AudioSource hit;
+    protected AudioSource collect;
+    protected AudioSource[] audioRaya;
 
     //StateMachine
     //RayaBaseState currentState;
@@ -22,12 +26,15 @@ public class RayaBot : AI_System
     //RayaCloneState CloneState = new RayaCloneState();
 
     //State Machine
-    //protected void Start()
-    //{
-    //    currentState = IdleState;
+    protected void Start()
+    {
+        audioRaya = GetComponents<AudioSource>();
+        hit = audioRaya[0];
+        collect = audioRaya[1];
 
-    //    currentState.EnterState(this);
-    //}
+        //currentState = IdleState;
+        //currentState.EnterState(this);
+    }
 
     protected override void Awake()
     {
@@ -39,21 +46,22 @@ public class RayaBot : AI_System
         //StateMachine
         //currentState.UpdateState(this);
 
-        base.Update();
+        scoreBoard();
         ClosestFood = FindClosestFood();
         ClosestEnemy = FindClosestEnemy();
 
-        if (smallestDistance1 < (smallestDistance2 / 1.5f))   //prioritize enemies: if the difference between the two is less than 1/4 go for the enemy
+        if (smallestDistance1 > (smallestDistance2 / 1.5f) && ready == true)   //prioritize enemies: if the difference between the two is less than 1/4 go for the enemy
         {
-            //Debug.Log("My next target: " + ClosestFood.name);
-            movePositionTransform = ClosestFood;
+            movePositionTransform = ClosestEnemy;
+            GoToPosition();
             //currentState = CollectState;
             //currentState.EnterState(this);
         }
-        else
+        else if (!pause)
         {
             //Debug.Log("My next target: " + ClosestEnemy.name);
-            movePositionTransform = ClosestEnemy;
+            movePositionTransform = ClosestFood;
+            GoToPosition();
         }
     }
 
@@ -69,26 +77,43 @@ public class RayaBot : AI_System
         }
     }
 
+    //COLLECT
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
+        collect.Play();
     }
 
+    //ATTACK
     protected override void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player")){
-
-            chanceToSnatch = Random.Range(0f, 1.0f);
-
-            if (chanceToSnatch < 0.7)
+            if (ready)
             {
-                other.gameObject.GetComponent<AI_System>().Score -= 10;
-                Score += 10;
-                player1_scoreText.text = Score.ToString();
+                ready = false;
+                Debug.Log("HitHim");
+
+                chanceToSnatch = Random.Range(0f, 1.0f);
+                if (chanceToSnatch < 0.7)
+                {
+                    other.gameObject.GetComponent<AI_System>().Score -= 10;
+                    Score += 10;
+
+                    player1_scoreText.text = Score.ToString();
+                    hit.Play();
+
+                    StartCoroutine("CoolDown");
+                }
             }
+            else
+            {
+                StartCoroutine("CoolDown");
+            }
+
         }
     }
 
+    //---MY FUNCTIONS---
     protected List<GameObject> AllFoods()
     {
         List<GameObject> allFood = new List<GameObject>();
@@ -156,4 +181,20 @@ public class RayaBot : AI_System
         return ClosestEnemyTransform;
     }
 
+    protected IEnumerator CoolDown()
+    {
+        pause = true;
+
+        navMeshAgent.destination = transform.position;
+
+        yield return new WaitForSecondsRealtime(0.7f);
+
+        pause = false;
+        ready = true;
+    }
+
+    protected void CloneAbility()
+    {
+
+    }
 }
