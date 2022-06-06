@@ -106,10 +106,16 @@ public class Tom_Bot : AI_System
                 best_food = food;
                 dist = cur_dist;
             }
+            else
+            {
+                go_snatch();
+            }
         }
         Transform best_foodTransorm = best_food.transform;
 
         return (best_foodTransorm);
     }
+
+    protected
 
 }
