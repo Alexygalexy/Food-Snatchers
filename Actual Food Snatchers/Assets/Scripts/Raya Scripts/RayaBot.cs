@@ -9,6 +9,26 @@ public class RayaBot : AI_System
     protected Transform ClosestFood;
     protected Transform ClosestEnemy;
 
+    protected float chanceToSnatch;
+
+    protected GameObject enemy;
+
+    //StateMachine
+    //RayaBaseState currentState;
+    //RayaIdleState IdleState = new RayaIdleState();
+    //RayaDefenseState DefenseState = new RayaDefenseState();
+    //RayaAttackState AttackState = new RayaAttackState();
+    //RayaCollectState CollectState = new RayaCollectState();
+    //RayaCloneState CloneState = new RayaCloneState();
+
+    //State Machine
+    //protected void Start()
+    //{
+    //    currentState = IdleState;
+
+    //    currentState.EnterState(this);
+    //}
+
     protected override void Awake()
     {
         base.Awake();
@@ -16,6 +36,9 @@ public class RayaBot : AI_System
 
     protected override void Update()
     {
+        //StateMachine
+        //currentState.UpdateState(this);
+
         base.Update();
         ClosestFood = FindClosestFood();
         ClosestEnemy = FindClosestEnemy();
@@ -24,6 +47,8 @@ public class RayaBot : AI_System
         {
             //Debug.Log("My next target: " + ClosestFood.name);
             movePositionTransform = ClosestFood;
+            //currentState = CollectState;
+            //currentState.EnterState(this);
         }
         else
         {
@@ -51,7 +76,17 @@ public class RayaBot : AI_System
 
     protected override void OnCollisionEnter(Collision other)
     {
-        base.OnCollisionEnter(other);
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player")){
+
+            chanceToSnatch = Random.Range(0f, 1.0f);
+
+            if (chanceToSnatch < 0.7)
+            {
+                other.gameObject.GetComponent<AI_System>().Score -= 10;
+                Score += 10;
+                player1_scoreText.text = Score.ToString();
+            }
+        }
     }
 
     protected List<GameObject> AllFoods()

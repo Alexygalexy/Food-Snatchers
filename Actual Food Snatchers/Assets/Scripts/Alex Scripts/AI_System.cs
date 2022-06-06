@@ -20,10 +20,10 @@ public class AI_System : MonoBehaviour
     [SerializeField] protected Transform movePositionTransform;
 
     [Header("Player Score UI")]
-    [SerializeField] private TextMeshProUGUI player1_scoreText;
+    [SerializeField] protected TextMeshProUGUI player1_scoreText;
     [SerializeField] private GameObject ScoreBoard;
     [SerializeField] private Transform PlayersLocation;
-    [SerializeField] protected int Score;
+    [SerializeField] public int Score;
 
     [Header("Events")]
     public static GameObjectEvent onFoodRemove = new GameObjectEvent();
