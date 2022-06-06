@@ -23,7 +23,7 @@ public class AI_System : MonoBehaviour
     [SerializeField] private TextMeshProUGUI player1_scoreText;
     [SerializeField] private GameObject ScoreBoard;
     [SerializeField] private Transform PlayersLocation;
-    [SerializeField] private int Score;
+    [SerializeField] protected int Score;
 
     [Header("Events")]
     public static GameObjectEvent onFoodRemove = new GameObjectEvent();
@@ -79,7 +79,8 @@ public class AI_System : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            Destroy(other.gameObject);
+            Debug.Log("Touching Player");
+            //Destroy(other.gameObject);
         }
     }
 

@@ -4,15 +4,37 @@ using UnityEngine;
 
 public class Alex_Bot : AI_System
 {
+    private BotMovementStateMachine movementStateMachine;
+
+    [field: Header("Collisions")]
+    [field: SerializeField] public BotLayerData LayerData { get; private set; }
 
     protected override void Awake()
     {
+        movementStateMachine = new BotMovementStateMachine(this);
+
+        movementStateMachine.reusableData.alexMovePoint = movePositionTransform;
+
         base.Awake();
+    }
+
+    protected void Start()
+    {
+        movementStateMachine.ChangeState(movementStateMachine.MovingState);
     }
 
     protected override void Update()
     {
         base.Update();
+
+        movePositionTransform = movementStateMachine.reusableData.alexMovePoint;
+
+        movementStateMachine.Update();
+    }
+
+    protected void FixedUpdate()
+    {
+        movementStateMachine.PhysicsUpdate();
     }
 
     protected override void OnTriggerEnter(Collider other)
@@ -26,10 +48,10 @@ public class Alex_Bot : AI_System
     }
 
     #region Main Methods
-
-    //protected override void OnTriggerEnter(Collider other)
-    //{
-    //    base.OnTriggerEnter(other);
-    //}
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 30f);
+    }
     #endregion
 }
