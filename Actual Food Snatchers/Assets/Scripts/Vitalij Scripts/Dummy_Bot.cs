@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 
 
-public class Vitalij_Bot : AI_System
+public class Dummy_Bot : AI_System
 {
     public Transform[] waypoints;
     public int speed;
@@ -31,7 +31,6 @@ public class Vitalij_Bot : AI_System
         waypointIndex = 0;
         transform.LookAt(waypoints[waypointIndex].position);
         steal = true;
-        collided = true;
     }
 
     protected override void Update()
@@ -44,9 +43,9 @@ public class Vitalij_Bot : AI_System
             IncreaseIndex();
         }
         Patrol();
-        if(steal){
-            DetectEnemy();
-        }
+        // if(steal){
+        //     DetectEnemy();
+        // }
         
     }
 
@@ -59,10 +58,10 @@ public class Vitalij_Bot : AI_System
     protected override void OnCollisionEnter(Collision other)
     {
         // base.OnCollisionEnter(other);
-        // if (other.gameObject.tag == "Player")
-        // {
-        //     collided=true;
-        // }
+        if (other.gameObject.tag == "Player")
+        {
+            collided=true;
+        }
     }
 
     protected virtual void Patrol()
@@ -84,28 +83,25 @@ public class Vitalij_Bot : AI_System
         transform.LookAt(waypoints[waypointIndex].position);
     }
 
-    public virtual void DetectEnemy()
-    {
-        Vector3 detectEnemy = Vector3.forward;
-        Ray theRay = new Ray(transform.position, transform.TransformDirection(detectEnemy * range));
-        Debug.DrawRay(transform.position, transform.TransformDirection(detectEnemy * range));
+    // protected virtual void DetectEnemy()
+    // {
+    //     Vector3 detectEnemy = Vector3.forward;
+    //     Ray theRay = new Ray(transform.position, transform.TransformDirection(detectEnemy * range));
+    //     Debug.DrawRay(transform.position, transform.TransformDirection(detectEnemy * range));
 
-        if (Physics.Raycast(theRay, out RaycastHit hit, range))
-        {
-            if (hit.collider.tag == "Player")
-            {
-               if(collided)
-               {
-                   Debug.Log("STOLEN");                   
-                   hit.collider.gameObject.GetComponent<Dummy_Bot>().Score -=5;
-                   this.gameObject.GetComponent<Vitalij_Bot>().Score += 5;
-                   steal=false;
-                   collided=false;
-                   
-               }
-            }
-        }
-    }
+    //     if (Physics.Raycast(theRay, out RaycastHit hit, range))
+    //     {
+    //         if (hit.collider.tag == "Player")
+    //         {
+    //            if(collided)
+    //            {
+    //                Debug.Log("STOLEN");
+    //                collided=false;
+    //                steal=false;
+    //            }
+    //         }
+    //     }
+    // }
 
     
 
