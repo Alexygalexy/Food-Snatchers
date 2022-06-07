@@ -2,26 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class StateMachine
+
+namespace Alex
 {
-    protected IState currentState;
-
-    public void ChangeState(IState newState)
+    public abstract class StateMachine
     {
-        currentState?.Exit();
+        protected IState currentState;
 
-        currentState = newState;
+        public void ChangeState(IState newState)
+        {
+            currentState?.Exit();
 
-        currentState.Enter();
-    }
+            currentState = newState;
 
-    public void Update()
-    {
-        currentState?.Update();
-    }
+            currentState.Enter();
+        }
 
-    public void PhysicsUpdate()
-    {
-        currentState?.PhysicsUpdate();
+        public void Update()
+        {
+            currentState?.Update();
+        }
+
+        public void PhysicsUpdate()
+        {
+            currentState?.PhysicsUpdate();
+        }
     }
 }
