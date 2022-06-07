@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class CleanVitalijBot : AI_System
+public class CleanVitalijBot : AI_System, IPauseSystem
 {
 
     private bool collided;
@@ -88,4 +88,9 @@ public class CleanVitalijBot : AI_System
         base.scoreBoard();
     }
     #endregion
+
+    public void Pause(bool isPaused)
+    {
+        paused = isPaused;
+    }
 }

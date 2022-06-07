@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Tom_Bot : AI_System
+public class Tom_Bot : AI_System, IPauseSystem
 {
     ///[SerializeField]
     ///private bool GameOn = true
@@ -146,5 +146,12 @@ public class Tom_Bot : AI_System
             period = 0;
         }
         period += UnityEngine.Time.deltaTime;
+    }
+
+
+    //External Function
+    public void Pause(bool isPaused)
+    {
+        paused = isPaused;
     }
 }

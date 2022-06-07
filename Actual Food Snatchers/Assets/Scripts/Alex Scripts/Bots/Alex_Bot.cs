@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Alex
 {
-    public class Alex_Bot : AI_System
+    public class Alex_Bot : AI_System, IPauseSystem
     {
         private BotMovementStateMachine movementStateMachine;
 
@@ -74,6 +74,15 @@ namespace Alex
 
 
         }
+        #endregion
+
+        #region External Methods
+
+        public void Pause(bool isPaused)
+        {
+            paused = isPaused;
+        }
+
         #endregion
     }
 }

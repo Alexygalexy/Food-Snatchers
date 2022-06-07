@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RayaBot : AI_System
+public class RayaBot : AI_System, IPauseSystem
 {
     protected float smallestDistance1;
     protected float smallestDistance2;
@@ -191,7 +191,7 @@ public class RayaBot : AI_System
 
         navMeshAgent.destination = transform.position;
 
-        yield return new WaitForSecondsRealtime(0.7f);
+        yield return new WaitForSecondsRealtime(2f);
 
         pause = false;
         ready = true;
@@ -200,5 +200,10 @@ public class RayaBot : AI_System
     protected void CloneAbility()
     {
 
+    }
+
+    public void Pause(bool isPaused)
+    {
+        paused = isPaused;
     }
 }

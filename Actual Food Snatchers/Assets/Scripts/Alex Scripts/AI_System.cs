@@ -24,6 +24,7 @@ public class AI_System : MonoBehaviour
     [SerializeField] private GameObject ScoreBoard;
     [SerializeField] private Transform PlayersLocation;
     [SerializeField] public int Score;
+    [SerializeField] protected Transform cam;
 
     [Header("Events")]
     public static GameObjectEvent onFoodRemove = new GameObjectEvent();
@@ -40,6 +41,8 @@ public class AI_System : MonoBehaviour
     {
         if (!paused)
         {
+
+
             GoToPosition();
 
             scoreBoard();
@@ -98,6 +101,9 @@ public class AI_System : MonoBehaviour
     {
         // Positions scoreboard above player's head
         ScoreBoard.transform.position = new Vector3(PlayersLocation.transform.position.x, PlayersLocation.transform.position.y + 3, PlayersLocation.transform.position.z);
+        
+        ScoreBoard.transform.LookAt(cam.position);
+        ScoreBoard.transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
     }
 
     #endregion
