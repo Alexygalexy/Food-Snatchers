@@ -9,6 +9,37 @@ public class RayaBot : AI_System
     protected Transform ClosestFood;
     protected Transform ClosestEnemy;
 
+    protected float chanceToSnatch;
+
+    protected bool ready = true, pause = false;
+
+    protected AudioSource hit;
+    protected AudioSource collect;
+    protected AudioSource[] audioRaya;
+
+    Raya.StateMachine<RayaBot> stateMachine;
+    //RayaBaseState currentState;
+    Raya.RayaIdleState IdleState = new Raya.RayaIdleState();
+    Raya.RayaDefenseState DefenseState = new Raya.RayaDefenseState();
+    Raya.RayaAttackState AttackState = new Raya.RayaAttackState();
+    Raya.RayaCollectState CollectState = new Raya.RayaCollectState();
+    Raya.RayaCloneState CloneState = new Raya.RayaCloneState();
+
+    //State Machine
+    protected void Start()
+    {
+        audioRaya = GetComponents<AudioSource>();
+        hit = audioRaya[0];
+        collect = audioRaya[1];
+
+        stateMachine = new Raya.StateMachine<RayaBot>(this);
+
+        stateMachine.Start();
+
+        //currentState = IdleState;
+        //currentState.EnterState(this);
+    }
+
     protected override void Awake()
     {
         base.Awake();
@@ -16,19 +47,25 @@ public class RayaBot : AI_System
 
     protected override void Update()
     {
-        base.Update();
+        //StateMachine
+        stateMachine.Update();
+
+        scoreBoard();
         ClosestFood = FindClosestFood();
         ClosestEnemy = FindClosestEnemy();
 
-        if (smallestDistance1 < (smallestDistance2 / 1.5f))   //prioritize enemies: if the difference between the two is less than 1/4 go for the enemy
+        if (smallestDistance1 > (smallestDistance2 / 1.5f) && ready == true)   //prioritize enemies: if the difference between the two is less than 1/4 go for the enemy
         {
-            //Debug.Log("My next target: " + ClosestFood.name);
-            movePositionTransform = ClosestFood;
+            movePositionTransform = ClosestEnemy;
+            GoToPosition();
+            //currentState = CollectState;
+            //currentState.EnterState(this);
         }
-        else
+        else if (!pause)
         {
             //Debug.Log("My next target: " + ClosestEnemy.name);
-            movePositionTransform = ClosestEnemy;
+            movePositionTransform = ClosestFood;
+            GoToPosition();
         }
     }
 
@@ -44,17 +81,44 @@ public class RayaBot : AI_System
         }
     }
 
+    //COLLECT
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
+        collect.Play();
     }
 
+    //ATTACK
     protected override void OnCollisionEnter(Collision other)
     {
-        base.OnCollisionEnter(other);
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player")){
+            if (ready)
+            {
+                ready = false;
+                Debug.Log("HitHim");
+
+                chanceToSnatch = Random.Range(0f, 1.0f);
+                if (chanceToSnatch < 0.7)
+                {
+                    other.gameObject.GetComponent<AI_System>().Score -= 10;
+                    Score += 10;
+
+                    player1_scoreText.text = Score.ToString();
+                    hit.Play();
+
+                    StartCoroutine("CoolDown");
+                }
+            }
+            else
+            {
+                StartCoroutine("CoolDown");
+            }
+
+        }
     }
 
-    protected List<GameObject> AllFoods()
+    //---MY FUNCTIONS---
+    public List<GameObject> AllFoods()
     {
         List<GameObject> allFood = new List<GameObject>();
 
@@ -74,7 +138,7 @@ public class RayaBot : AI_System
         return allPlayers;
     }
 
-    protected Transform FindClosestFood()
+    public Transform FindClosestFood()
     {
         GameObject closestFood = null;
 
@@ -121,4 +185,20 @@ public class RayaBot : AI_System
         return ClosestEnemyTransform;
     }
 
+    protected IEnumerator CoolDown()
+    {
+        pause = true;
+
+        navMeshAgent.destination = transform.position;
+
+        yield return new WaitForSecondsRealtime(0.7f);
+
+        pause = false;
+        ready = true;
+    }
+
+    protected void CloneAbility()
+    {
+
+    }
 }
