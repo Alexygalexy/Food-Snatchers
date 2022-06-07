@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 
 
-public class Vitalij_Bot : AI_System
+public class Dummy_Bot : AI_System
 {
     public Transform[] waypoints;
     public int speed;
@@ -16,8 +16,6 @@ public class Vitalij_Bot : AI_System
     [SerializeField]protected float angleSpeed = 45.0f;
     private bool collided;
     private bool steal;
-    float timer = 5.0f;
-    
 
 
 
@@ -30,14 +28,9 @@ public class Vitalij_Bot : AI_System
     protected override void Awake()
     {
         // base.Awake();
-        
-        steal = true;
-        collided = true;
-    }
-
-    protected void Start() {
         waypointIndex = 0;
         transform.LookAt(waypoints[waypointIndex].position);
+        steal = true;
     }
 
     protected override void Update()
@@ -50,23 +43,10 @@ public class Vitalij_Bot : AI_System
             IncreaseIndex();
         }
         Patrol();
+        // if(steal){
+        //     DetectEnemy();
+        // }
         
-
-        if(!steal && !collided)
-        {
-            timer -= Time.deltaTime;
-            if (timer < 0)
-            {
-                steal=true;
-                collided=true;
-                
-            }
-        }
-    }
-    private void FixedUpdate() {
-        if(steal){
-            DetectEnemy();
-        }
     }
 
 
@@ -78,16 +58,9 @@ public class Vitalij_Bot : AI_System
     protected override void OnCollisionEnter(Collision other)
     {
         // base.OnCollisionEnter(other);
-        // if (other.gameObject.tag == "Player")
-        // {
-        //     collided=true;
-        // }
-        if (other.gameObject.tag == ("Player"))
+        if (other.gameObject.tag == "Player")
         {
-            if(collided)
-            {
-                other.gameObject.GetComponent<Rigidbody>().AddForce(0f, 0f, 15f, ForceMode.Impulse);
-            }
+            collided=true;
         }
     }
 
@@ -102,7 +75,6 @@ public class Vitalij_Bot : AI_System
 
     protected virtual void IncreaseIndex()
     {
-        
         waypointIndex++;
         if (waypointIndex >= waypoints.Length)
         {
@@ -111,32 +83,25 @@ public class Vitalij_Bot : AI_System
         transform.LookAt(waypoints[waypointIndex].position);
     }
 
-    public virtual void DetectEnemy()
-    {
-        Vector3 detectEnemy = Vector3.forward;
-        Ray theRay = new Ray(transform.position, transform.TransformDirection(detectEnemy * range));
-        Debug.DrawRay(transform.position, transform.TransformDirection(detectEnemy * range));
+    // protected virtual void DetectEnemy()
+    // {
+    //     Vector3 detectEnemy = Vector3.forward;
+    //     Ray theRay = new Ray(transform.position, transform.TransformDirection(detectEnemy * range));
+    //     Debug.DrawRay(transform.position, transform.TransformDirection(detectEnemy * range));
 
-        if (Physics.Raycast(theRay, out RaycastHit hit, range))
-        {
-            if (hit.collider.tag == "Player")
-            {
-               if(collided)
-               {
-                   Debug.Log("STOLEN");                   
-                   hit.collider.gameObject.GetComponent<AI_System>().Score -=5;
-                   hit.collider.gameObject.GetComponent<AI_System>().player1_scoreText.text = Score.ToString();
-                   this.gameObject.GetComponent<Vitalij_Bot>().Score += 5;
-                   this.player1_scoreText.text = Score.ToString();
-                   
-                   timer = 5.0f;
-                   steal=false;
-                   collided=false;
-                   
-               }
-            }
-        }
-    }
+    //     if (Physics.Raycast(theRay, out RaycastHit hit, range))
+    //     {
+    //         if (hit.collider.tag == "Player")
+    //         {
+    //            if(collided)
+    //            {
+    //                Debug.Log("STOLEN");
+    //                collided=false;
+    //                steal=false;
+    //            }
+    //         }
+    //     }
+    // }
 
     
 
