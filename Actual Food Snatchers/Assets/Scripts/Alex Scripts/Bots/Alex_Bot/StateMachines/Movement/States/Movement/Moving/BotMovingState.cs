@@ -31,14 +31,19 @@ namespace Alex
         {
             base.Update();
 
-            FindFood();
+            GoToFood();
 
-            EnemyDetect();
+            //EnemyDetect();
 
         }
         #endregion
 
         #region Main Methods
+
+        private void GoToFood()
+        {
+            stateMachine.reusableData.alexMovePoint.position = FindFood().position;
+        }
 
         #endregion
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Alex
@@ -10,6 +11,9 @@ namespace Alex
 
         protected Vector3 centre;
         protected float radius = 30f;
+
+        protected Vector3 foodCentre;
+        protected float foodRadius = 3f;
 
         protected float EnemyDistanceRun = 10f;
 
@@ -47,52 +51,69 @@ namespace Alex
         #endregion
 
         #region Reusable Methods
-        protected virtual void FindFood()
+        protected virtual Transform FindFood()
         {
             Collider[] colliders = Physics.OverlapSphere(centre, radius, stateMachine.Alex_Bot.LayerData.Food);
+            
 
             Collider nearestCollider = null;
             float minSqrDistance = Mathf.Infinity;
+            Transform detectedFood = null;
+            bool isEnemy = false;
 
             for (int i = 0; i < colliders.Length; i++)
             {
-                float sqrDistanceToCenter = (centre - colliders[i].transform.position).sqrMagnitude;
+                foodCentre = colliders[i].transform.position;
+                Collider[] enemies = Physics.OverlapSphere(foodCentre, foodRadius, stateMachine.Alex_Bot.LayerData.Player);
+                List<Collider> enemyList = enemies.ToList();
+                enemyList.RemoveAll(x => x.transform.root == stateMachine.Alex_Bot.transform);
+                enemies = enemyList.ToArray();
 
-                if (sqrDistanceToCenter < minSqrDistance)
+                isEnemy = enemies.Length > 0;
+
+                if (!isEnemy)
                 {
-                    minSqrDistance = sqrDistanceToCenter;
-                    nearestCollider = colliders[i];
-                    stateMachine.reusableData.alexMovePoint.position = colliders[i].transform.position;
-                    Debug.DrawRay(centre, colliders[i].transform.position, Color.green);
-                }
+                    float sqrDistanceToCenter = (centre - colliders[i].transform.position).sqrMagnitude;
 
-            }
-        }
+                    if (sqrDistanceToCenter < minSqrDistance)
+                    {
+                        minSqrDistance = sqrDistanceToCenter;
+                        nearestCollider = colliders[i];
+                        //stateMachine.reusableData.alexMovePoint.position = colliders[i].transform.position;
+                        detectedFood = colliders[i].transform;
 
-        protected virtual void EnemyDetect()
-        {
-            Collider[] colliders = Physics.OverlapSphere(stateMachine.Alex_Bot.transform.position, EnemyDistanceRun, stateMachine.Alex_Bot.LayerData.Player);
-
-            Collider nearestCollider = null;
-            float minSqrDistance = Mathf.Infinity;
-
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                float sqrDistanceToCentre = (stateMachine.Alex_Bot.transform.position - colliders[i].transform.position).sqrMagnitude;
-
-                if (sqrDistanceToCentre < minSqrDistance)
-                {
-                    minSqrDistance = sqrDistanceToCentre;
-                    nearestCollider = colliders[i];
-
-                    Vector3 dirToEnemy = stateMachine.Alex_Bot.transform.position - colliders[i].transform.position;
-
-                    Vector3 newPos = stateMachine.Alex_Bot.transform.position + dirToEnemy;
-
-                    stateMachine.reusableData.alexMovePoint.position = newPos;
+                        stateMachine.reusableData.foodPos = colliders[i].transform;
+                    }
                 }
             }
+            return detectedFood;
         }
+
+        //protected virtual void EnemyDetect()
+        //{
+        //    Collider[] colliders = Physics.OverlapSphere(stateMachine.Alex_Bot.transform.position, EnemyDistanceRun, stateMachine.Alex_Bot.LayerData.Player);
+
+        //    Collider nearestCollider = null;
+        //    float minSqrDistance = Mathf.Infinity;
+
+        //    for (int i = 0; i < colliders.Length; i++)
+        //    {
+        //        float sqrDistanceToCentre = (stateMachine.Alex_Bot.transform.position - colliders[i].transform.position).sqrMagnitude;
+
+        //        if (sqrDistanceToCentre < minSqrDistance)
+        //        {
+        //            minSqrDistance = sqrDistanceToCentre;
+        //            nearestCollider = colliders[i];
+
+        //            Vector3 dirToEnemy = stateMachine.Alex_Bot.transform.position - colliders[i].transform.position;
+
+        //            Vector3 newPos = stateMachine.Alex_Bot.transform.position + dirToEnemy;
+
+        //            stateMachine.reusableData.alexMovePoint.position = newPos;
+        //        }
+        //    }
+        //}
+
 
         //protected virtual Transform FindFood(Transform[] food)
         //{

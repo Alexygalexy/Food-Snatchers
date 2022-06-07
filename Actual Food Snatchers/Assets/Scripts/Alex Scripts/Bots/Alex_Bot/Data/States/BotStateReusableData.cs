@@ -7,5 +7,6 @@ namespace Alex
     public class BotStateReusableData
     {
         public Transform alexMovePoint { get; set; }
+        public Transform foodPos { get; set; }
     }
 }

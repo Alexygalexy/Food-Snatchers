@@ -11,11 +11,14 @@ namespace Alex
         [field: Header("Collisions")]
         [field: SerializeField] public BotLayerData LayerData { get; private set; }
 
+
         protected override void Awake()
         {
             movementStateMachine = new BotMovementStateMachine(this);
 
             movementStateMachine.reusableData.alexMovePoint = movePositionTransform;
+
+
 
             base.Awake();
         }
@@ -52,11 +55,24 @@ namespace Alex
         #region Main Methods
         private void OnDrawGizmos()
         {
+
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, 30f);
 
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, 10f);
+
+
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 30f, LayerData.Food);
+            Gizmos.color = Color.green;
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                Gizmos.DrawWireSphere(colliders[i].transform.position, 3f);
+            }
+
+
+
+
         }
         #endregion
     }

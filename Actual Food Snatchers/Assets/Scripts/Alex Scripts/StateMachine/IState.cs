@@ -6,10 +6,10 @@ namespace Alex
 {
     public interface IState
     {
-        public void Enter();
-        public void Exit();
-        public void Update();
-        public void PhysicsUpdate();
+        void Enter();
+        void Exit();
+        void Update();
+        void PhysicsUpdate();
     }
 
 }
