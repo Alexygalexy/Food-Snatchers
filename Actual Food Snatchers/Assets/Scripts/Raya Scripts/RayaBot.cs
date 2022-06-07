@@ -34,6 +34,8 @@ public class RayaBot : AI_System
 
         stateMachine = new Raya.StateMachine<RayaBot>(this);
 
+        stateMachine.Start();
+
         //currentState = IdleState;
         //currentState.EnterState(this);
     }

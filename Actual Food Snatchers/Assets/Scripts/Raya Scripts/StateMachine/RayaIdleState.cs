@@ -6,12 +6,13 @@ namespace Raya
     {
         public override void Enter(RayaBot raya)
         {
-            raya.FindClosestFood();
+            //raya.FindClosestFood();
+            Debug.Log("Hahahaha");
         }
 
         public override void Update(RayaBot raya)
         {
-
+            Debug.Log("Haha");
         }
 
         public override void OnCollisionEnter(RayaBot raya)

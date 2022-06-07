@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -7,10 +5,10 @@ namespace Raya
 {
     public class StateMachine<T> 
     {
-        State<T> currentState;
-        T owner; 
+        State<RayaBot> currentState;
+        RayaBot owner; 
 
-        public StateMachine(T owner) // constructor
+        public StateMachine(RayaBot owner) // constructor
         {
             this.owner = owner;
         }
@@ -21,17 +19,22 @@ namespace Raya
         //RayaCollectState CollectState = new RayaCollectState();
         //RayaCloneState CloneState = new RayaCloneState();
 
-        //// Start is called before the first frame update
-        //void Start()
-        //{
-        //    currentState = IdleState;
+        RayaIdleState IdleState = new RayaIdleState();
 
-        //    currentState.EnterState(this);
-        //}
+        //// Start is called before the first frame update
+        public void Start()
+        {
+            StateMachine<RayaBot> stateMachine = new StateMachine<RayaBot>(owner);
+
+            currentState = IdleState;
+
+            currentState.Enter(owner);
+        }
 
         public void Update()
         {
-            currentState.Update(owner);
+            //Debug.Log("hahah");
+            //currentState.Update(owner);
         }
     }
 }
