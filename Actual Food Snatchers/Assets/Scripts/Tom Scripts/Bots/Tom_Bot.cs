@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class Tom_Bot : AI_System
 {
-    [Header("Target AI")]
-    [SerializeField]
-    private List<GameObject> tables = new List<GameObject>();
-    [SerializeField]
+    ///[SerializeField]
     ///private bool GameOn = true
 
-    public float boostTimer;
-    public bool boosting;
-
-    public float period;
+    [Header("Speed Boost")]
+    [SerializeField]
+    private float boostTimer;
+    [SerializeField]
+    private bool boosting;
+    [SerializeField]
+    private float period;
 
     protected override void Awake()
     {
@@ -30,7 +30,6 @@ public class Tom_Bot : AI_System
         base.Update();
         movePositionTransform = go_high_food();
         speed_boost();
-        print(period);
 
         if (boosting == true)
         {
@@ -39,6 +38,7 @@ public class Tom_Bot : AI_System
             {
                 GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 4;
                 boostTimer = 0;
+                period = 0;
                 boosting = false;
             }
         }
