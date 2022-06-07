@@ -16,6 +16,8 @@ public class Vitalij_Bot : AI_System
     [SerializeField]protected float angleSpeed = 45.0f;
     private bool collided;
     private bool steal;
+    float timer = 5.0f;
+    
 
 
 
@@ -28,10 +30,14 @@ public class Vitalij_Bot : AI_System
     protected override void Awake()
     {
         // base.Awake();
-        waypointIndex = 0;
-        transform.LookAt(waypoints[waypointIndex].position);
+        
         steal = true;
         collided = true;
+    }
+
+    protected void Start() {
+        waypointIndex = 0;
+        transform.LookAt(waypoints[waypointIndex].position);
     }
 
     protected override void Update()
@@ -44,10 +50,23 @@ public class Vitalij_Bot : AI_System
             IncreaseIndex();
         }
         Patrol();
+        
+
+        if(!steal && !collided)
+        {
+            timer -= Time.deltaTime;
+            if (timer < 0)
+            {
+                steal=true;
+                collided=true;
+                
+            }
+        }
+    }
+    private void FixedUpdate() {
         if(steal){
             DetectEnemy();
         }
-        
     }
 
 
@@ -63,6 +82,13 @@ public class Vitalij_Bot : AI_System
         // {
         //     collided=true;
         // }
+        if (other.gameObject.tag == ("Player"))
+        {
+            if(collided)
+            {
+                other.gameObject.GetComponent<Rigidbody>().AddForce(0f, 0f, 15f, ForceMode.Impulse);
+            }
+        }
     }
 
     protected virtual void Patrol()
@@ -76,6 +102,7 @@ public class Vitalij_Bot : AI_System
 
     protected virtual void IncreaseIndex()
     {
+        
         waypointIndex++;
         if (waypointIndex >= waypoints.Length)
         {
@@ -97,8 +124,12 @@ public class Vitalij_Bot : AI_System
                if(collided)
                {
                    Debug.Log("STOLEN");                   
-                   hit.collider.gameObject.GetComponent<Dummy_Bot>().Score -=5;
+                   hit.collider.gameObject.GetComponent<AI_System>().Score -=5;
+                   hit.collider.gameObject.GetComponent<AI_System>().player1_scoreText.text = Score.ToString();
                    this.gameObject.GetComponent<Vitalij_Bot>().Score += 5;
+                   this.player1_scoreText.text = Score.ToString();
+                   
+                   timer = 5.0f;
                    steal=false;
                    collided=false;
                    
