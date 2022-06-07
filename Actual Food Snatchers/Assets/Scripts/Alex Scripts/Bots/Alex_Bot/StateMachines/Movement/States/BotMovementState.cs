@@ -89,30 +89,48 @@ namespace Alex
             return detectedFood;
         }
 
-        //protected virtual void EnemyDetect()
-        //{
-        //    Collider[] colliders = Physics.OverlapSphere(stateMachine.Alex_Bot.transform.position, EnemyDistanceRun, stateMachine.Alex_Bot.LayerData.Player);
+        protected virtual bool EnemyDetect()
+        {
+            Collider[] colliders = Physics.OverlapSphere(centre, EnemyDistanceRun, stateMachine.Alex_Bot.LayerData.Player);
+            List<Collider> enemyList = colliders.ToList();
+            enemyList.RemoveAll(x => x.transform.root == stateMachine.Alex_Bot.transform);
+            colliders = enemyList.ToArray();
 
-        //    Collider nearestCollider = null;
-        //    float minSqrDistance = Mathf.Infinity;
+            Collider nearestCollider = null;
+            float minSqrDistance = Mathf.Infinity;
+            Vector3 newPos = Vector3.zero;
+            bool IsEnemy = false;
 
-        //    for (int i = 0; i < colliders.Length; i++)
-        //    {
-        //        float sqrDistanceToCentre = (stateMachine.Alex_Bot.transform.position - colliders[i].transform.position).sqrMagnitude;
+            IsEnemy = colliders.Length > 0;
 
-        //        if (sqrDistanceToCentre < minSqrDistance)
-        //        {
-        //            minSqrDistance = sqrDistanceToCentre;
-        //            nearestCollider = colliders[i];
+            if (IsEnemy)
+            {
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    float sqrDistanceToCentre = (stateMachine.Alex_Bot.transform.position - colliders[i].transform.position).sqrMagnitude;
 
-        //            Vector3 dirToEnemy = stateMachine.Alex_Bot.transform.position - colliders[i].transform.position;
+                    if (sqrDistanceToCentre < minSqrDistance)
+                    {
+                        minSqrDistance = sqrDistanceToCentre;
+                        nearestCollider = colliders[i];
 
-        //            Vector3 newPos = stateMachine.Alex_Bot.transform.position + dirToEnemy;
+                        Vector3 dirToEnemy = stateMachine.Alex_Bot.transform.position - colliders[i].transform.position;
 
-        //            stateMachine.reusableData.alexMovePoint.position = newPos;
-        //        }
-        //    }
-        //}
+                        newPos = stateMachine.Alex_Bot.transform.position + dirToEnemy;
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        protected virtual Vector3 EnemyPos()
+        {
+            return new Vector3(0, 0, 0);
+        }
 
 
         //protected virtual Transform FindFood(Transform[] food)
