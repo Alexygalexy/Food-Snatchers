@@ -54,7 +54,7 @@ public class CollectingObject : MonoBehaviour
         if (Score < 1)
         {
             // Disables stealing GameObject's NavMesh, so that it won't chases other GameObjects
-            GameObject.FindGameObjectWithTag("Stealing").GetComponent<Player_Nav_Mesh>().enabled = false;
+            //GameObject.FindGameObjectWithTag("Stealing").GetComponent<Player_Nav_Mesh>().enabled = false;
         }
     }
 
@@ -67,8 +67,8 @@ public class CollectingObject : MonoBehaviour
             {
 
                 Debug.Log(this.gameObject.name + " is Passive");
-                this.GetComponent<Player_Nav_Mesh>().enabled = false;
-                this.GetComponent<Player_Nav_Mesh>().enabled = true;
+                //this.GetComponent<Player_Nav_Mesh>().enabled = false;
+                //this.GetComponent<Player_Nav_Mesh>().enabled = true;
                 madePassive = true;
                 startChasing();
             }
@@ -81,7 +81,7 @@ public class CollectingObject : MonoBehaviour
         {
 
             Debug.Log("Start Stealing");
-            GameObject.FindGameObjectWithTag("Stealing").GetComponent<Player_Nav_Mesh>().enabled = true;
+            //GameObject.FindGameObjectWithTag("Stealing").GetComponent<Player_Nav_Mesh>().enabled = true;
         }
     }
     void Update()
