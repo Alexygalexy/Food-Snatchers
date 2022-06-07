@@ -17,13 +17,13 @@ public class RayaBot : AI_System
     protected AudioSource collect;
     protected AudioSource[] audioRaya;
 
-    //StateMachine
+    Raya.StateMachine<RayaBot> stateMachine;
     //RayaBaseState currentState;
-    //RayaIdleState IdleState = new RayaIdleState();
-    //RayaDefenseState DefenseState = new RayaDefenseState();
-    //RayaAttackState AttackState = new RayaAttackState();
-    //RayaCollectState CollectState = new RayaCollectState();
-    //RayaCloneState CloneState = new RayaCloneState();
+    Raya.RayaIdleState IdleState = new Raya.RayaIdleState();
+    Raya.RayaDefenseState DefenseState = new Raya.RayaDefenseState();
+    Raya.RayaAttackState AttackState = new Raya.RayaAttackState();
+    Raya.RayaCollectState CollectState = new Raya.RayaCollectState();
+    Raya.RayaCloneState CloneState = new Raya.RayaCloneState();
 
     //State Machine
     protected void Start()
@@ -31,6 +31,8 @@ public class RayaBot : AI_System
         audioRaya = GetComponents<AudioSource>();
         hit = audioRaya[0];
         collect = audioRaya[1];
+
+        stateMachine = new Raya.StateMachine<RayaBot>(this);
 
         //currentState = IdleState;
         //currentState.EnterState(this);
@@ -44,7 +46,7 @@ public class RayaBot : AI_System
     protected override void Update()
     {
         //StateMachine
-        //currentState.UpdateState(this);
+        stateMachine.Update();
 
         scoreBoard();
         ClosestFood = FindClosestFood();
@@ -114,7 +116,7 @@ public class RayaBot : AI_System
     }
 
     //---MY FUNCTIONS---
-    protected List<GameObject> AllFoods()
+    public List<GameObject> AllFoods()
     {
         List<GameObject> allFood = new List<GameObject>();
 
@@ -134,7 +136,7 @@ public class RayaBot : AI_System
         return allPlayers;
     }
 
-    protected Transform FindClosestFood()
+    public Transform FindClosestFood()
     {
         GameObject closestFood = null;
 

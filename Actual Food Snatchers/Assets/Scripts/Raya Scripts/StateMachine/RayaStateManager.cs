@@ -2,26 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RayaStateManager : MonoBehaviour
+
+namespace Raya
 {
-    //RayaBaseState currentState;
-    //RayaIdleState IdleState = new RayaIdleState();
-    //RayaDefenseState DefenseState = new RayaDefenseState(); 
-    //RayaAttackState AttackState = new RayaAttackState();
-    //RayaCollectState CollectState = new RayaCollectState();
-    //RayaCloneState CloneState = new RayaCloneState();
+    public class StateMachine<T> 
+    {
+        State<T> currentState;
+        T owner; 
 
-    //// Start is called before the first frame update
-    //void Start()
-    //{
-    //    currentState = IdleState;
+        public StateMachine(T owner) // constructor
+        {
+            this.owner = owner;
+        }
 
-    //    currentState.EnterState(this);
-    //}
+        //RayaIdleState IdleState = new RayaIdleState();
+        //RayaDefenseState DefenseState = new RayaDefenseState(); 
+        //RayaAttackState AttackState = new RayaAttackState();
+        //RayaCollectState CollectState = new RayaCollectState();
+        //RayaCloneState CloneState = new RayaCloneState();
 
-    //// Update is called once per frame
-    //void Update()
-    //{
-    //    currentState.UpdateState(this);
-    //}
+        //// Start is called before the first frame update
+        //void Start()
+        //{
+        //    currentState = IdleState;
+
+        //    currentState.EnterState(this);
+        //}
+
+        public void Update()
+        {
+            currentState.Update(owner);
+        }
+    }
 }

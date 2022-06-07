@@ -1,19 +1,22 @@
 using UnityEngine;
 
-public class RayaCloneState : RayaBaseState
+namespace Raya
 {
-    public override void EnterState(RayaBot raya)
+    public class RayaCloneState : State<RayaBot>
     {
+        public override void Enter(RayaBot raya)
+        {
+            raya.FindClosestFood();
+        }
 
-    }
+        public override void Update(RayaBot raya)
+        {
 
-    public override void UpdateState(RayaBot raya)
-    {
+        }
 
-    }
+        public override void OnCollisionEnter(RayaBot raya)
+        {
 
-    public override void OnCollisionEnter(RayaBot raya)
-    {
-
+        }
     }
 }
