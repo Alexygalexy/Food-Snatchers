@@ -6,4 +6,5 @@ using UnityEngine;
 public class BotLayerData
 {
     [field: SerializeField] public LayerMask Food { get; private set; }
+    [field: SerializeField] public LayerMask Player { get; private set; }
 }
