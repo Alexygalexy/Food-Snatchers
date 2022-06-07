@@ -2,35 +2,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sjoeke_AI : AI_System
+public class Sjoeke_AI : AI_System, IPauseSystem
 {
     protected Transform FoodTarget;
+    protected Transform currentPosition;
+    protected Vector3 TargetPosition;
+    private bool pickedRandomFood = false;
 
+    private int maxDistance = 9;
+    bool coolingDown = false;
+    float coolDown = 5f;
+    float freezeTime = 2f;
 
     protected override void Awake()
     {
         base.Awake();
-        //RandomFood1();
     }
 
     protected override void Update()
     {
         base.Update();
-        FoodTarget = RandomFood();
+        if (pickedRandomFood == false)
+        {
+            FoodTarget = RandomFood();
+        }
 
         movePositionTransform = FoodTarget;
+        TargetPosition = FoodTarget.position;
     }
 
     public override void GoToPosition()
     {
-        if (movePositionTransform)
+        Vector3 minus = TargetPosition - transform.position;
+        float distance = minus.sqrMagnitude;
+        if (distance > maxDistance)
         {
             navMeshAgent.destination = movePositionTransform.position;
         }
-        else
+        if (distance < maxDistance)
         {
-            navMeshAgent.destination = transform.position;
+            pickedRandomFood = false;
         }
+
     }
 
     protected override void OnTriggerEnter(Collider other)
@@ -40,14 +53,35 @@ public class Sjoeke_AI : AI_System
 
     protected override void OnCollisionEnter(Collision other)
     {
-        //StartCoroutine(FreezeEnemy(other));
-    }
-
-    IEnumerator FreezeEnemy(GameObject enemy)
-    {
-        yield return new WaitForSeconds(2f);
+        if (!coolingDown)
+        {
+            StartCoroutine(FreezeEnemy(other));
+        }
     }
     
+    IEnumerator FreezeEnemy(Collision enemy)
+    {
+        IPauseSystem pause = (IPauseSystem)enemy.transform.GetComponent(typeof(IPauseSystem));
+        if (pause != null)
+        {
+            enemy.gameObject.GetComponent<IPauseSystem>().Pause(true);
+            StartCoroutine(Cooldown());
+        }
+        //Play hiiiiya sound.
+
+        yield return new WaitForSeconds(freezeTime);
+
+        enemy.gameObject.GetComponent<IPauseSystem>().Pause(false);
+        
+    }
+
+    IEnumerator Cooldown()
+    {
+        coolingDown = true;
+        yield return new WaitForSeconds(coolDown);
+        coolingDown = false;
+    }
+
     protected List<GameObject> AvailableFood()
     {
         List<GameObject> foods = new List<GameObject>();
@@ -58,7 +92,7 @@ public class Sjoeke_AI : AI_System
 
         return foods;
     }
-    
+
     protected Transform RandomFood()
     {
         int randomFoodInt = Random.Range(0, AvailableFood().Count);
@@ -67,144 +101,17 @@ public class Sjoeke_AI : AI_System
 
         Transform randomFoodTransform = randomFood.transform;
 
-        //Debug.Log("Food is " + randomFood);
-        
+        pickedRandomFood = true;
         return randomFoodTransform;
-    }/*
+    }
 
-    private void RandomFood1()
+    public void Pause(bool isPaused)
     {
-        int randomFoodInt = Random.Range(0, AvailableFood().Count);
-
-        GameObject randomFood = AvailableFood()[randomFoodInt];
-
-        Debug.Log("Food is " + randomFood);
-        Transform randomFoodTransform = randomFood.transform;
-
-
-        movePositionTransform = randomFoodTransform;
-        GoToPosition();
-    }*/
+        paused = isPaused;
+    }
 }
 
-/*
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-
-public class Foods
+public interface IPauseSystem
 {
-    public string FoodName;
-    public int FoodScore;
-    public Transform FoodTransform;
-    public Vector3 FoodPosition;
+    void Pause(bool isPaused);
 }
-
-public class Sjoeke_AI : AI_System
-{
-    [SerializeField]
-    private List<Foods> SortedAvailableFoods = new List<Foods>();
-    //private List<GameObject> AvailableFoods = new List<GameObject>();
-
-    private int score;
-
-    [SerializeField]
-    private GameObject table;
-
-    protected override void Awake()
-    {
-        FindFoods();
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-        movePositionTransform = FindFoods();
-    }
-
-    protected List<GameObject> AvailableFoods()
-    {
-        List<GameObject> foods = new List<GameObject>();
-
-        foods.AddRange(GameObject.FindGameObjectsWithTag("Apple"));
-        foods.AddRange(GameObject.FindGameObjectsWithTag("Tomato"));
-        foods.AddRange(GameObject.FindGameObjectsWithTag("Egg"));
-        foods.AddRange(GameObject.FindGameObjectsWithTag("Chicken"));
-
-        return foods;
-    }
-
-    protected override void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
-    }
-
-    protected override void OnCollisionEnter(Collision other)
-    {
-        base.OnCollisionEnter(other);
-    }
-
-    public override void GoToPosition()
-    {
-        if (movePositionTransform)
-        {
-            navMeshAgent.destination = movePositionTransform.position;
-        }
-        else
-        {
-            navMeshAgent.destination = transform.position;
-        }
-    }
-
-    protected Transform FindFoods()
-    {
-        foreach (GameObject food in AvailableFoods()) 
-        {
-            Debug.Log("helleo");
-            switch (food.gameObject.tag)
-            {
-                case "Apple":
-                    score = 1;
-                    break;
-
-                case "Tomato":
-                    score = 2;
-                    break;
-
-                case "Egg":
-                    score = 3;
-                    break;
-
-                case "Chicken":
-                    score = 4;
-                    break;                    
-            }
-            Debug.Log(score);
-
-            SortedAvailableFoods.Add(new Foods() { FoodName = food.name, FoodScore = score, FoodTransform = food.transform, FoodPosition = food.transform.position});            
-        }
-        
-        SortedAvailableFoods.Sort(SortByScore);
-        Transform SortedFoodTransform = SortedAvailableFoods[0].FoodTransform;
-
-        Transform SortedFoodTransform = table.transform;
-
-        return SortedFoodTransform;
-    }
-
-    private int SortByScore (Foods food1, Foods food2)
-    {
-        return food1.FoodScore.CompareTo(food2.FoodScore);
-    }*/
-
-    #region Main Methods
-
-    
-
-    //protected override void OnTriggerEnter(Collider other)
-    //{
-    //    base.OnTriggerEnter(other);
-    //}
-    #endregion
-

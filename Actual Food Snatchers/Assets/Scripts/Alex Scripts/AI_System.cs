@@ -27,7 +27,7 @@ public class AI_System : MonoBehaviour
 
     [Header("Events")]
     public static GameObjectEvent onFoodRemove = new GameObjectEvent();
-
+    protected bool paused;
 
 
     protected virtual void Awake()
@@ -38,9 +38,12 @@ public class AI_System : MonoBehaviour
 
     protected virtual void Update()
     {
-        GoToPosition();
+        if (!paused)
+        {
+            GoToPosition();
 
-        scoreBoard();
+            scoreBoard();
+        }
     }
 
 
