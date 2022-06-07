@@ -22,7 +22,6 @@ public class Tom_Bot : AI_System
         boostTimer = 0;
         period = 0;
         boosting = false;
-
     }
 
     protected override void Update()
@@ -42,7 +41,6 @@ public class Tom_Bot : AI_System
                 boosting = false;
             }
         }
-
         /*if(Apple_Prefab != null)
         {
             movePositionTransform.position = new Vector3(-13, -4, -22);
@@ -112,13 +110,11 @@ public class Tom_Bot : AI_System
             }
             else if (cur_dist < dist && target.name == "Egg_Prefab(Clone)")
             {
-                ///print("egg");
                 best_target = target;
                 dist = cur_dist;
             }
             else if (cur_dist < dist && target.name == "Tomato_Prefab(Clone)")
             {
-                ///print("tomato");
                 best_target = target;
                 dist = cur_dist;
             }
