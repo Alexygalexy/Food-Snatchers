@@ -60,7 +60,7 @@ namespace Alex
             Gizmos.DrawWireSphere(transform.position, 30f);
 
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, 10f);
+            Gizmos.DrawWireSphere(transform.position, 5f);
 
 
             Collider[] colliders = Physics.OverlapSphere(transform.position, 30f, LayerData.Food);
