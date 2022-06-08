@@ -8,5 +8,6 @@ namespace Alex
     {
         public Transform alexMovePoint { get; set; }
         public Transform foodPos { get; set; }
+        public Vector3 evadePos { get; set; }
     }
 }
