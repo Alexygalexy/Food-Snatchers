@@ -1662,7 +1662,7 @@ MonoBehaviour:
   ScoreBoard: {fileID: 142623124}
   PlayersLocation: {fileID: 100418585}
   Score: 0
-  cam: {fileID: 0}
+  cam: {fileID: 833584073}
   boostTimer: 0
   boosting: 0
   period: 0
@@ -25276,7 +25276,7 @@ MonoBehaviour:
   ScoreBoard: {fileID: 992395429}
   PlayersLocation: {fileID: 1794327486}
   Score: 0
-  cam: {fileID: 0}
+  cam: {fileID: 833584073}
   <LayerData>k__BackingField:
     <Food>k__BackingField:
       serializedVersion: 2

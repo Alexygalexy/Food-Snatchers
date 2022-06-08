@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17757861, g: 0.2223221, b: 0.30451763, a: 1}
+  m_IndirectSpecularColor: {r: 0.17757887, g: 0.22232258, b: 0.30451837, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4872,81 +4872,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2432090755550338912, guid: c78370692aafdc044ad9aa12b962bdf0, type: 3}
---- !u!1001 &393024381
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 498709125}
-    m_Modifications:
-    - target: {fileID: 7091691545289852903, guid: 1d9ff0d35a769d74ea2861b900ae4892,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7091691545289852903, guid: 1d9ff0d35a769d74ea2861b900ae4892,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 21.11
-      objectReference: {fileID: 0}
-    - target: {fileID: 7091691545289852903, guid: 1d9ff0d35a769d74ea2861b900ae4892,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5.89
-      objectReference: {fileID: 0}
-    - target: {fileID: 7091691545289852903, guid: 1d9ff0d35a769d74ea2861b900ae4892,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -7.06
-      objectReference: {fileID: 0}
-    - target: {fileID: 7091691545289852903, guid: 1d9ff0d35a769d74ea2861b900ae4892,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7091691545289852903, guid: 1d9ff0d35a769d74ea2861b900ae4892,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7091691545289852903, guid: 1d9ff0d35a769d74ea2861b900ae4892,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7091691545289852903, guid: 1d9ff0d35a769d74ea2861b900ae4892,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7091691545289852903, guid: 1d9ff0d35a769d74ea2861b900ae4892,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7091691545289852903, guid: 1d9ff0d35a769d74ea2861b900ae4892,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7091691545289852903, guid: 1d9ff0d35a769d74ea2861b900ae4892,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7575458435707493725, guid: 1d9ff0d35a769d74ea2861b900ae4892,
-        type: 3}
-      propertyPath: m_Name
-      value: Chicken_Prefab
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1d9ff0d35a769d74ea2861b900ae4892, type: 3}
---- !u!4 &393024382 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7091691545289852903, guid: 1d9ff0d35a769d74ea2861b900ae4892,
-    type: 3}
-  m_PrefabInstance: {fileID: 393024381}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &404192610
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6686,7 +6611,6 @@ Transform:
   - {fileID: 533959631}
   - {fileID: 1255177002}
   - {fileID: 2143681227}
-  - {fileID: 393024382}
   m_Father: {fileID: 2007360218}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7185,7 +7109,7 @@ MonoBehaviour:
       m_Bits: 64
     <Player>k__BackingField:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 128
 --- !u!195 &560337890
 NavMeshAgent:
   m_ObjectHideFlags: 0
