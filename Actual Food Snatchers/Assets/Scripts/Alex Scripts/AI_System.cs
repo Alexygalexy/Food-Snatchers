@@ -21,7 +21,7 @@ public class AI_System : MonoBehaviour
 
     [Header("Player Score UI")]
     [SerializeField] public TextMeshProUGUI player1_scoreText;
-    [SerializeField] private GameObject ScoreBoard;
+    [SerializeField] protected GameObject ScoreBoard;
     [SerializeField] private Transform PlayersLocation;
     [SerializeField] public int Score;
     [SerializeField] protected Transform cam;

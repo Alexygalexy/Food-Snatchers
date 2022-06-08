@@ -11,7 +11,10 @@ public class RayaBot : AI_System, IPauseSystem
 
     protected float chanceToSnatch;
 
-    protected bool ready = true, pause = false;
+    protected bool ready = true, pause = false, readyClone = true;
+
+    [SerializeField] protected GameObject myPrefab;
+    [SerializeField] protected GameObject myPrefabScoreBoard;
 
     protected AudioSource hit;
     protected AudioSource collect;
@@ -26,7 +29,7 @@ public class RayaBot : AI_System, IPauseSystem
     Raya.RayaCloneState CloneState = new Raya.RayaCloneState();
 
     //State Machine
-    protected void Start()
+    protected virtual void Start()
     {
         audioRaya = GetComponents<AudioSource>();
         hit = audioRaya[0];
@@ -67,6 +70,12 @@ public class RayaBot : AI_System, IPauseSystem
             movePositionTransform = ClosestFood;
             GoToPosition();
         }
+
+        if (smallestDistance2 > 20f && readyClone == true)
+        {
+            Instantiate(myPrefab, transform.position, Quaternion.identity);
+            readyClone = false;
+        }
     }
 
     public override void GoToPosition()
@@ -104,7 +113,6 @@ public class RayaBot : AI_System, IPauseSystem
                     Score += 10;
 
                     player1_scoreText.text = Score.ToString();
-                    hit.Play();
 
                     StartCoroutine("CoolDown");
                 }
@@ -113,7 +121,6 @@ public class RayaBot : AI_System, IPauseSystem
             {
                 StartCoroutine("CoolDown");
             }
-
         }
     }
 
@@ -188,6 +195,7 @@ public class RayaBot : AI_System, IPauseSystem
     protected IEnumerator CoolDown()
     {
         pause = true;
+        hit.Play();
 
         navMeshAgent.destination = transform.position;
 
@@ -199,7 +207,10 @@ public class RayaBot : AI_System, IPauseSystem
 
     protected void CloneAbility()
     {
-
+        if(smallestDistance2 > 20f)
+        {
+            Instantiate(myPrefab, transform.position, Quaternion.identity);
+        }
     }
 
     public void Pause(bool isPaused)
