@@ -28,19 +28,27 @@ public class Sjoeke_AI : AI_System, IPauseSystem
         }
 
         movePositionTransform = FoodTarget;
-        TargetPosition = FoodTarget.position;
+        //TargetPosition = FoodTarget.position;
     }
 
     public override void GoToPosition()
     {
-        Vector3 minus = TargetPosition - transform.position;
-        float distance = minus.sqrMagnitude;
-        if (distance > maxDistance)
+        if (movePositionTransform)
         {
-            navMeshAgent.destination = movePositionTransform.position;
+            Vector3 minus = movePositionTransform.position - transform.position;
+            float distance = minus.sqrMagnitude;
+            if (distance > maxDistance)
+            {
+                navMeshAgent.destination = movePositionTransform.position;
+            }
+            if (distance < maxDistance)
+            {
+                pickedRandomFood = false;
+            }
         }
-        if (distance < maxDistance)
+        else
         {
+            navMeshAgent.destination = transform.position;
             pickedRandomFood = false;
         }
 
@@ -65,6 +73,7 @@ public class Sjoeke_AI : AI_System, IPauseSystem
         if (pause != null)
         {
             enemy.gameObject.GetComponent<IPauseSystem>().Pause(true);
+            Debug.Log("sjoeke is kicking you");
             StartCoroutine(Cooldown());
         }
         //Play hiiiiya sound.
