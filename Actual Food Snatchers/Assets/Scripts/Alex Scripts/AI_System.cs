@@ -28,6 +28,7 @@ public class AI_System : MonoBehaviour
 
     [Header("Events")]
     public static GameObjectEvent onFoodRemove = new GameObjectEvent();
+    public static GameObjectEvent addTable = new GameObjectEvent();
     protected bool paused;
 
 
@@ -41,12 +42,9 @@ public class AI_System : MonoBehaviour
     {
         if (!paused)
         {
-
-
             GoToPosition();
-
-            scoreBoard();
         }
+        scoreBoard();
     }
 
 
@@ -77,6 +75,7 @@ public class AI_System : MonoBehaviour
                     break;
             }
             player1_scoreText.text = Score.ToString();
+            addTable.Invoke(other.transform.parent.gameObject);
             onFoodRemove.Invoke(other.gameObject);
         }
     }
@@ -94,14 +93,17 @@ public class AI_System : MonoBehaviour
 
     public virtual void GoToPosition()
     {
-        navMeshAgent.destination = movePositionTransform.position;
+        if (!paused)
+        {
+            navMeshAgent.destination = movePositionTransform.position;
+        }
     }
 
     protected virtual void scoreBoard()
     {
         // Positions scoreboard above player's head
         ScoreBoard.transform.position = new Vector3(PlayersLocation.transform.position.x, PlayersLocation.transform.position.y + 3, PlayersLocation.transform.position.z);
-        
+
         ScoreBoard.transform.LookAt(cam.position);
         ScoreBoard.transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
     }

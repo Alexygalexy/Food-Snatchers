@@ -14,6 +14,7 @@ public class FoodSpawn : MonoBehaviour
     private int maxSpawnPlaces;
 
     private float tableYOffset = 1.6f;
+    private float spawnTimer = 2.5f;
 
     private bool GameOn = true;
     private bool SpawnPlacesAvailable = true;
@@ -22,12 +23,18 @@ public class FoodSpawn : MonoBehaviour
     private void Awake()
     {
         AI_System.onFoodRemove.AddListener(RemoveFood);
+        AI_System.addTable.AddListener(TableToList);
 
-        StartCoroutine(foodSpawner(2.5f));
+        StartCoroutine(FoodSpawner(spawnTimer));
+    }
+
+    private void Update()
+    {
+        Debug.Log(maxSpawnPlaces);
     }
 
 
-    IEnumerator foodSpawner(float spawnTimer)
+    IEnumerator FoodSpawner(float spawnTimer)
     {
         maxSpawnPlaces = spawnPlaces.Count;
         while (GameOn && SpawnPlacesAvailable)
@@ -48,6 +55,20 @@ public class FoodSpawn : MonoBehaviour
             }
             yield return new WaitForSeconds(spawnTimer);
         }
+        CheckSpawnPlaces();
+    }
+
+    private void CheckSpawnPlaces()
+    {
+        while (SpawnPlacesAvailable == false)
+        {
+            Debug.Log("max spawn places are " + maxSpawnPlaces);
+            if (maxSpawnPlaces > 3)
+            {
+                SpawnPlacesAvailable = true;
+            }
+        }
+        StartCoroutine(FoodSpawner(spawnTimer));
     }
 
     private void RemoveFood(GameObject food)
@@ -55,5 +76,9 @@ public class FoodSpawn : MonoBehaviour
         Destroy(food);
     }
 
-
+    private void TableToList(GameObject table)
+    {
+        spawnPlaces.Add(table);
+        maxSpawnPlaces++;
+    }
 }
