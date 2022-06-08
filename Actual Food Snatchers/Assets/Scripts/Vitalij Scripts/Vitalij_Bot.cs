@@ -17,6 +17,7 @@ public class Vitalij_Bot : AI_System
     private bool collided;
     private bool steal;
     float timer = 5.0f;
+    public GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
     
 
 
@@ -36,8 +37,10 @@ public class Vitalij_Bot : AI_System
     }
 
     protected void Start() {
+        Debug.Log(players);
         waypointIndex = 0;
         transform.LookAt(waypoints[waypointIndex].position);
+        
     }
 
     protected override void Update()

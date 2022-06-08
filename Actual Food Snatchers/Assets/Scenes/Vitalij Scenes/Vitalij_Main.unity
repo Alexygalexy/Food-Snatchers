@@ -9196,11 +9196,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62559b39a2883b846b998877ca9092ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movePositionTransform: {fileID: 0}
+  movePositionTransform: {fileID: 1143337964}
   player1_scoreText: {fileID: 66152597}
   ScoreBoard: {fileID: 551146597}
   PlayersLocation: {fileID: 673946999}
   Score: 0
+  cam: {fileID: 2010702446}
 --- !u!195 &673946995
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -9835,10 +9836,14 @@ MonoBehaviour:
   ScoreBoard: {fileID: 599227919}
   PlayersLocation: {fileID: 699038111}
   Score: 0
+  cam: {fileID: 0}
   <LayerData>k__BackingField:
     <Food>k__BackingField:
       serializedVersion: 2
       m_Bits: 64
+    <Player>k__BackingField:
+      serializedVersion: 2
+      m_Bits: 0
 --- !u!195 &699038107
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -16888,6 +16893,7 @@ MonoBehaviour:
   ScoreBoard: {fileID: 1056505930}
   PlayersLocation: {fileID: 1136465288}
   Score: 0
+  cam: {fileID: 0}
 --- !u!54 &1136465283
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -17930,7 +17936,10 @@ MonoBehaviour:
   ScoreBoard: {fileID: 1240720218}
   PlayersLocation: {fileID: 1254109004}
   Score: 0
-  tables: []
+  cam: {fileID: 0}
+  boostTimer: 0
+  boosting: 0
+  period: 0
 --- !u!54 &1254108999
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -22044,6 +22053,7 @@ MonoBehaviour:
   ScoreBoard: {fileID: 1684594636}
   PlayersLocation: {fileID: 1462559351}
   Score: 0
+  cam: {fileID: 2010702446}
   timer: 5
   range: 2
 --- !u!1001 &1477040600

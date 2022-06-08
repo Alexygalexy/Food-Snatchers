@@ -28,10 +28,7 @@ public class FoodSpawn : MonoBehaviour
         StartCoroutine(FoodSpawner(spawnTimer));
     }
 
-    private void Update()
-    {
-        Debug.Log(maxSpawnPlaces);
-    }
+  
 
 
     IEnumerator FoodSpawner(float spawnTimer)
@@ -62,7 +59,7 @@ public class FoodSpawn : MonoBehaviour
     {
         while (SpawnPlacesAvailable == false)
         {
-            Debug.Log("max spawn places are " + maxSpawnPlaces);
+            
             if (maxSpawnPlaces > 3)
             {
                 SpawnPlacesAvailable = true;

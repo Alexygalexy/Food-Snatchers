@@ -8,15 +8,35 @@ public class CleanVitalijBot : AI_System, IPauseSystem
 
     private bool collided;
     private bool steal;
+    public GameObject[] players;
     [SerializeField] float timer = 5.0f;
     [SerializeField] private float range = 5;
     protected override void Awake()
+
     {
         base.Awake();
         steal = true;
         collided = true;
+
     }
 
+    protected void GetClosestPlayer()
+    {
+        players = GameObject.FindGameObjectsWithTag("Player");
+        float closestDistance = Mathf.Infinity;
+        Transform trans = null;
+
+        foreach (GameObject go in players)
+        {
+            float currentDistance;
+            currentDistance = Vector3.Distance(transform.position, go.transform.position);
+            if(currentDistance < closestDistance)
+            {
+                closestDistance = currentDistance;
+                trans = go.transform;
+            }
+        }
+    }
     protected override void Update()
     {
         base.Update();
@@ -57,14 +77,14 @@ public class CleanVitalijBot : AI_System, IPauseSystem
                 {
                     if (hit.collider.gameObject.GetComponent<AI_System>().Score > 5)
                     {
-                    Debug.Log("STOLEN");
+                        Debug.Log("STOLEN");
 
-                    hit.collider.gameObject.GetComponent<AI_System>().Score -= 5;
-                    hit.collider.gameObject.GetComponent<AI_System>().player1_scoreText.text = hit.collider.gameObject.GetComponent<AI_System>().Score.ToString();
-                    this.gameObject.GetComponent<CleanVitalijBot>().Score += 5;
-                    this.gameObject.GetComponent<CleanVitalijBot>().player1_scoreText.text = Score.ToString();
+                        hit.collider.gameObject.GetComponent<AI_System>().Score -= 5;
+                        hit.collider.gameObject.GetComponent<AI_System>().player1_scoreText.text = hit.collider.gameObject.GetComponent<AI_System>().Score.ToString();
+                        this.gameObject.GetComponent<CleanVitalijBot>().Score += 5;
+                        this.gameObject.GetComponent<CleanVitalijBot>().player1_scoreText.text = Score.ToString();
                     }
-                    else 
+                    else
                     {
                         Debug.Log("There's nothing to steal!");
                     }
