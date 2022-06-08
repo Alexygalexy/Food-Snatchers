@@ -13,8 +13,8 @@ public class RayaBot : AI_System, IPauseSystem
 
     protected bool ready = true, pause = false, readyClone = true;
 
-    [SerializeField] protected GameObject myPrefab;
-    [SerializeField] protected GameObject myPrefabScoreBoard;
+    //[SerializeField] protected GameObject myPrefab;
+    //[SerializeField] protected GameObject myPrefabScoreBoard;
 
     protected AudioSource hit;
     protected AudioSource collect;
@@ -71,11 +71,11 @@ public class RayaBot : AI_System, IPauseSystem
             GoToPosition();
         }
 
-        if (smallestDistance2 > 20f && readyClone == true)
-        {
-            Instantiate(myPrefab, transform.position, Quaternion.identity);
-            readyClone = false;
-        }
+        //if (smallestDistance2 > 20f && readyClone == true)
+        //{
+        //    Instantiate(myPrefab, transform.position, Quaternion.identity);
+        //    readyClone = false;
+        //}
     }
 
     public override void GoToPosition()
@@ -205,13 +205,13 @@ public class RayaBot : AI_System, IPauseSystem
         ready = true;
     }
 
-    protected void CloneAbility()
-    {
-        if(smallestDistance2 > 20f)
-        {
-            Instantiate(myPrefab, transform.position, Quaternion.identity);
-        }
-    }
+    //protected void CloneAbility()
+    //{
+    //    if(smallestDistance2 > 20f)
+    //    {
+    //        Instantiate(myPrefab, transform.position, Quaternion.identity);
+    //    }
+    //}
 
     public void Pause(bool isPaused)
     {

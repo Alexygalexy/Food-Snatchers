@@ -1948,7 +1948,10 @@ MonoBehaviour:
   ScoreBoard: {fileID: 2098545941}
   PlayersLocation: {fileID: 161927143}
   Score: 0
-  tables: []
+  cam: {fileID: 779924315}
+  boostTimer: 0
+  boosting: 0
+  period: 0
 --- !u!54 &161927138
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6770,10 +6773,14 @@ MonoBehaviour:
   ScoreBoard: {fileID: 466841200}
   PlayersLocation: {fileID: 560337894}
   Score: 0
+  cam: {fileID: 779924315}
   <LayerData>k__BackingField:
     <Food>k__BackingField:
       serializedVersion: 2
       m_Bits: 64
+    <Player>k__BackingField:
+      serializedVersion: 2
+      m_Bits: 0
 --- !u!195 &560337890
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -9120,7 +9127,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &695867064
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9149,11 +9156,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62559b39a2883b846b998877ca9092ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movePositionTransform: {fileID: 0}
+  movePositionTransform: {fileID: 2143681227}
   player1_scoreText: {fileID: 1956351095}
   ScoreBoard: {fileID: 734867023}
   PlayersLocation: {fileID: 695867070}
   Score: 0
+  cam: {fileID: 779924315}
 --- !u!195 &695867066
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -24679,6 +24687,7 @@ MonoBehaviour:
   ScoreBoard: {fileID: 1069967828}
   PlayersLocation: {fileID: 1595316714}
   Score: 0
+  cam: {fileID: 779924315}
   waypoints:
   - {fileID: 119588978}
   - {fileID: 1382422879}
@@ -24697,6 +24706,7 @@ MonoBehaviour:
   - {fileID: 1903466044}
   speed: 10
   range: 0
+  angleSpeed: 45
 --- !u!54 &1595316709
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -31034,6 +31044,9 @@ MonoBehaviour:
   ScoreBoard: {fileID: 1396549571}
   PlayersLocation: {fileID: 2081119014}
   Score: 0
+  cam: {fileID: 779924315}
+  myPrefab: {fileID: 0}
+  myPrefabScoreBoard: {fileID: 0}
 --- !u!54 &2081119009
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -31144,7 +31157,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2081119007}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 14.53, y: -3, z: 11.6}
+  m_LocalPosition: {x: 19.26, y: -3, z: -28.47}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:

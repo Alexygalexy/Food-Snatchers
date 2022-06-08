@@ -30,7 +30,7 @@ public class FoodSpawn : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(maxSpawnPlaces);
+        //Debug.Log(maxSpawnPlaces);
     }
 
 
