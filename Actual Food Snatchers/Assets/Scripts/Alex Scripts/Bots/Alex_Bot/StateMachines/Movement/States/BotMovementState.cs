@@ -15,7 +15,7 @@ namespace Alex
         protected Vector3 foodCentre;
         protected float foodRadius = 3f;
 
-        protected float EnemyDistanceRun = 10f;
+        protected float EnemyDistanceRun = 5f;
 
         public BotMovementState(BotMovementStateMachine botMovementStateMachine)
         {
@@ -117,6 +117,8 @@ namespace Alex
                         Vector3 dirToEnemy = stateMachine.Alex_Bot.transform.position - colliders[i].transform.position;
 
                         newPos = stateMachine.Alex_Bot.transform.position + dirToEnemy;
+
+                        stateMachine.reusableData.evadePos = newPos;
                     }
                 }
                 return true;
@@ -127,10 +129,10 @@ namespace Alex
             }
         }
 
-        protected virtual Vector3 EnemyPos()
-        {
-            return new Vector3(0, 0, 0);
-        }
+        //protected virtual Vector3 EnemyPos()
+        //{
+        //    return new Vector3(0, 0, 0);
+        //}
 
 
         //protected virtual Transform FindFood(Transform[] food)

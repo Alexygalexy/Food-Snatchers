@@ -33,7 +33,12 @@ namespace Alex
 
             GoToFood();
 
-            //EnemyDetect();
+            if (!EnemyDetect())
+            {
+                return;
+            }
+
+            stateMachine.ChangeState(stateMachine.EvadeState);
 
         }
         #endregion
