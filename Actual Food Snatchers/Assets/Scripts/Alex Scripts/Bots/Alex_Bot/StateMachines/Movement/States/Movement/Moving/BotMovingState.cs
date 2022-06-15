@@ -38,6 +38,11 @@ namespace Alex
                 return;
             }
 
+            if (stateMachine.reusableData.isInvis)
+            {
+                return;
+            }
+
             stateMachine.ChangeState(stateMachine.EvadeState);
 
         }
@@ -45,10 +50,7 @@ namespace Alex
 
         #region Main Methods
 
-        private void GoToFood()
-        {
-            stateMachine.reusableData.alexMovePoint.position = FindFood().position;
-        }
+        
 
         #endregion
     }

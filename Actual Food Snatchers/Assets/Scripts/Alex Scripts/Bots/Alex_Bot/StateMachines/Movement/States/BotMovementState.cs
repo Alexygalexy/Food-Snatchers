@@ -105,20 +105,30 @@ namespace Alex
 
             if (IsEnemy)
             {
-                for (int i = 0; i < colliders.Length; i++)
+                if (stateMachine.reusableData.canInvis)
                 {
-                    float sqrDistanceToCentre = (stateMachine.Alex_Bot.transform.position - colliders[i].transform.position).sqrMagnitude;
-
-                    if (sqrDistanceToCentre < minSqrDistance)
+                    stateMachine.Alex_Bot.StartCoroutine(InvisabilityDuration());
+                    stateMachine.reusableData.isInvis = true;
+                    stateMachine.Alex_Bot.StartCoroutine(InvisabilityCooldown());
+                    stateMachine.reusableData.canInvis = false;
+                }
+                else if (!stateMachine.reusableData.isInvis)
+                {
+                    for (int i = 0; i < colliders.Length; i++)
                     {
-                        minSqrDistance = sqrDistanceToCentre;
-                        nearestCollider = colliders[i];
+                        float sqrDistanceToCentre = (stateMachine.Alex_Bot.transform.position - colliders[i].transform.position).sqrMagnitude;
 
-                        Vector3 dirToEnemy = stateMachine.Alex_Bot.transform.position - colliders[i].transform.position;
+                        if (sqrDistanceToCentre < minSqrDistance)
+                        {
+                            minSqrDistance = sqrDistanceToCentre;
+                            nearestCollider = colliders[i];
 
-                        newPos = stateMachine.Alex_Bot.transform.position + dirToEnemy;
+                            Vector3 dirToEnemy = stateMachine.Alex_Bot.transform.position - colliders[i].transform.position;
 
-                        stateMachine.reusableData.evadePos = newPos;
+                            newPos = stateMachine.Alex_Bot.transform.position + dirToEnemy;
+
+                            stateMachine.reusableData.evadePos = newPos;
+                        }
                     }
                 }
                 return true;
@@ -127,6 +137,34 @@ namespace Alex
             {
                 return false;
             }
+        }
+
+        protected virtual void GoToFood()
+        {
+            stateMachine.reusableData.alexMovePoint.position = FindFood().position;
+        }
+
+        IEnumerator InvisabilityCooldown()
+        {
+            yield return new WaitForSeconds(4f);
+            Debug.Log("Can Invis Again");
+            stateMachine.reusableData.canInvis = true;
+
+        }
+        
+        IEnumerator InvisabilityDuration()
+        {
+            Debug.Log("Started Invis");
+            stateMachine.Alex_Bot.smoke.Play();
+            stateMachine.Alex_Bot.gameObject.GetComponent<MeshRenderer>().material = stateMachine.Alex_Bot.invisability_mat;
+            stateMachine.Alex_Bot.gameObject.layer = LayerMask.NameToLayer("Default");
+            yield return new WaitForSeconds(3f);
+            stateMachine.Alex_Bot.smoke.Stop();
+            stateMachine.Alex_Bot.gameObject.GetComponent<MeshRenderer>().material = stateMachine.Alex_Bot.original_mat;
+            stateMachine.Alex_Bot.gameObject.layer = LayerMask.NameToLayer("Player");
+            stateMachine.reusableData.isInvis = false;
+            Debug.Log("Ended Invis");
+
         }
 
         //protected virtual Vector3 EnemyPos()

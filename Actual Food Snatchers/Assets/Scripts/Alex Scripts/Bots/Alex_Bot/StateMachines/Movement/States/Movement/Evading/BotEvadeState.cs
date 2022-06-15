@@ -31,7 +31,7 @@ namespace Alex
         {
             base.Update();
 
-            if (EnemyDetect())
+            if (EnemyDetect() && !stateMachine.reusableData.isInvis)
             {
                 EvadeEnemy();
                 return;
@@ -46,7 +46,12 @@ namespace Alex
 
         protected void EvadeEnemy()
         {
-            stateMachine.reusableData.alexMovePoint.position = stateMachine.reusableData.evadePos;
+
+            if (!stateMachine.reusableData.isInvis)
+            {
+                stateMachine.reusableData.alexMovePoint.position = stateMachine.reusableData.evadePos;
+            }
+            
         }
 
         #endregion

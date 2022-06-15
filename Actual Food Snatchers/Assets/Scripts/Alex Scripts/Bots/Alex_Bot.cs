@@ -11,6 +11,11 @@ namespace Alex
         [field: Header("Collisions")]
         [field: SerializeField] public BotLayerData LayerData { get; private set; }
 
+        [field: Header("References")]
+        [field: SerializeField] public ParticleSystem smoke;
+        [field: SerializeField] public Material invisability_mat;
+        [field: SerializeField] public Material original_mat;
+
 
         protected override void Awake()
         {
