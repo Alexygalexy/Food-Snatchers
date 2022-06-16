@@ -24,8 +24,10 @@ namespace Alex
             movementStateMachine.reusableData.alexMovePoint = movePositionTransform;
 
 
-
             base.Awake();
+
+
+            movementStateMachine.reusableData.navSpeed = navMeshAgent.speed;
         }
 
         protected void Start()
@@ -38,6 +40,7 @@ namespace Alex
             base.Update();
 
             movePositionTransform = movementStateMachine.reusableData.alexMovePoint;
+            navMeshAgent.speed = movementStateMachine.reusableData.navSpeed;
 
             movementStateMachine.Update();
         }
@@ -54,7 +57,31 @@ namespace Alex
 
         protected override void OnCollisionEnter(Collision other)
         {
-            base.OnCollisionEnter(other);
+            //base.OnCollisionEnter(other);
+
+            if (other.gameObject.layer == LayerMask.NameToLayer("Player") && movementStateMachine.reusableData.willSnatch)
+            {
+                
+                if (other.gameObject.GetComponent<AI_System>().Score >= 5 )
+                {
+                    Score += 5;
+                    other.gameObject.GetComponent<AI_System>().Score -= 5;
+                    movementStateMachine.reusableData.timeToSnatch = 0;
+
+                    player1_scoreText.text = Score.ToString();
+                    other.gameObject.GetComponent<AI_System>().player1_scoreText.text = Score.ToString();
+                } 
+                else
+                {
+                    Score += 5;
+                    other.gameObject.GetComponent<AI_System>().Score = 0;
+                    movementStateMachine.reusableData.timeToSnatch = 0;
+
+                    player1_scoreText.text = Score.ToString();
+                    other.gameObject.GetComponent<AI_System>().player1_scoreText.text = Score.ToString();
+                }
+            }
+
         }
 
         #region Main Methods

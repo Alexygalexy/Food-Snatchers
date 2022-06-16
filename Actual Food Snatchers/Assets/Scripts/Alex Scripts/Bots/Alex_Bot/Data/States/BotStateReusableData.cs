@@ -12,9 +12,13 @@ namespace Alex
         public Vector3 evadePos { get; set; }
 
         public bool canInvis { get; set; } = true;
+        public bool cdInvis { get; set; } = false;
         public bool isInvis { get; set; } = true;
-        public bool stopSnatch { get; set; } = false;
+        public bool willSnatch { get; set; } = false;
 
         public int timeToSnatch { get; set; } = 0;
+
+        public float invisTime { get; set; } = 3f;
+        public float navSpeed { get; set; } = 3.5f;
     }
 }

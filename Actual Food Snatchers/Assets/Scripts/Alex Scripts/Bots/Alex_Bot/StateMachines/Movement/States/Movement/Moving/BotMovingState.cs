@@ -33,6 +33,12 @@ namespace Alex
 
             GoToFood();
 
+            if (FindToSnatch() && stateMachine.reusableData.timeToSnatch > 1 && stateMachine.reusableData.canInvis)
+            {
+                stateMachine.ChangeState(stateMachine.SnatchingState);
+                return;
+            }
+
             if (!EnemyDetect())
             {
                 return;
@@ -42,7 +48,7 @@ namespace Alex
             {
                 return;
             }
-
+                
             stateMachine.ChangeState(stateMachine.EvadeState);
 
         }

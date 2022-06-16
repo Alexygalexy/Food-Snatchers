@@ -87,7 +87,58 @@ namespace Alex
             return detectedFood;
         }
 
-        protected virtual Transform FindPlayerToSnatch()
+        protected virtual bool FindToSnatch()
+        {
+            Collider[] colliders = Physics.OverlapSphere(centre, EnemyDistanceRun, stateMachine.Alex_Bot.LayerData.Player);
+            List<Collider> enemyList = colliders.ToList();
+            enemyList.RemoveAll(x => x.transform.root == stateMachine.Alex_Bot.transform);
+            colliders = enemyList.ToArray();
+
+            //Collider nearestCollider = null;
+            //float minSqrDistance = Mathf.Infinity;
+            //Vector3 newPos = Vector3.zero;
+            bool IsPlayer = colliders.Length > 0;
+
+            if (IsPlayer)
+            {
+                //for (int i = 0; i < colliders.Length; i++)
+                //{
+                //    float sqrDistanceToCentre = (centre - colliders[i].transform.position).sqrMagnitude;
+
+                //    if (sqrDistanceToCentre < minSqrDistance)
+                //    {
+                //        minSqrDistance = sqrDistanceToCentre;
+                //        nearestCollider = colliders[i];
+
+                //        //Vector3 dirToEnemy = stateMachine.Alex_Bot.transform.position - colliders[i].transform.position;
+
+                //        newPos = stateMachine.Alex_Bot.transform.position;
+
+                //        stateMachine.reusableData.playerPos.position = newPos;
+                //    }
+                //}
+
+                if (!stateMachine.reusableData.cdInvis)
+                {
+                    stateMachine.Alex_Bot.StartCoroutine(InvisabilityDuration());
+                    stateMachine.reusableData.isInvis = true;
+                    stateMachine.Alex_Bot.StartCoroutine(InvisabilityCooldown());
+                    stateMachine.reusableData.cdInvis = true;
+                }
+
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+            
+        }
+
+
+        protected virtual Transform SnatchClosest()
         {
             Collider[] colliders = Physics.OverlapSphere(centre, EnemyDistanceRun, stateMachine.Alex_Bot.LayerData.Player);
             List<Collider> enemyList = colliders.ToList();
@@ -97,28 +148,70 @@ namespace Alex
             Collider nearestCollider = null;
             float minSqrDistance = Mathf.Infinity;
             Transform detectedPlayer = null;
+            bool ToSnatch = false;
 
-            //bool ToSnatch = false;
-
-            //ToSnatch = colliders.Length <= 1;
-            if (stateMachine.reusableData.timeToSnatch >= 3)
+            ToSnatch = colliders.Length > 0;
+            
+            
+            for (int i = 0; i < colliders.Length; i++)
             {
-                for (int i = 0; i < colliders.Length; i++)
+                float sqrDistanceToCenter = (centre - colliders[i].transform.position).sqrMagnitude;
+
+                if (sqrDistanceToCenter < minSqrDistance)
                 {
-                    float sqrDistanceToCenter = (centre - colliders[i].transform.position).sqrMagnitude;
+                    minSqrDistance = sqrDistanceToCenter;
+                    nearestCollider = colliders[i];
 
-                    if (sqrDistanceToCenter < minSqrDistance)
-                    {
-                        minSqrDistance = sqrDistanceToCenter;
-                        nearestCollider = colliders[i];
+                    detectedPlayer = colliders[i].transform;
 
-                        detectedPlayer = colliders[i].transform;
-
-                        stateMachine.reusableData.playerPos = colliders[i].transform;
-                    }
+                    //stateMachine.reusableData.playerPos = colliders[i].transform;
                 }
             }
             return detectedPlayer;
+
+
+
+
+
+            //if (ToSnatch && stateMachine.reusableData.canInvis)
+            //{
+            //    if (!stateMachine.reusableData.cdInvis)
+            //    {
+            //        stateMachine.Alex_Bot.StartCoroutine(InvisabilityDuration());
+            //        stateMachine.reusableData.isInvis = true;
+            //        stateMachine.Alex_Bot.StartCoroutine(InvisabilityCooldown());
+            //        stateMachine.reusableData.cdInvis = true;
+            //    }
+
+
+            //    if (stateMachine.reusableData.isInvis)
+            //    {
+            //        for (int i = 0; i < colliders.Length; i++)
+            //        {
+            //            float sqrDistanceToCentre = (stateMachine.Alex_Bot.transform.position - colliders[i].transform.position).sqrMagnitude;
+
+            //            if (sqrDistanceToCentre < minSqrDistance)
+            //            {
+            //                minSqrDistance = sqrDistanceToCentre;
+            //                nearestCollider = colliders[i];
+
+            //                newPos = colliders[i].transform.position;
+
+            //                stateMachine.reusableData.playerPos.position = newPos;
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        stateMachine.reusableData.canInvis = false;
+            //    }
+
+            //    return true;
+            //}
+            //else
+            //{
+            //    return false;
+            //}
         }
 
         protected virtual bool EnemyDetect()
@@ -137,12 +230,12 @@ namespace Alex
 
             if (IsEnemy)
             {
-                if (stateMachine.reusableData.canInvis)
+                if (!stateMachine.reusableData.cdInvis)
                 {
                     stateMachine.Alex_Bot.StartCoroutine(InvisabilityDuration());
                     stateMachine.reusableData.isInvis = true;
                     stateMachine.Alex_Bot.StartCoroutine(InvisabilityCooldown());
-                    stateMachine.reusableData.canInvis = false;
+                    stateMachine.reusableData.cdInvis = true;
                 }
                 else if (!stateMachine.reusableData.isInvis)
                 {
@@ -178,13 +271,25 @@ namespace Alex
 
         protected virtual void SnatchFromPlayer()
         {
-            stateMachine.reusableData.alexMovePoint.position = FindPlayerToSnatch().position;
+            stateMachine.reusableData.alexMovePoint.position = SnatchClosest().position;
         }
 
         IEnumerator InvisabilityCooldown()
         {
-            yield return new WaitForSeconds(4f);
+            if (stateMachine.reusableData.timeToSnatch <= 1)
+            {
+                stateMachine.reusableData.timeToSnatch++;
+                Debug.Log(stateMachine.reusableData.timeToSnatch);
+            }
+            else
+            {
+                stateMachine.reusableData.invisTime = 5f;
+            }
+
+
+            yield return new WaitForSeconds(stateMachine.reusableData.invisTime + 1f);
             Debug.Log("Can Invis Again");
+            stateMachine.reusableData.cdInvis = false;
             stateMachine.reusableData.canInvis = true;
         }
 
@@ -195,12 +300,22 @@ namespace Alex
             stateMachine.Alex_Bot.gameObject.GetComponent<MeshRenderer>().material = stateMachine.Alex_Bot.invisability_mat;
             stateMachine.Alex_Bot.gameObject.layer = LayerMask.NameToLayer("Default");
             stateMachine.Alex_Bot.gameObject.tag = "Untagged";
-            yield return new WaitForSeconds(3f);
+            stateMachine.reusableData.navSpeed = 4f;
+            stateMachine.reusableData.willSnatch = true;
+
+            
+
+            yield return new WaitForSeconds(stateMachine.reusableData.invisTime);
             stateMachine.Alex_Bot.smoke.Stop();
             stateMachine.Alex_Bot.gameObject.GetComponent<MeshRenderer>().material = stateMachine.Alex_Bot.original_mat;
             stateMachine.Alex_Bot.gameObject.layer = LayerMask.NameToLayer("Player");
             stateMachine.Alex_Bot.gameObject.tag = "Player";
+            stateMachine.reusableData.navSpeed = 3.5f;
+            stateMachine.reusableData.willSnatch = false;
             stateMachine.reusableData.isInvis = false;
+            stateMachine.reusableData.canInvis = false;
+
+
             Debug.Log("Ended Invis");
         }
 

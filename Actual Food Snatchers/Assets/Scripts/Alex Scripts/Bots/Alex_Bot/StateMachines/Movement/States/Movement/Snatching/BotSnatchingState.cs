@@ -21,7 +21,7 @@ namespace Alex
         {
             base.Exit();
 
-            stateMachine.reusableData.stopSnatch = false;
+            //stateMachine.reusableData.stopSnatch = false;
         }
 
         public override void PhysicsUpdate()
@@ -33,10 +33,15 @@ namespace Alex
         {
             base.Update();
 
-            SnatchFromPlayer();
+            //SnatchFromPlayer();
 
-            if (!stateMachine.reusableData.stopSnatch)
+            //if (!stateMachine.reusableData.stopSnatch)
+            //{
+            //    return;
+            //}
+            if (FindToSnatch() && stateMachine.reusableData.canInvis && stateMachine.reusableData.timeToSnatch > 1)
             {
+                SnatchFromPlayer();
                 return;
             }
 
