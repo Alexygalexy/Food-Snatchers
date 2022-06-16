@@ -62,7 +62,6 @@ public class FoodSpawn : MonoBehaviour
     {
         while (SpawnPlacesAvailable == false)
         {
-            Debug.Log("max spawn places are " + maxSpawnPlaces);
             if (maxSpawnPlaces > 3)
             {
                 SpawnPlacesAvailable = true;

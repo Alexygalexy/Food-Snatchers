@@ -40,10 +40,7 @@ public class AI_System : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (!paused)
-        {
-            GoToPosition();
-        }
+        GoToPosition();
         scoreBoard();
     }
 
@@ -93,10 +90,7 @@ public class AI_System : MonoBehaviour
 
     public virtual void GoToPosition()
     {
-        if (!paused)
-        {
-            navMeshAgent.destination = movePositionTransform.position;
-        }
+        navMeshAgent.destination = movePositionTransform.position;
     }
 
     protected virtual void scoreBoard()
