@@ -10,8 +10,11 @@ public class RayaBotClone : RayaBot
     // Start is called before the first frame update
     protected override void Start()
     {
-        ScoreBoard = transform.Find("ScoreBoard_Raya_Clone").gameObject; 
+        ScoreBoard = transform.Find("ScoreBoard_Raya_Clone").gameObject;
         player1_scoreText = ScoreBoard.GetComponentInChildren<TextMeshProUGUI>();
+
+        Score = transform.parent.gameObject.GetComponent<RayaBot>().Score;
+        player1_scoreText.text = Score.ToString();
 
         audioRaya = GetComponents<AudioSource>();
         collect = audioRaya[0];
@@ -30,11 +33,9 @@ public class RayaBotClone : RayaBot
         timer += Time.deltaTime;
 
         ClosestEnemy = FindClosestEnemy();
-        if (smallestDistance2 < 3f)
+        if (smallestDistance2 < 5f)
         {
-            navMeshAgent.speed += 3f;
-            navMeshAgent.destination = -ClosestEnemy.transform.position;
-            navMeshAgent.speed -= 3f;
+            
             StartCoroutine("RunAway");
         }
         scoreBoard();
@@ -46,26 +47,20 @@ public class RayaBotClone : RayaBot
         if (timer > timeStamp)
         {
             vanish.Play();
+            transform.parent.gameObject.GetComponent<RayaBot>().Score *= 2;
             cam.GetComponent<MultipleTargetsCamera>().targets.Remove(transform);
-            Destroy(transform.gameObject, 0.3f);
+            Destroy(transform.gameObject, 0.2f);
         }
     }
 
     protected override void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player") && other.gameObject.name != "RayaBotTest")
         {
-            if (other.gameObject.name == "RayaBotTest")
-            {
-                //other.gameObject.GetComponent<AI_System>().Score += Score;
-            }
-            else
-            {
-                vanish.Play();
-                cam.GetComponent<MultipleTargetsCamera>().targets.Remove(transform);
-                Destroy(transform.gameObject, 0.3f);
-                Debug.Log("Clone is gone ;(");
-            }
+            vanish.Play();
+            cam.GetComponent<MultipleTargetsCamera>().targets.Remove(transform);
+            Destroy(transform.gameObject, 0.2f);
+            Debug.Log("Clone is gone ;(");
         }
     }
 
@@ -76,6 +71,9 @@ public class RayaBotClone : RayaBot
 
     protected IEnumerator RunAway()
     {
+        navMeshAgent.speed += 3f;
+        navMeshAgent.destination = -ClosestEnemy.transform.position;
+        navMeshAgent.speed -= 3f;
         yield return new WaitForSecondsRealtime(5f);
     }
 

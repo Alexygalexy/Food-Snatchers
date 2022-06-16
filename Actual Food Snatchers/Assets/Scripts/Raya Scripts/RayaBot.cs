@@ -65,7 +65,7 @@ public class RayaBot : AI_System, IPauseSystem
         //IF NOT ATTACKING
         if (ready == false)
         {
-            if (smallestDistance2 < 3f)
+            if (smallestDistance2 < 5f)
             {
                 navMeshAgent.speed += 3f;
                 navMeshAgent.destination = -ClosestEnemy.transform.position;
@@ -99,7 +99,9 @@ public class RayaBot : AI_System, IPauseSystem
         //MAKING A CLONE
         if (smallestDistance2 > 20f && readyClone == true)
         {
-            Instantiate(myPrefab, transform.position * 0.95f, Quaternion.identity);
+            Score = Score/2;
+            Instantiate(myPrefab, new Vector3(transform.position.x + 1f, transform.position.y, transform.position.z + 1f), Quaternion.identity, transform);
+            player1_scoreText.text = Score.ToString();
             readyClone = false;
             timeStamp = timer + 30f;
         }
