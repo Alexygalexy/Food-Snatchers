@@ -16,12 +16,29 @@ public class Tom_Bot : AI_System, IPauseSystem
     [SerializeField]
     private float period;
 
+    protected AudioSource collect;
+    protected AudioSource speedboost;
+    protected AudioSource[] audioTom;
+
+    protected virtual void Start()
+    {
+        audioTom = GetComponents<AudioSource>();
+        collect = audioTom[0];
+        speedboost = audioTom[1];
+        Awake();
+
+    }
+
     protected override void Awake()
     {
         base.Awake();
         boostTimer = 0;
         period = 0;
         boosting = false;
+
+        audioTom = GetComponents<AudioSource>();
+        collect = audioTom[0];
+        speedboost = audioTom[1];
     }
 
     protected override void Update()
@@ -75,6 +92,7 @@ public class Tom_Bot : AI_System, IPauseSystem
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
+        collect.Play();
     }
 
     protected override void OnCollisionEnter(Collision other)
@@ -143,6 +161,7 @@ public class Tom_Bot : AI_System, IPauseSystem
         {
             boosting = true;
             GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 10;
+            speedboost.Play();
             Score -= 1;
             period = 0;
         }
