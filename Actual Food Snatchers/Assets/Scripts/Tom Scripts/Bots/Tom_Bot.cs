@@ -136,13 +136,14 @@ public class Tom_Bot : AI_System, IPauseSystem
         return (best_targetTransorm);
     }
 
-    ///Function for my AI : All 10 seconds, my AI will get a speed boost during 4 seconds:)
+    ///Function for my AI : All 10 seconds, my AI will get a speed boost during 4 seconds:) and lost 1 point to balance the game.
     protected void speed_boost()
     {
         if (period > 10)
         {
             boosting = true;
             GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 10;
+            Score -= 1;
             period = 0;
         }
         period += UnityEngine.Time.deltaTime;
