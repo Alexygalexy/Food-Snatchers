@@ -8,10 +8,11 @@ public class CleanVitalijBot : AI_System, IPauseSystem
 
     private bool collided;
     private bool steal;
-    // public GameObject[] players;
     public Transform closestPlayer;
     public Transform closestFood;
     public bool playerContact;
+    public AudioSource stealSound;
+    public AudioSource eatFood;
 
     [SerializeField] float timer = 5.0f;
     [SerializeField] private float range = 5;
@@ -95,6 +96,7 @@ public class CleanVitalijBot : AI_System, IPauseSystem
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
+        eatFood.Play();
         ChaseFood();
         if (other.isTrigger != true && other.CompareTag("Player"))
         {
@@ -141,11 +143,11 @@ public class CleanVitalijBot : AI_System, IPauseSystem
                     if (hit.collider.gameObject.GetComponent<AI_System>().Score > 2)
                     {
                         Debug.Log("STOLEN");
-
                         hit.collider.gameObject.GetComponent<AI_System>().Score -= 2;
                         hit.collider.gameObject.GetComponent<AI_System>().player1_scoreText.text = hit.collider.gameObject.GetComponent<AI_System>().Score.ToString();
                         this.gameObject.GetComponent<CleanVitalijBot>().Score += 2;
                         this.gameObject.GetComponent<CleanVitalijBot>().player1_scoreText.text = Score.ToString();
+                        stealSound.Play();
                     }
                     else
                     {
