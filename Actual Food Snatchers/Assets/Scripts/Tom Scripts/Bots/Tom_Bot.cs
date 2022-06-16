@@ -170,8 +170,8 @@ public class Tom_Bot : AI_System, IPauseSystem
 
 
     //External Function
-    public void Pause(bool isPaused)
+    public void Pause(float Speed)
     {
-        paused = isPaused;
+        navMeshAgent.speed = Speed;
     }
 }

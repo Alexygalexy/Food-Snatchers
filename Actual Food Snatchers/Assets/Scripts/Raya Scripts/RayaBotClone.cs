@@ -46,10 +46,11 @@ public class RayaBotClone : RayaBot
 
         if (timer > timeStamp)
         {
+            timeStamp += 60f;
             vanish.Play();
-            transform.parent.gameObject.GetComponent<RayaBot>().Score *= 2;
             cam.GetComponent<MultipleTargetsCamera>().targets.Remove(transform);
             Destroy(transform.gameObject, 0.2f);
+            transform.parent.gameObject.GetComponent<RayaBot>().Score *= 2;
         }
     }
 

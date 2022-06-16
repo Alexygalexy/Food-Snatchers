@@ -174,8 +174,8 @@ public class CleanVitalijBot : AI_System, IPauseSystem
     }
     #endregion
 
-    public void Pause(bool isPaused)
+    public void Pause(float Speed)
     {
-        paused = isPaused;
+        navMeshAgent.speed = Speed;
     }
 }

@@ -214,12 +214,16 @@ public class RayaBot : AI_System, IPauseSystem
 
         foreach (GameObject enemy in AllPlayers())
         {
-            Vector3 diff = enemy.transform.position - position;
-            float curDistance = diff.sqrMagnitude;
-            if (curDistance < distance)
+            //ALEX CHANGE
+            if (enemy.gameObject.GetComponent<AI_System>().Score >= 5)
             {
-                closestEnemy = enemy;
-                distance = curDistance;
+                Vector3 diff = enemy.transform.position - position;
+                float curDistance = diff.sqrMagnitude;
+                if (curDistance < distance)
+                {
+                    closestEnemy = enemy;
+                    distance = curDistance;
+                }
             }
         }
         Transform ClosestEnemyTransform = closestEnemy.transform;
@@ -244,9 +248,9 @@ public class RayaBot : AI_System, IPauseSystem
     //    }
     //}
 
-    public void Pause(bool isPaused)
+    public void Pause(float Speed)
     {
-        paused = isPaused;
+        navMeshAgent.speed = Speed;
     }
 
     //protected void AvoidOtherPlayers()

@@ -37,18 +37,21 @@ public class Sjoeke_AI : AI_System, IPauseSystem
     protected override void Awake()
     {
         base.Awake();
-        FindObjectOfType<AudioManager>().Play("Walking");
+        //FindObjectOfType<AudioManager>().Play("Walking");
         players.AddRange(GameObject.FindGameObjectsWithTag("Player"));
+
+        
     }
 
     protected override void Update()
     {
         base.Update();
+
         if (pickedRandomFood == false)
         {
             FoodTarget = RandomFood();
-            movePositionTransform = FoodTarget;
         }
+            movePositionTransform = FoodTarget;
         /*if (closeEnemy == false)
         {
             enemyTarget = findPlayers();

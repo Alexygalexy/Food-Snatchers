@@ -110,9 +110,9 @@ namespace Alex
 
         #region External Methods
 
-        public void Pause(bool isPaused)
+        public void Pause(float Speed)
         {
-            paused = isPaused;
+            navMeshAgent.speed = Speed;
         }
 
         #endregion
