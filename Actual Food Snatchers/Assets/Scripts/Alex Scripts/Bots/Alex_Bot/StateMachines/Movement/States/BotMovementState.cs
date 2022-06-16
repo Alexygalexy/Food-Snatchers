@@ -26,8 +26,6 @@ namespace Alex
         public virtual void Enter()
         {
             Debug.Log("State: " + GetType().Name);
-
-
         }
 
         public virtual void Exit()
@@ -54,7 +52,7 @@ namespace Alex
         protected virtual Transform FindFood()
         {
             Collider[] colliders = Physics.OverlapSphere(centre, radius, stateMachine.Alex_Bot.LayerData.Food);
-            
+
 
             Collider nearestCollider = null;
             float minSqrDistance = Mathf.Infinity;
@@ -79,7 +77,7 @@ namespace Alex
                     {
                         minSqrDistance = sqrDistanceToCenter;
                         nearestCollider = colliders[i];
-                        //stateMachine.reusableData.alexMovePoint.position = colliders[i].transform.position;
+
                         detectedFood = colliders[i].transform;
 
                         stateMachine.reusableData.foodPos = colliders[i].transform;
@@ -87,6 +85,40 @@ namespace Alex
                 }
             }
             return detectedFood;
+        }
+
+        protected virtual Transform FindPlayerToSnatch()
+        {
+            Collider[] colliders = Physics.OverlapSphere(centre, EnemyDistanceRun, stateMachine.Alex_Bot.LayerData.Player);
+            List<Collider> enemyList = colliders.ToList();
+            enemyList.RemoveAll(x => x.transform.root == stateMachine.Alex_Bot.transform);
+            colliders = enemyList.ToArray();
+
+            Collider nearestCollider = null;
+            float minSqrDistance = Mathf.Infinity;
+            Transform detectedPlayer = null;
+
+            //bool ToSnatch = false;
+
+            //ToSnatch = colliders.Length <= 1;
+            if (stateMachine.reusableData.timeToSnatch >= 3)
+            {
+                for (int i = 0; i < colliders.Length; i++)
+                {
+                    float sqrDistanceToCenter = (centre - colliders[i].transform.position).sqrMagnitude;
+
+                    if (sqrDistanceToCenter < minSqrDistance)
+                    {
+                        minSqrDistance = sqrDistanceToCenter;
+                        nearestCollider = colliders[i];
+
+                        detectedPlayer = colliders[i].transform;
+
+                        stateMachine.reusableData.playerPos = colliders[i].transform;
+                    }
+                }
+            }
+            return detectedPlayer;
         }
 
         protected virtual bool EnemyDetect()
@@ -144,27 +176,32 @@ namespace Alex
             stateMachine.reusableData.alexMovePoint.position = FindFood().position;
         }
 
+        protected virtual void SnatchFromPlayer()
+        {
+            stateMachine.reusableData.alexMovePoint.position = FindPlayerToSnatch().position;
+        }
+
         IEnumerator InvisabilityCooldown()
         {
             yield return new WaitForSeconds(4f);
             Debug.Log("Can Invis Again");
             stateMachine.reusableData.canInvis = true;
-
         }
-        
+
         IEnumerator InvisabilityDuration()
         {
             Debug.Log("Started Invis");
             stateMachine.Alex_Bot.smoke.Play();
             stateMachine.Alex_Bot.gameObject.GetComponent<MeshRenderer>().material = stateMachine.Alex_Bot.invisability_mat;
             stateMachine.Alex_Bot.gameObject.layer = LayerMask.NameToLayer("Default");
+            stateMachine.Alex_Bot.gameObject.tag = "Untagged";
             yield return new WaitForSeconds(3f);
             stateMachine.Alex_Bot.smoke.Stop();
             stateMachine.Alex_Bot.gameObject.GetComponent<MeshRenderer>().material = stateMachine.Alex_Bot.original_mat;
             stateMachine.Alex_Bot.gameObject.layer = LayerMask.NameToLayer("Player");
+            stateMachine.Alex_Bot.gameObject.tag = "Player";
             stateMachine.reusableData.isInvis = false;
             Debug.Log("Ended Invis");
-
         }
 
         //protected virtual Vector3 EnemyPos()
@@ -189,7 +226,6 @@ namespace Alex
         //    }
         //    return tMin;
         //}
-
         #endregion
     }
 }

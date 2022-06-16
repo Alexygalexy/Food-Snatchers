@@ -10,6 +10,7 @@ namespace Alex
         public BotStateReusableData reusableData { get; }
         public BotMovingState MovingState { get; }
         public BotEvadeState EvadeState { get; }
+        public BotSnatchingState SnatchingState { get; }
 
         public BotMovementStateMachine(Alex_Bot alex_Bot)
         {
@@ -20,6 +21,8 @@ namespace Alex
             MovingState = new BotMovingState(this);
 
             EvadeState = new BotEvadeState(this);
+
+            SnatchingState = new BotSnatchingState(this);
         }
     }
 }

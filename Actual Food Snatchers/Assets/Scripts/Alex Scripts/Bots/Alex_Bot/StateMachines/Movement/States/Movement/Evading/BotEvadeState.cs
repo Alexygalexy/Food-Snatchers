@@ -15,6 +15,9 @@ namespace Alex
         public override void Enter()
         {
             base.Enter();
+
+            stateMachine.reusableData.timeToSnatch++;
+            Debug.Log(stateMachine.reusableData.timeToSnatch);
         }
 
         public override void Exit()
@@ -30,6 +33,11 @@ namespace Alex
         public override void Update()
         {
             base.Update();
+
+            if (stateMachine.reusableData.timeToSnatch >= 3)
+            {
+                stateMachine.ChangeState(stateMachine.SnatchingState);
+            }
 
             if (EnemyDetect() && !stateMachine.reusableData.isInvis)
             {
