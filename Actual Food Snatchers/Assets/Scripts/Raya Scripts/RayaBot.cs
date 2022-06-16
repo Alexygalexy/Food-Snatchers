@@ -13,7 +13,9 @@ public class RayaBot : AI_System, IPauseSystem
 
     protected bool ready = true, pause = false, readyClone = true;
 
-    //[SerializeField] protected GameObject myPrefab;
+    protected float timer, timeStamp;
+
+    [SerializeField] protected GameObject myPrefab;
     //[SerializeField] protected GameObject myPrefabScoreBoard;
 
     protected AudioSource hit;
@@ -35,6 +37,7 @@ public class RayaBot : AI_System, IPauseSystem
         hit = audioRaya[0];
         collect = audioRaya[1];
 
+
         stateMachine = new Raya.StateMachine<RayaBot>(this);
 
         stateMachine.Start();
@@ -50,6 +53,8 @@ public class RayaBot : AI_System, IPauseSystem
 
     protected override void Update()
     {
+        timer += Time.deltaTime;
+
         //StateMachine
         stateMachine.Update();
 
@@ -57,25 +62,54 @@ public class RayaBot : AI_System, IPauseSystem
         ClosestFood = FindClosestFood();
         ClosestEnemy = FindClosestEnemy();
 
-        if (smallestDistance1 > (smallestDistance2 / 1.5f) && ready == true)   //prioritize enemies: if the difference between the two is less than 1/4 go for the enemy
+        //IF NOT ATTACKING
+        if (ready == false)
         {
-            movePositionTransform = ClosestEnemy;
-            GoToPosition();
-            //currentState = CollectState;
-            //currentState.EnterState(this);
-        }
-        else if (!pause)
-        {
-            //Debug.Log("My next target: " + ClosestEnemy.name);
-            movePositionTransform = ClosestFood;
-            GoToPosition();
+            if (smallestDistance2 < 3f)
+            {
+                navMeshAgent.speed += 3f;
+                navMeshAgent.destination = -ClosestEnemy.transform.position;
+                navMeshAgent.speed -= 3f;
+                //AvoidOtherPlayers();
+            }
+            else
+            {
+                movePositionTransform = ClosestFood;
+                GoToPosition();
+            }
         }
 
-        //if (smallestDistance2 > 20f && readyClone == true)
-        //{
-        //    Instantiate(myPrefab, transform.position, Quaternion.identity);
-        //    readyClone = false;
-        //}
+        //IF ATTACKING
+        else
+        {
+            if (smallestDistance1 > (smallestDistance2 / 2f))   //prioritize enemies: if the difference between the two is less than 50% go for the enemy
+            {
+                movePositionTransform = ClosestEnemy;
+                GoToPosition();
+                //currentState = CollectState;
+                //currentState.EnterState(this);
+            }
+            else
+            {
+                movePositionTransform = ClosestFood;
+                GoToPosition();
+            }
+        }
+
+        //MAKING A CLONE
+        if (smallestDistance2 > 20f && readyClone == true)
+        {
+            Instantiate(myPrefab, transform.position * 0.95f, Quaternion.identity);
+            readyClone = false;
+            timeStamp = timer + 30f;
+        }
+        
+        //COOL DOWN CLONE ABILITY
+        if (timeStamp < timer && readyClone == false)
+        {
+            readyClone = true;
+            //Debug.Log("NEW CLONE IS READY NEW CLONE IS READY NEW CLONE IS READY");
+        }
     }
 
     public override void GoToPosition()
@@ -100,7 +134,8 @@ public class RayaBot : AI_System, IPauseSystem
     //ATTACK
     protected override void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player")){
+        if (other.gameObject.tag == "Player")
+        {//(other.gameObject.layer == LayerMask.NameToLayer("Player")){
             if (ready)
             {
                 ready = false;
@@ -113,13 +148,13 @@ public class RayaBot : AI_System, IPauseSystem
                     Score += 10;
 
                     player1_scoreText.text = Score.ToString();
-
-                    StartCoroutine("CoolDown");
                 }
-            }
-            else
-            {
+
                 StartCoroutine("CoolDown");
+
+                navMeshAgent.speed += 3f;
+                navMeshAgent.destination = -other.transform.position;
+                navMeshAgent.speed -= 3f;
             }
         }
     }
@@ -194,14 +229,8 @@ public class RayaBot : AI_System, IPauseSystem
 
     protected IEnumerator CoolDown()
     {
-        pause = true;
         hit.Play();
-
-        navMeshAgent.destination = transform.position;
-
-        yield return new WaitForSecondsRealtime(2f);
-
-        pause = false;
+        yield return new WaitForSecondsRealtime(5f);
         ready = true;
     }
 
@@ -217,4 +246,10 @@ public class RayaBot : AI_System, IPauseSystem
     {
         paused = isPaused;
     }
+
+    //protected void AvoidOtherPlayers()
+    //{
+    //    navMeshAgent.destination = -ClosestEnemy.transform.position;
+    //    Debug.Log("RAYA RUN!!!");
+    //}
 }
