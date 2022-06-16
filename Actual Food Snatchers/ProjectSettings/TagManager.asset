@@ -13,6 +13,7 @@ TagManager:
   - Chicken
   - Egg
   - Tomato
+  - RayaClone
   layers:
   - Default
   - TransparentFX

@@ -5,13 +5,13 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    public float timeLeft = 30.0f;    
+    public float timeLeft;    
     public TMP_Text timerText;
 
     void Update()
     {
         timeLeft -= Time.deltaTime;
-        timerText.text = (timeLeft / 60).ToString("00") + ":" + (timeLeft % 60).ToString("00"); 
+        timerText.text = Mathf.Floor(timeLeft / 60).ToString("00") + ":" + (timeLeft % 60).ToString("00"); 
         if (timeLeft < 0)
         {
             GameOver();
