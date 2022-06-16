@@ -8,15 +8,11 @@ public class CleanVitalijBot : AI_System, IPauseSystem
 
     private bool collided;
     private bool steal;
-<<<<<<< Updated upstream
-    public GameObject[] players;
-=======
     // public GameObject[] players;
     public Transform closestPlayer;
     public Transform closestFood;
     public bool playerContact;
 
->>>>>>> Stashed changes
     [SerializeField] float timer = 5.0f;
     [SerializeField] private float range = 5;
 
@@ -32,11 +28,7 @@ public class CleanVitalijBot : AI_System, IPauseSystem
         base.Awake();
         steal = true;
         collided = true;
-<<<<<<< Updated upstream
-
-=======
         ChaseFood();
->>>>>>> Stashed changes
     }
     // https://www.youtube.com/watch?v=VH-bUST_w0o
     protected Transform GetClosestPlayer()
@@ -55,19 +47,6 @@ public class CleanVitalijBot : AI_System, IPauseSystem
             {
                 closestDistance = currentDistance;
 
-<<<<<<< Updated upstream
-    protected void GetClosestPlayer()
-    {
-        players = GameObject.FindGameObjectsWithTag("Player");
-        float closestDistance = Mathf.Infinity;
-        Transform trans = null;
-
-        foreach (GameObject go in players)
-        {
-            float currentDistance;
-            currentDistance = Vector3.Distance(transform.position, go.transform.position);
-            if(currentDistance < closestDistance)
-=======
                 trans = go.transform;
             }
         }
@@ -89,16 +68,12 @@ public class CleanVitalijBot : AI_System, IPauseSystem
             float currentDistance;
             currentDistance = Vector3.Distance(transform.position, go.transform.position);
             if (currentDistance < closestDistance)
->>>>>>> Stashed changes
             {
                 closestDistance = currentDistance;
                 trans = go.transform;
             }
         }
-<<<<<<< Updated upstream
-=======
         return trans;
->>>>>>> Stashed changes
     }
     protected override void Update()
     {
@@ -125,7 +100,6 @@ public class CleanVitalijBot : AI_System, IPauseSystem
         {
             closestPlayer = GetClosestPlayer();
             playerContact = true;
-            closestPlayer.gameObject.GetComponent<Renderer>().material.color = new Color(0, 0, 0, 1);
             movePositionTransform = closestPlayer;
         }
     }
@@ -135,7 +109,6 @@ public class CleanVitalijBot : AI_System, IPauseSystem
         if (other.isTrigger != true && other.CompareTag("Player"))
         {
             playerContact = false;
-            closestPlayer.gameObject.GetComponent<Renderer>().material.color = Color.white;
         }
     }
 
@@ -169,15 +142,9 @@ public class CleanVitalijBot : AI_System, IPauseSystem
                     {
                         Debug.Log("STOLEN");
 
-<<<<<<< Updated upstream
-                        hit.collider.gameObject.GetComponent<AI_System>().Score -= 5;
-                        hit.collider.gameObject.GetComponent<AI_System>().player1_scoreText.text = hit.collider.gameObject.GetComponent<AI_System>().Score.ToString();
-                        this.gameObject.GetComponent<CleanVitalijBot>().Score += 5;
-=======
                         hit.collider.gameObject.GetComponent<AI_System>().Score -= 2;
                         hit.collider.gameObject.GetComponent<AI_System>().player1_scoreText.text = hit.collider.gameObject.GetComponent<AI_System>().Score.ToString();
                         this.gameObject.GetComponent<CleanVitalijBot>().Score += 2;
->>>>>>> Stashed changes
                         this.gameObject.GetComponent<CleanVitalijBot>().player1_scoreText.text = Score.ToString();
                     }
                     else
