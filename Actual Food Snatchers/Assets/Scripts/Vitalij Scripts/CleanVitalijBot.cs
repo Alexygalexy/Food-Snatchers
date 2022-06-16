@@ -8,18 +8,54 @@ public class CleanVitalijBot : AI_System, IPauseSystem
 
     private bool collided;
     private bool steal;
+<<<<<<< Updated upstream
     public GameObject[] players;
+=======
+    // public GameObject[] players;
+    public Transform closestPlayer;
+    public Transform closestFood;
+    public bool playerContact;
+
+>>>>>>> Stashed changes
     [SerializeField] float timer = 5.0f;
     [SerializeField] private float range = 5;
+
+    void Start()
+    {
+        closestPlayer = null;
+        closestFood = null;
+        playerContact = false;
+    }
     protected override void Awake()
 
     {
         base.Awake();
         steal = true;
         collided = true;
+<<<<<<< Updated upstream
 
+=======
+        ChaseFood();
+>>>>>>> Stashed changes
     }
+    // https://www.youtube.com/watch?v=VH-bUST_w0o
+    protected Transform GetClosestPlayer()
+    {
+        List<GameObject> playerObjects = new List<GameObject>();
+        playerObjects.AddRange(GameObject.FindGameObjectsWithTag("Player"));
+        playerObjects.Remove(transform.gameObject);
+        float closestDistance = Mathf.Infinity;
+        Transform trans = null;
 
+        foreach (GameObject go in playerObjects)
+        {
+            float currentDistance;
+            currentDistance = Vector3.Distance(transform.position, go.transform.position);
+            if (currentDistance < closestDistance)
+            {
+                closestDistance = currentDistance;
+
+<<<<<<< Updated upstream
     protected void GetClosestPlayer()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
@@ -31,16 +67,45 @@ public class CleanVitalijBot : AI_System, IPauseSystem
             float currentDistance;
             currentDistance = Vector3.Distance(transform.position, go.transform.position);
             if(currentDistance < closestDistance)
+=======
+                trans = go.transform;
+            }
+        }
+        return trans;
+    }
+
+    protected Transform GetClosestFood()
+    {
+        List<GameObject> foodObjects = new List<GameObject>();
+        foodObjects.AddRange(GameObject.FindGameObjectsWithTag("Apple"));
+        foodObjects.AddRange(GameObject.FindGameObjectsWithTag("Chicken"));
+        foodObjects.AddRange(GameObject.FindGameObjectsWithTag("Egg"));
+        foodObjects.AddRange(GameObject.FindGameObjectsWithTag("Tomato"));
+        float closestDistance = Mathf.Infinity;
+        Transform trans = null;
+
+        foreach (GameObject go in foodObjects)
+        {
+            float currentDistance;
+            currentDistance = Vector3.Distance(transform.position, go.transform.position);
+            if (currentDistance < closestDistance)
+>>>>>>> Stashed changes
             {
                 closestDistance = currentDistance;
                 trans = go.transform;
             }
         }
+<<<<<<< Updated upstream
+=======
+        return trans;
+>>>>>>> Stashed changes
     }
     protected override void Update()
     {
+        ChaseFood();
         base.Update();
         DetectEnemy();
+        
         if (!steal && !collided)
         {
             timer -= Time.deltaTime;
@@ -48,7 +113,6 @@ public class CleanVitalijBot : AI_System, IPauseSystem
             {
                 steal = true;
                 collided = true;
-
             }
         }
     }
@@ -56,13 +120,39 @@ public class CleanVitalijBot : AI_System, IPauseSystem
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
+        ChaseFood();
+        if (other.isTrigger != true && other.CompareTag("Player"))
+        {
+            closestPlayer = GetClosestPlayer();
+            playerContact = true;
+            closestPlayer.gameObject.GetComponent<Renderer>().material.color = new Color(0, 0, 0, 1);
+            movePositionTransform = closestPlayer;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.isTrigger != true && other.CompareTag("Player"))
+        {
+            playerContact = false;
+            closestPlayer.gameObject.GetComponent<Renderer>().material.color = Color.white;
+        }
+    }
+
+    private void ChaseFood()
+    {
+        if(!playerContact)
+        {
+            closestFood = GetClosestFood();
+            movePositionTransform = closestFood;
+        }
     }
 
     protected override void OnCollisionEnter(Collision other)
     {
         base.OnCollisionEnter(other);
     }
-
+    // https://www.youtube.com/watch?v=E6bac9YP6Jc
     public virtual void DetectEnemy()
     {
         Vector3 detectEnemy = Vector3.forward;
@@ -75,13 +165,19 @@ public class CleanVitalijBot : AI_System, IPauseSystem
             {
                 if (collided)
                 {
-                    if (hit.collider.gameObject.GetComponent<AI_System>().Score > 5)
+                    if (hit.collider.gameObject.GetComponent<AI_System>().Score > 2)
                     {
                         Debug.Log("STOLEN");
 
+<<<<<<< Updated upstream
                         hit.collider.gameObject.GetComponent<AI_System>().Score -= 5;
                         hit.collider.gameObject.GetComponent<AI_System>().player1_scoreText.text = hit.collider.gameObject.GetComponent<AI_System>().Score.ToString();
                         this.gameObject.GetComponent<CleanVitalijBot>().Score += 5;
+=======
+                        hit.collider.gameObject.GetComponent<AI_System>().Score -= 2;
+                        hit.collider.gameObject.GetComponent<AI_System>().player1_scoreText.text = hit.collider.gameObject.GetComponent<AI_System>().Score.ToString();
+                        this.gameObject.GetComponent<CleanVitalijBot>().Score += 2;
+>>>>>>> Stashed changes
                         this.gameObject.GetComponent<CleanVitalijBot>().player1_scoreText.text = Score.ToString();
                     }
                     else
