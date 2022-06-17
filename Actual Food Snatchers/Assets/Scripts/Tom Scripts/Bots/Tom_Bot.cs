@@ -39,10 +39,11 @@ public class Tom_Bot : AI_System, IPauseSystem
         movePositionTransform = go_high_food();
         speed_boost();
 
+        ///duration of speedboost.
         if (boosting == true)
         {
             boostTimer += UnityEngine.Time.deltaTime;
-            if (boostTimer >= 4)
+            if (boostTimer >= 5)
             {
                 GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 5;
                 boostTimer = 0;
@@ -146,7 +147,7 @@ public class Tom_Bot : AI_System, IPauseSystem
         return (best_targetTransorm);
     }
 
-    ///Function for my AI : All 10 seconds, my AI will get a speed boost during 4 seconds:) and lost 1 point to balance the game.
+    ///Function for my AI : All 10 seconds, my AI will get a speed boost during 5 seconds:) and lost 1 point to balance the game.
     protected void speed_boost()
     {
         if (period > 10)
