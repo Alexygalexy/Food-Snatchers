@@ -43,7 +43,7 @@ public class Timer : MonoBehaviour
         sjoekeScore.text = "Sjoeke: " + sjoekeBot.GetComponent<Sjoeke_AI>().Score.ToString();
         rayaScore.text = "Raya: " + rayaBot.GetComponent<RayaBot>().Score.ToString();
         vitalijScore.text = "Vitalij: " + vitalijBot.GetComponent<CleanVitalijBot>().Score.ToString();
-        tomScore.text = "Tom: " + tomBot.GetComponent<Tom_Bot>().Score.ToString() + 1;
+        tomScore.text = "Tom: " + tomBot.GetComponent<Tom_Bot>().Score.ToString();
 
 
     }
