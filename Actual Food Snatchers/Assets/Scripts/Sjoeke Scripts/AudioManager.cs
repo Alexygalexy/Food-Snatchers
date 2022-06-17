@@ -2,6 +2,10 @@ using UnityEngine.Audio;
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Followed a tutorial by Brackeys on audio called: "Introduction to AUDIO in Unity". 
+/// Added the class Sounds in this script so it's easier to navigate
+/// </summary>
 [Serializable]
 public class Sounds
 {
@@ -20,6 +24,9 @@ public class AudioManager : MonoBehaviour
 {
     public Sounds[] sounds;
 
+    /// <summary>
+    /// Adding an audiosource to all the items in Sounds with coresponding settings: clip, volume, and loop.
+    /// </summary>
     private void Awake()
     {
         foreach (Sounds s in sounds)
@@ -31,13 +38,22 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void Play (string name)
+    /// <summary>
+    /// Play or stop a sound in the sounds array, they are called by the name given to them in the inspector.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="play"></param>
+    public void Play (string name, bool play)
     {
         foreach (Sounds s in sounds)
         {
-            if (s.name == name)
+            if (play && s.name == name)
             {
                 s.source.Play();
+            }
+            if (!play && s.name == name)
+            {
+                s.source.Stop();
             }
         }
     }
