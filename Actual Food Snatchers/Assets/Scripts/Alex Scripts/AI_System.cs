@@ -35,7 +35,6 @@ public class AI_System : MonoBehaviour
     protected virtual void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-
     }
 
     protected virtual void Update()
