@@ -5,7 +5,6 @@ using TMPro;
 
 public class CleanVitalijBot : AI_System, IPauseSystem
 {
-
     private bool collided;
     private bool steal;
     public Transform closestPlayer;
@@ -17,21 +16,20 @@ public class CleanVitalijBot : AI_System, IPauseSystem
     [SerializeField] float timer = 5.0f;
     [SerializeField] private float range = 5;
 
-    void Start()
+    protected override void Awake()
     {
         closestPlayer = null;
         closestFood = null;
         playerContact = false;
-    }
-    protected override void Awake()
-
-    {
         base.Awake();
         steal = true;
         collided = true;
-        ChaseFood();
     }
+
     // https://www.youtube.com/watch?v=VH-bUST_w0o
+    // Makes a list of all bots
+    // Removes own bot from the list (so that it won't count itself as the closest object)
+    // Calculates the distance between player bot and every enemy bot
     protected Transform GetClosestPlayer()
     {
         List<GameObject> playerObjects = new List<GameObject>();
@@ -54,6 +52,7 @@ public class CleanVitalijBot : AI_System, IPauseSystem
         return trans;
     }
 
+    //  Same as GetClosestPlayer, but for food objects
     protected Transform GetClosestFood()
     {
         List<GameObject> foodObjects = new List<GameObject>();
@@ -76,12 +75,14 @@ public class CleanVitalijBot : AI_System, IPauseSystem
         }
         return trans;
     }
+
     protected override void Update()
     {
         ChaseFood();
         base.Update();
         DetectEnemy();
-        
+        GetClosestFood();
+        GetClosestPlayer();
         if (!steal && !collided)
         {
             timer -= Time.deltaTime;
@@ -93,6 +94,7 @@ public class CleanVitalijBot : AI_System, IPauseSystem
         }
     }
 
+    // If an enemy bot enters player's collider, then player's bot starts chasing the enemy, not the food
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
@@ -106,6 +108,7 @@ public class CleanVitalijBot : AI_System, IPauseSystem
         }
     }
 
+    //If an enemy bot leaves player's collider, then player's bot starts looking for food
     private void OnTriggerExit(Collider other)
     {
         if (other.isTrigger != true && other.CompareTag("Player"))
@@ -127,7 +130,11 @@ public class CleanVitalijBot : AI_System, IPauseSystem
     {
         base.OnCollisionEnter(other);
     }
+    
     // https://www.youtube.com/watch?v=E6bac9YP6Jc
+    // Draws a short raycast in front of the player
+    // This raycast is used for detecting an enemy, from which player can steal
+    // Stealing only happens if player's raycast hit an enemy
     public virtual void DetectEnemy()
     {
         Vector3 detectEnemy = Vector3.forward;
@@ -140,12 +147,12 @@ public class CleanVitalijBot : AI_System, IPauseSystem
             {
                 if (collided)
                 {
-                    if (hit.collider.gameObject.GetComponent<AI_System>().Score > 2)
+                    if (hit.collider.gameObject.GetComponent<AI_System>().Score >= 5)
                     {
                         Debug.Log("STOLEN");
-                        hit.collider.gameObject.GetComponent<AI_System>().Score -= 2;
+                        hit.collider.gameObject.GetComponent<AI_System>().Score -= 5;
                         hit.collider.gameObject.GetComponent<AI_System>().player1_scoreText.text = hit.collider.gameObject.GetComponent<AI_System>().Score.ToString();
-                        this.gameObject.GetComponent<CleanVitalijBot>().Score += 2;
+                        this.gameObject.GetComponent<CleanVitalijBot>().Score += 5;
                         this.gameObject.GetComponent<CleanVitalijBot>().player1_scoreText.text = Score.ToString();
                         stealSound.Play();
                     }
