@@ -20,14 +20,6 @@ public class Tom_Bot : AI_System, IPauseSystem
     protected AudioSource speedboost;
     protected AudioSource[] audioTom;
 
-    protected virtual void Start()
-    {
-        audioTom = GetComponents<AudioSource>();
-        collect = audioTom[0];
-        speedboost = audioTom[1];
-        Awake();
-
-    }
 
     protected override void Awake()
     {
@@ -52,7 +44,7 @@ public class Tom_Bot : AI_System, IPauseSystem
             boostTimer += UnityEngine.Time.deltaTime;
             if (boostTimer >= 4)
             {
-                GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 4;
+                GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 5;
                 boostTimer = 0;
                 period = 0;
                 boosting = false;
