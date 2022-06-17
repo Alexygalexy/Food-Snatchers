@@ -17,20 +17,21 @@ public class CleanVitalijBot : AI_System, IPauseSystem
     [SerializeField] float timer = 5.0f;
     [SerializeField] private float range = 5;
 
-    void Start()
+    // void Start()
+    // {
+        
+    // }
+
+    protected override void Awake()
     {
         closestPlayer = null;
         closestFood = null;
         playerContact = false;
-    }
-    protected override void Awake()
-
-    {
         base.Awake();
         steal = true;
         collided = true;
-        ChaseFood();
     }
+
     // https://www.youtube.com/watch?v=VH-bUST_w0o
     protected Transform GetClosestPlayer()
     {
@@ -76,12 +77,14 @@ public class CleanVitalijBot : AI_System, IPauseSystem
         }
         return trans;
     }
+
     protected override void Update()
     {
         ChaseFood();
         base.Update();
         DetectEnemy();
-        
+        GetClosestFood();
+        GetClosestPlayer();
         if (!steal && !collided)
         {
             timer -= Time.deltaTime;
@@ -127,6 +130,7 @@ public class CleanVitalijBot : AI_System, IPauseSystem
     {
         base.OnCollisionEnter(other);
     }
+    
     // https://www.youtube.com/watch?v=E6bac9YP6Jc
     public virtual void DetectEnemy()
     {
@@ -140,12 +144,12 @@ public class CleanVitalijBot : AI_System, IPauseSystem
             {
                 if (collided)
                 {
-                    if (hit.collider.gameObject.GetComponent<AI_System>().Score > 2)
+                    if (hit.collider.gameObject.GetComponent<AI_System>().Score >= 5)
                     {
                         Debug.Log("STOLEN");
-                        hit.collider.gameObject.GetComponent<AI_System>().Score -= 2;
+                        hit.collider.gameObject.GetComponent<AI_System>().Score -= 5;
                         hit.collider.gameObject.GetComponent<AI_System>().player1_scoreText.text = hit.collider.gameObject.GetComponent<AI_System>().Score.ToString();
-                        this.gameObject.GetComponent<CleanVitalijBot>().Score += 2;
+                        this.gameObject.GetComponent<CleanVitalijBot>().Score += 5;
                         this.gameObject.GetComponent<CleanVitalijBot>().player1_scoreText.text = Score.ToString();
                         stealSound.Play();
                     }
