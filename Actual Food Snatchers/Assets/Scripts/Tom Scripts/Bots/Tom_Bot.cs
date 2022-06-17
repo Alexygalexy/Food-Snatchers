@@ -156,6 +156,7 @@ public class Tom_Bot : AI_System, IPauseSystem
             GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 10;
             speedboost.Play();
             Score -= 1;
+            player1_scoreText.text = Score.ToString();
             period = 0;
         }
         period += UnityEngine.Time.deltaTime;
