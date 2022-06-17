@@ -6,6 +6,12 @@ using UnityEngine.SceneManagement;
 public class Restart_Scene : MonoBehaviour
 {
 
+    private void Awake()
+    {
+        Time.timeScale = 1;
+    }
+
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -16,6 +22,7 @@ public class Restart_Scene : MonoBehaviour
 
     void Restart()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

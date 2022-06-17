@@ -39,7 +39,7 @@ namespace Alex
             //{
             //    return;
             //}
-            if (FindToSnatch() && stateMachine.reusableData.canInvis && stateMachine.reusableData.timeToSnatch > 1)
+            if (FindToSnatch() && stateMachine.reusableData.canInvis && stateMachine.reusableData.timeToSnatch > 3)
             {
                 SnatchFromPlayer();
                 return;

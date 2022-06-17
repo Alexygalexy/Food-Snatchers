@@ -257,7 +257,7 @@ public class RayaBot : AI_System, IPauseSystem
     //Sjoeke's script
     public void Pause(float Speed)
     {
-        navMeshAgent.speed = Speed;
+        navMeshAgent.speed = Speed - 0.5f;
     }
 
 }

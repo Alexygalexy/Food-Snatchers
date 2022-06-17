@@ -20,14 +20,6 @@ public class Tom_Bot : AI_System, IPauseSystem
     protected AudioSource speedboost;
     protected AudioSource[] audioTom;
 
-    protected virtual void Start()
-    {
-        audioTom = GetComponents<AudioSource>();
-        collect = audioTom[0];
-        speedboost = audioTom[1];
-        Awake();
-
-    }
 
     protected override void Awake()
     {
@@ -47,12 +39,13 @@ public class Tom_Bot : AI_System, IPauseSystem
         movePositionTransform = go_high_food();
         speed_boost();
 
+        ///duration of speedboost.
         if (boosting == true)
         {
             boostTimer += UnityEngine.Time.deltaTime;
-            if (boostTimer >= 4)
+            if (boostTimer >= 5)
             {
-                GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 4;
+                GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 3.5f;
                 boostTimer = 0;
                 period = 0;
                 boosting = false;
@@ -154,15 +147,16 @@ public class Tom_Bot : AI_System, IPauseSystem
         return (best_targetTransorm);
     }
 
-    ///Function for my AI : All 10 seconds, my AI will get a speed boost during 4 seconds:) and lost 1 point to balance the game.
+    ///Function for my AI : All 10 seconds, my AI will get a speed boost during 5 seconds:) and lost 1 point to balance the game.
     protected void speed_boost()
     {
-        if (period > 10)
+        if (period > 20)
         {
             boosting = true;
             GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 10;
             speedboost.Play();
             Score -= 1;
+            player1_scoreText.text = Score.ToString();
             period = 0;
         }
         period += UnityEngine.Time.deltaTime;
