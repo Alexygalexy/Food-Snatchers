@@ -35,7 +35,6 @@ public class AI_System : MonoBehaviour
     protected virtual void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-
     }
 
     protected virtual void Update()
@@ -72,6 +71,9 @@ public class AI_System : MonoBehaviour
                     break;
             }
             player1_scoreText.text = Score.ToString();
+
+            // Made by Sjoeke.
+            // When the food has been picked up, run the addTable event and take the parent of the picked up food (which is the table). The addtable event void is run in foodspawn (TableToList).
             addTable.Invoke(other.transform.parent.gameObject);
             onFoodRemove.Invoke(other.gameObject);
         }
