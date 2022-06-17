@@ -5,7 +5,6 @@ using TMPro;
 
 public class CleanVitalijBot : AI_System, IPauseSystem
 {
-
     private bool collided;
     private bool steal;
     public Transform closestPlayer;
@@ -16,11 +15,6 @@ public class CleanVitalijBot : AI_System, IPauseSystem
 
     [SerializeField] float timer = 5.0f;
     [SerializeField] private float range = 5;
-
-    // void Start()
-    // {
-        
-    // }
 
     protected override void Awake()
     {
@@ -33,6 +27,9 @@ public class CleanVitalijBot : AI_System, IPauseSystem
     }
 
     // https://www.youtube.com/watch?v=VH-bUST_w0o
+    // Makes a list of all bots
+    // Removes own bot from the list (so that it won't count itself as the closest object)
+    // Calculates the distance between player bot and every enemy bot
     protected Transform GetClosestPlayer()
     {
         List<GameObject> playerObjects = new List<GameObject>();
@@ -55,6 +52,7 @@ public class CleanVitalijBot : AI_System, IPauseSystem
         return trans;
     }
 
+    //  Same as GetClosestPlayer, but for food objects
     protected Transform GetClosestFood()
     {
         List<GameObject> foodObjects = new List<GameObject>();
@@ -96,6 +94,7 @@ public class CleanVitalijBot : AI_System, IPauseSystem
         }
     }
 
+    // If an enemy bot enters player's collider, then player's bot starts chasing the enemy, not the food
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
@@ -109,6 +108,7 @@ public class CleanVitalijBot : AI_System, IPauseSystem
         }
     }
 
+    //If an enemy bot leaves player's collider, then player's bot starts looking for food
     private void OnTriggerExit(Collider other)
     {
         if (other.isTrigger != true && other.CompareTag("Player"))
@@ -132,6 +132,9 @@ public class CleanVitalijBot : AI_System, IPauseSystem
     }
     
     // https://www.youtube.com/watch?v=E6bac9YP6Jc
+    // Draws a short raycast in front of the player
+    // This raycast is used for detecting an enemy, from which player can steal
+    // Stealing only happens if player's raycast hit an enemy
     public virtual void DetectEnemy()
     {
         Vector3 detectEnemy = Vector3.forward;
