@@ -11,15 +11,6 @@ public class Restart_Scene : MonoBehaviour
         Time.timeScale = 1;
     }
 
-
-    //void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.R))
-    //    {
-    //        Restart();
-    //    }
-    //}
-
     /// <summary>
     /// 
     /// Restarting the current scene to restart the game

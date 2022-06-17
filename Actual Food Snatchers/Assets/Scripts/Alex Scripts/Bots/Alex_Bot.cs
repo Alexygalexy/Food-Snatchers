@@ -129,7 +129,6 @@ namespace Alex
         /// <param name="other"></param>
         protected override void OnCollisionEnter(Collision other)
         {
-            //base.OnCollisionEnter(other);
 
             if (other.gameObject.layer == LayerMask.NameToLayer("Player") && movementStateMachine.reusableData.willSnatch)
             {
@@ -145,9 +144,6 @@ namespace Alex
                     other.gameObject.GetComponent<AI_System>().Score -= 5;
                     other.gameObject.GetComponent<AI_System>().player1_scoreText.text = other.gameObject.GetComponent<AI_System>().Score.ToString();
                     movementStateMachine.reusableData.willSnatch = false;
-
-                    //player1_scoreText.text = Score.ToString();
-                    //other.gameObject.GetComponent<AI_System>().player1_scoreText.text = Score.ToString();
                 } 
                 else
                 {
@@ -157,8 +153,6 @@ namespace Alex
                     other.gameObject.GetComponent<AI_System>().Score = 0;
                     other.gameObject.GetComponent<AI_System>().player1_scoreText.text = other.gameObject.GetComponent<AI_System>().Score.ToString();
                     movementStateMachine.reusableData.willSnatch = false;
-                    //player1_scoreText.text = Score.ToString();
-                    //other.gameObject.GetComponent<AI_System>().player1_scoreText.text = Score.ToString();
                 }
             }
 
