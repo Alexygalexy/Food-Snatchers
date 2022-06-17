@@ -226,7 +226,7 @@ public class RayaBot : AI_System, IPauseSystem
     protected IEnumerator CoolDown()
     {
         hit.Play();
-        yield return new WaitForSecondsRealtime(5f);
+        yield return new WaitForSecondsRealtime(7f);
         ready = true;
     }
 
@@ -234,7 +234,7 @@ public class RayaBot : AI_System, IPauseSystem
     protected IEnumerator RunAway()
     {
         navMeshAgent.destination = -ClosestEnemy.transform.position;
-        yield return new WaitForSecondsRealtime(3f);
+        yield return new WaitForSecondsRealtime(5f);
     }
 
     //producing a clone
@@ -242,7 +242,7 @@ public class RayaBot : AI_System, IPauseSystem
     {
         transform.gameObject.GetComponent<MeshRenderer>().material.EnableKeyword("_EMISSION");
         readyClone = false;
-        timeStamp = timer + 30f;
+        timeStamp = timer + 20f;
 
         yield return new WaitForSecondsRealtime(0.5f);
 

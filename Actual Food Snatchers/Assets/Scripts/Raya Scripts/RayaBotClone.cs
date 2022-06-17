@@ -6,6 +6,7 @@ using TMPro;
 public class RayaBotClone : RayaBot
 {
     protected AudioSource vanish;
+    protected AudioSource baby;
     protected int parentScore;
     protected bool stop = false;
 
@@ -24,10 +25,11 @@ public class RayaBotClone : RayaBot
         audioRaya = GetComponents<AudioSource>();
         collect = audioRaya[0];
         vanish = audioRaya[1];
-        vanish.Play();
+        baby = audioRaya[2];
+        baby.Play();
 
-        //sets lifetime 
-        timeStamp = Time.deltaTime + 15f;
+        //set lifetime
+        timeStamp = 15f;
 
         //adds camera tracking 
         cam = GameObject.FindObjectOfType<Camera>().transform;
@@ -58,6 +60,7 @@ public class RayaBotClone : RayaBot
             StartCoroutine("CloneVanish");
         }
 
+        //end of game - clone vanishes
         EndGameScore();
     }
 
@@ -89,7 +92,7 @@ public class RayaBotClone : RayaBot
     //getting killed
     protected override void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player") && other.gameObject.name != "RayaBotTest")
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player") && other.gameObject.name != "Raya_Bot")
         {
             vanish.PlayDelayed(0.9f);
             player1_scoreText.color = Color.red;
@@ -122,7 +125,7 @@ public class RayaBotClone : RayaBot
 
     protected void EndGameScore()
     {
-        if (timerText.GetComponent<Timer>().timeLeft < 3f && stop == false)
+        if (timerText.GetComponent<Timer>().timeLeft < 1.5f && stop == false)
         {
             stop = true;
             Debug.Log("No TIME!!! Vanishing rn");
