@@ -287,7 +287,7 @@ namespace Alex
             }
 
 
-            yield return new WaitForSeconds(stateMachine.reusableData.invisTime + 1f);
+            yield return new WaitForSeconds(stateMachine.reusableData.invisTime + 3f);
             Debug.Log("Can Invis Again");
             stateMachine.reusableData.cdInvis = false;
             stateMachine.reusableData.canInvis = true;

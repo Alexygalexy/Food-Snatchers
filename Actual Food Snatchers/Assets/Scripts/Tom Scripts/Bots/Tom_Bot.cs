@@ -45,7 +45,7 @@ public class Tom_Bot : AI_System, IPauseSystem
             boostTimer += UnityEngine.Time.deltaTime;
             if (boostTimer >= 5)
             {
-                GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 5;
+                GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 3.5f;
                 boostTimer = 0;
                 period = 0;
                 boosting = false;
@@ -150,7 +150,7 @@ public class Tom_Bot : AI_System, IPauseSystem
     ///Function for my AI : All 10 seconds, my AI will get a speed boost during 5 seconds:) and lost 1 point to balance the game.
     protected void speed_boost()
     {
-        if (period > 10)
+        if (period > 20)
         {
             boosting = true;
             GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 10;
