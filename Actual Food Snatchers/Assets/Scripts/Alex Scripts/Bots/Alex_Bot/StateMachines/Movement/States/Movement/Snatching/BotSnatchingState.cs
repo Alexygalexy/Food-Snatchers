@@ -4,6 +4,13 @@ using UnityEngine;
 
 namespace Alex
 {
+    /// <summary>
+    /// 
+    /// State for the player to start snatching from the players
+    /// 
+    /// -Alex
+    /// 
+    /// </summary>
     public class BotSnatchingState : BotMovementState
     {
         public BotSnatchingState(BotMovementStateMachine botMovementStateMachine) : base(botMovementStateMachine)
@@ -20,8 +27,6 @@ namespace Alex
         public override void Exit()
         {
             base.Exit();
-
-            //stateMachine.reusableData.stopSnatch = false;
         }
 
         public override void PhysicsUpdate()
@@ -33,18 +38,15 @@ namespace Alex
         {
             base.Update();
 
-            //SnatchFromPlayer();
-
-            //if (!stateMachine.reusableData.stopSnatch)
-            //{
-            //    return;
-            //}
+            //Same check as in the Moving state, but if there are no enemies to be found around.
             if (FindToSnatch() && stateMachine.reusableData.canInvis && stateMachine.reusableData.timeToSnatch > 3)
             {
+                //Go to the players position
                 SnatchFromPlayer();
                 return;
             }
 
+            //Return to moving state if no enemies are around
             stateMachine.ChangeState(stateMachine.MovingState);
 
         }

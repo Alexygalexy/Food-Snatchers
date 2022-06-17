@@ -5,12 +5,25 @@ using UnityEngine.Events;
 using UnityEngine.AI;
 using TMPro;
 
-
+/// <summary>
+/// 
+/// Initializing the event systeme for food spawning.
+/// 
+/// -Alex
+/// 
+/// </summary>
 [System.Serializable]
 public class GameObjectEvent : UnityEvent<GameObject>
 {
 
 }
+/// <summary>
+/// 
+/// AI_System works as the base branch for every single Bot in the game, which they refer to
+/// 
+/// -Alex
+/// 
+/// </summary>
 public class AI_System : MonoBehaviour
 {
     [Header("Components")]
@@ -37,13 +50,33 @@ public class AI_System : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
+
+    /// <summary>
+    /// 
+    /// Updating the position of the NavMesh follow point "movePositionTransform" for the Bots to find direction to move
+    /// 
+    /// -Alex
+    /// 
+    /// Updating Scoreboard position on top of the player
+    /// 
+    /// -Vitalij
+    /// 
+    /// </summary>
     protected virtual void Update()
     {
         GoToPosition();
         scoreBoard();
     }
 
-
+    /// <summary>
+    /// 
+    /// 
+    /// A trigger enter to check what type of food is being removed and invoking a function in FoodScript
+    /// 
+    /// -Alex & Vitalij
+    /// 
+    /// </summary>
+    /// <param name="other"></param>
     protected virtual void OnTriggerEnter(Collider other)
     {
 
@@ -79,6 +112,15 @@ public class AI_System : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// 
+    /// Collision only with players layer
+    /// 
+    /// -Alex
+    /// 
+    /// </summary>
+    /// <param name="other"></param>
     protected virtual void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
@@ -90,11 +132,23 @@ public class AI_System : MonoBehaviour
 
     #region Reusable Methods
 
+
+    /// <summary>
+    /// Assigning the navigation mesh destination to the move point
+    /// 
+    /// -Alex
+    /// </summary>
     public virtual void GoToPosition()
     {
         navMeshAgent.destination = movePositionTransform.position;
     }
 
+
+    /// <summary>
+    /// 
+    /// -Vitalij
+    /// 
+    /// </summary>
     protected virtual void scoreBoard()
     {
         // Positions scoreboard above player's head

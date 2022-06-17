@@ -4,6 +4,15 @@ using UnityEngine;
 
 namespace Alex
 {
+
+    /// <summary>
+    /// 
+    /// This script allows the state machine scripts to use all of theses variables between each other. Additionally can be used also in the Alex_Bot,
+    /// which inherits from Monobehaviour class
+    /// 
+    /// -Alex
+    /// 
+    /// </summary>
     public class BotStateReusableData
     {
         public Transform alexMovePoint { get; set; }

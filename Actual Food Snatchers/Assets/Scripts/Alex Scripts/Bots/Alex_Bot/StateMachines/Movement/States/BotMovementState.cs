@@ -5,8 +5,17 @@ using UnityEngine;
 
 namespace Alex
 {
+
+    /// <summary>
+    /// 
+    /// Creating the father script of all states that holds reusable methods across the states and allows them to inherit from MovementState
+    /// 
+    /// -Alex
+    /// 
+    /// </summary>
     public class BotMovementState : IState
     {
+        
         protected BotMovementStateMachine stateMachine;
 
         protected Vector3 centre;
@@ -17,6 +26,7 @@ namespace Alex
 
         protected float EnemyDistanceRun = 5f;
 
+        //Allowing the Statemachine to uses stored variables, like reusableData, LayerData or Alex_Bot
         public BotMovementState(BotMovementStateMachine botMovementStateMachine)
         {
             stateMachine = botMovementStateMachine;
@@ -25,6 +35,7 @@ namespace Alex
         #region IState Methods
         public virtual void Enter()
         {
+            //For testing purposes to see what current state is active
             Debug.Log("State: " + GetType().Name);
         }
 
@@ -49,6 +60,15 @@ namespace Alex
         #endregion
 
         #region Reusable Methods
+
+        /// <summary>
+        /// 
+        /// A transform function that creates a scripted collider to check the closest food by using a for loop.
+        /// 
+        /// -Alex
+        /// 
+        /// </summary>
+        /// <returns> Food Position </returns>
         protected virtual Transform FindFood()
         {
             Collider[] colliders = Physics.OverlapSphere(centre, radius, stateMachine.Alex_Bot.LayerData.Food);
@@ -62,15 +82,23 @@ namespace Alex
             for (int i = 0; i < colliders.Length; i++)
             {
                 foodCentre = colliders[i].transform.position;
+                //Another collider created around detected food to ignore the food with enemies close to it.
                 Collider[] enemies = Physics.OverlapSphere(foodCentre, foodRadius, stateMachine.Alex_Bot.LayerData.Player);
+                // Source: Armando Knowledge
+                // Excluding yourself from the collider detection by adding the Array to a list (Because you can only remove objects from a list)
+                // and removing the Alex_Bot from it. Aftre we return it back to the array.
                 List<Collider> enemyList = enemies.ToList();
                 enemyList.RemoveAll(x => x.transform.root == stateMachine.Alex_Bot.transform);
                 enemies = enemyList.ToArray();
 
+                // Source: Manno Knowledge
+                // Did not know that you can make a boolean like this.
                 isEnemy = enemies.Length > 0;
 
+                // If there are no enemies around the food then go to the food
                 if (!isEnemy)
                 {
+                    //Getting the square distance
                     float sqrDistanceToCenter = (centre - colliders[i].transform.position).sqrMagnitude;
 
                     if (sqrDistanceToCenter < minSqrDistance)
@@ -87,6 +115,13 @@ namespace Alex
             return detectedFood;
         }
 
+        /// <summary>
+        /// 
+        /// Create a boolean fuction that checks with a collider that finds closest players and excluding yourself from it.
+        /// 
+        /// -Alex
+        /// </summary>
+        /// <returns> boolean </returns>
         protected virtual bool FindToSnatch()
         {
             Collider[] colliders = Physics.OverlapSphere(centre, EnemyDistanceRun, stateMachine.Alex_Bot.LayerData.Player);
@@ -101,23 +136,8 @@ namespace Alex
 
             if (IsPlayer)
             {
-                //for (int i = 0; i < colliders.Length; i++)
-                //{
-                //    float sqrDistanceToCentre = (centre - colliders[i].transform.position).sqrMagnitude;
-
-                //    if (sqrDistanceToCentre < minSqrDistance)
-                //    {
-                //        minSqrDistance = sqrDistanceToCentre;
-                //        nearestCollider = colliders[i];
-
-                //        //Vector3 dirToEnemy = stateMachine.Alex_Bot.transform.position - colliders[i].transform.position;
-
-                //        newPos = stateMachine.Alex_Bot.transform.position;
-
-                //        stateMachine.reusableData.playerPos.position = newPos;
-                //    }
-                //}
-
+                
+                //Activating Invisibility and cooldown for it if true
                 if (!stateMachine.reusableData.cdInvis)
                 {
                     stateMachine.Alex_Bot.StartCoroutine(InvisabilityDuration());
@@ -137,7 +157,12 @@ namespace Alex
             
         }
 
-
+        /// <summary>
+        /// 
+        /// Creates a transform of the players position
+        /// 
+        /// </summary>
+        /// <returns> Players Position </returns>
         protected virtual Transform SnatchClosest()
         {
             Collider[] colliders = Physics.OverlapSphere(centre, EnemyDistanceRun, stateMachine.Alex_Bot.LayerData.Player);
@@ -163,57 +188,18 @@ namespace Alex
                     nearestCollider = colliders[i];
 
                     detectedPlayer = colliders[i].transform;
-
-                    //stateMachine.reusableData.playerPos = colliders[i].transform;
                 }
             }
             return detectedPlayer;
-
-
-
-
-
-            //if (ToSnatch && stateMachine.reusableData.canInvis)
-            //{
-            //    if (!stateMachine.reusableData.cdInvis)
-            //    {
-            //        stateMachine.Alex_Bot.StartCoroutine(InvisabilityDuration());
-            //        stateMachine.reusableData.isInvis = true;
-            //        stateMachine.Alex_Bot.StartCoroutine(InvisabilityCooldown());
-            //        stateMachine.reusableData.cdInvis = true;
-            //    }
-
-
-            //    if (stateMachine.reusableData.isInvis)
-            //    {
-            //        for (int i = 0; i < colliders.Length; i++)
-            //        {
-            //            float sqrDistanceToCentre = (stateMachine.Alex_Bot.transform.position - colliders[i].transform.position).sqrMagnitude;
-
-            //            if (sqrDistanceToCentre < minSqrDistance)
-            //            {
-            //                minSqrDistance = sqrDistanceToCentre;
-            //                nearestCollider = colliders[i];
-
-            //                newPos = colliders[i].transform.position;
-
-            //                stateMachine.reusableData.playerPos.position = newPos;
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        stateMachine.reusableData.canInvis = false;
-            //    }
-
-            //    return true;
-            //}
-            //else
-            //{
-            //    return false;
-            //}
         }
 
+
+        /// <summary>
+        /// 
+        /// Creates a boolean that changes its state depending if there is a player close to you. 
+        /// 
+        /// </summary>
+        /// <returns> boolean </returns>
         protected virtual bool EnemyDetect()
         {
             Collider[] colliders = Physics.OverlapSphere(centre, EnemyDistanceRun, stateMachine.Alex_Bot.LayerData.Player);
@@ -230,6 +216,7 @@ namespace Alex
 
             if (IsEnemy)
             {
+                //Activating Invisibility and cooldow if there is an opponent next to you
                 if (!stateMachine.reusableData.cdInvis)
                 {
                     stateMachine.Alex_Bot.StartCoroutine(InvisabilityDuration());
@@ -239,6 +226,7 @@ namespace Alex
                 }
                 else if (!stateMachine.reusableData.isInvis)
                 {
+                    //If the invisibility is inactive then flee from the closest enemy to the opposite direction.
                     for (int i = 0; i < colliders.Length; i++)
                     {
                         float sqrDistanceToCentre = (stateMachine.Alex_Bot.transform.position - colliders[i].transform.position).sqrMagnitude;
@@ -264,18 +252,35 @@ namespace Alex
             }
         }
 
+        /// <summary>
+        /// 
+        /// A function that is used across the states, which make the players movePoint be equal to the detected food
+        /// 
+        /// </summary>
         protected virtual void GoToFood()
         {
             stateMachine.reusableData.alexMovePoint.position = FindFood().position;
         }
 
+        /// <summary>
+        /// 
+        /// Similar to the detected food. Make the players movePoint equal to closest player.
+        /// 
+        /// </summary>
         protected virtual void SnatchFromPlayer()
         {
             stateMachine.reusableData.alexMovePoint.position = SnatchClosest().position;
         }
 
+        /// <summary>
+        /// 
+        /// a coroutine for the Ability cooldown
+        /// 
+        /// </summary>
+        /// <returns> cooldown </returns>
         IEnumerator InvisabilityCooldown()
         {
+            //An if that checks how many times has the player encountered enemies to make the invis time higher
             if (stateMachine.reusableData.timeToSnatch <= 4)
             {
                 stateMachine.reusableData.timeToSnatch++;
@@ -288,60 +293,44 @@ namespace Alex
 
 
             yield return new WaitForSeconds(stateMachine.reusableData.invisTime + 3f);
-            Debug.Log("Can Invis Again");
+            // setting boolean to make the cooldown be usable again.
             stateMachine.reusableData.cdInvis = false;
             stateMachine.reusableData.canInvis = true;
         }
 
+        /// <summary>
+        /// 
+        /// a coroutine fo the ability duration
+        /// 
+        /// </summary>
+        /// <returns> duration </returns>
         IEnumerator InvisabilityDuration()
         {
-            
+            //plays sfx and particles on start and changes the player look. Additionally makes the player change tags and layers to be un-snatchable by opponents.
             stateMachine.Alex_Bot.smoke.Play();
             stateMachine.Alex_Bot.invisSFX.Play();
             stateMachine.Alex_Bot.gameObject.GetComponentInChildren<Renderer>().material = stateMachine.Alex_Bot.invisability_mat;
             stateMachine.Alex_Bot.gameObject.layer = LayerMask.NameToLayer("Non-Player");
             stateMachine.Alex_Bot.gameObject.tag = "Untagged";
+            //Adding ALex_Bot Speed
             stateMachine.reusableData.navSpeed = 4.5f;
+            //Making the player be able to snatch only when invisable
             stateMachine.reusableData.willSnatch = true;
 
 
 
             yield return new WaitForSeconds(stateMachine.reusableData.invisTime);
+            //returning the player before ablility use
             stateMachine.Alex_Bot.smoke.Stop();
             stateMachine.Alex_Bot.invisSFX.Stop();
             stateMachine.Alex_Bot.gameObject.GetComponentInChildren<Renderer>().material = stateMachine.Alex_Bot.original_mat;
             stateMachine.Alex_Bot.gameObject.layer = LayerMask.NameToLayer("Player");
             stateMachine.Alex_Bot.gameObject.tag = "Player";
             stateMachine.reusableData.navSpeed = 3.5f;
+            //boolean to check if invis ended
             stateMachine.reusableData.isInvis = false;
             stateMachine.reusableData.canInvis = false;
-
-
-            Debug.Log("Ended Invis");
         }
-
-        //protected virtual Vector3 EnemyPos()
-        //{
-        //    return new Vector3(0, 0, 0);
-        //}
-
-
-        //protected virtual Transform FindFood(Transform[] food)
-        //{
-        //    Transform tMin = null;
-        //    float minDist = Mathf.Infinity;
-        //    Vector3 currentPos = stateMachine.Alex_Bot.transform.position;
-        //    foreach (Transform t in food)
-        //    {
-        //        float dist = Vector3.Distance(t.position, currentPos);
-        //        if (dist < minDist)
-        //        {
-        //            tMin = t;
-        //            minDist = dist;
-        //        }
-        //    }
-        //    return tMin;
-        //}
         #endregion
     }
 }

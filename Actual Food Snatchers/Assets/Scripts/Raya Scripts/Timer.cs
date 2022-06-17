@@ -46,7 +46,15 @@ public class Timer : MonoBehaviour
             GameOver();
         }
     }
-
+    /// <summary>
+    /// 
+    /// Using Rayas timer script. Make the scoreboard appear after the time hits 0. 
+    /// 
+    /// Also showing the current scores of the players
+    /// 
+    /// -Alex
+    /// 
+    /// </summary>
     void GameOver()
     {
         Time.timeScale = 0;

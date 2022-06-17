@@ -5,6 +5,12 @@ using UnityEngine;
 
 namespace Alex
 {
+
+    /// <summary>
+    /// 
+    /// Creating an abstarct class to install methods. Most importantly a method to change a state "ChangeState"
+    /// 
+    /// </summary>
     public abstract class StateMachine
     {
         protected IState currentState;

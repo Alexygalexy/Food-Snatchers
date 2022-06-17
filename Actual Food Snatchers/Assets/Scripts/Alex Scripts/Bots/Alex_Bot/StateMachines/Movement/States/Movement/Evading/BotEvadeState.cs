@@ -4,6 +4,13 @@ using UnityEngine;
 
 namespace Alex
 {
+    /// <summary>
+    /// 
+    /// State for the player to flee/evade from enemies
+    /// 
+    /// -ALex
+    /// 
+    /// </summary>
     public class BotEvadeState : BotMovementState
     {
         public BotEvadeState(BotMovementStateMachine botMovementStateMachine) : base(botMovementStateMachine)
@@ -31,18 +38,16 @@ namespace Alex
         {
             base.Update();
 
-            //if (stateMachine.reusableData.timeToSnatch >= 2)
-            //{
-            //    //stateMachine.reusableData.invisTime = 5f;
-            //    stateMachine.ChangeState(stateMachine.SnatchingState);
-            //}
 
+            //Make the player perform fleeing if is not invisable and detects enemies.
             if (EnemyDetect() && !stateMachine.reusableData.isInvis)
             {
+                //location away from the players
                 EvadeEnemy();
                 return;
             }
 
+            //Go back to going after food if no enemies are close
             stateMachine.ChangeState(stateMachine.MovingState);
 
         }
@@ -50,6 +55,13 @@ namespace Alex
 
         #region Main Methods
 
+        /// <summary>
+        /// 
+        /// If not invisable then flee from the players by making the movePosition equal to the evade position
+        /// 
+        /// -Alex
+        /// 
+        /// </summary>
         protected void EvadeEnemy()
         {
 

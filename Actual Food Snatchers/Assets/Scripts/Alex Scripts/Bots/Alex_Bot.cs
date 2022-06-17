@@ -4,10 +4,28 @@ using UnityEngine;
 
 namespace Alex
 {
+    /// <summary>
+    /// 
+    /// Alex_Bot is the bot script, which is inheriting from AI_System, which is inheriting from Monobehaviour.
+    /// 
+    /// -Alex
+    /// 
+    /// </summary>
     public class Alex_Bot : AI_System, IPauseSystem
     {
+
+        /// <summary>
+        /// 
+        /// Reference to the Alex_Bot State Machine
+        /// 
+        /// </summary>
         private BotMovementStateMachine movementStateMachine;
 
+        /// <summary>
+        /// Creating a LayeData script, which holds all the Layers that Alex_Bot uses
+        /// 
+        /// -Alex
+        /// </summary>
         [field: Header("Collisions")]
         [field: SerializeField] public BotLayerData LayerData { get; private set; }
 
@@ -32,8 +50,10 @@ namespace Alex
 
         protected override void Awake()
         {
+            //State machine reference
             movementStateMachine = new BotMovementStateMachine(this);
 
+            //Storing the move position in a specific script that holds all variables and values that are needed for the state machine reference
             movementStateMachine.reusableData.alexMovePoint = movePositionTransform;
 
 
@@ -51,6 +71,7 @@ namespace Alex
 
         protected void Start()
         {
+            //Make the Alex_Bot start from Moving State from the start of the game
             movementStateMachine.ChangeState(movementStateMachine.MovingState);
         }
 
@@ -58,12 +79,14 @@ namespace Alex
         {
             base.Update();
 
+            //Update the values on Reusable Data script to keep it updated with the state machine
             movePositionTransform = movementStateMachine.reusableData.alexMovePoint;
             navMeshAgent.speed = movementStateMachine.reusableData.navSpeed;
 
-            anim.SetBool("Move", navMeshAgent.velocity.magnitude > 0.01f);
 
-            //Debug.Log(movementStateMachine.reusableData.willSnatch);
+            // Source: https://www.youtube.com/watch?v=wLZPM46zgUo
+            // animating the character run animation
+            anim.SetBool("Move", navMeshAgent.velocity.magnitude > 0.01f);
 
             movementStateMachine.Update();
         }
@@ -73,6 +96,14 @@ namespace Alex
             movementStateMachine.PhysicsUpdate();
         }
 
+        /// <summary>
+        /// 
+        /// On every food gather make the PickUp particle and sfx play
+        /// 
+        /// -Alex
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
         protected override void OnTriggerEnter(Collider other)
         {
             base.OnTriggerEnter(other);
@@ -81,13 +112,27 @@ namespace Alex
             foodSFX.Play();
         }
 
+
+        /// <summary>
+        /// 
+        /// On Collision with the player check if other is Player and you are allowed to snatch.
+        /// 
+        /// Play snatch particles and sfx
+        /// 
+        /// Subtract the oppenents food by referencing their score and updating their score text. Also an if statement, 
+        /// if they are lower than 5 than make it equal to 0, to not make their score negative numbers
+        /// 
+        /// Refresh the number count of when to snatch with "timeToSnatch" int.
+        /// 
+        /// -Alex
+        /// </summary>
+        /// <param name="other"></param>
         protected override void OnCollisionEnter(Collision other)
         {
             //base.OnCollisionEnter(other);
 
             if (other.gameObject.layer == LayerMask.NameToLayer("Player") && movementStateMachine.reusableData.willSnatch)
             {
-                Debug.Log("SNAAAAAAAAAAAAATCH");
                 partics[1].gameObject.transform.position = other.gameObject.transform.position + new Vector3(0f, 3f, 0f);
                 partics[1].Play();
                 snatch.Play();
@@ -127,6 +172,12 @@ namespace Alex
         }
 
         #region Main Methods
+
+        /// <summary>
+        /// 
+        /// For development porposes to see the scripted colliders
+        /// 
+        /// </summary>
         private void OnDrawGizmos()
         {
 
@@ -150,6 +201,12 @@ namespace Alex
         }
         #endregion
 
+        /// <summary>
+        /// 
+        /// External methods by Sjoeke
+        /// 
+        /// </summary>
+        /// <param name="Speed"></param>
         #region External Methods
 
         public void Pause(float Speed)
