@@ -297,7 +297,7 @@ namespace Alex
         {
             Debug.Log("Started Invis");
             stateMachine.Alex_Bot.smoke.Play();
-            stateMachine.Alex_Bot.gameObject.GetComponent<MeshRenderer>().material = stateMachine.Alex_Bot.invisability_mat;
+            stateMachine.Alex_Bot.gameObject.GetComponentInChildren<Material>().mainTexture = stateMachine.Alex_Bot.invisability_mat.mainTexture;
             stateMachine.Alex_Bot.gameObject.layer = LayerMask.NameToLayer("Default");
             stateMachine.Alex_Bot.gameObject.tag = "Untagged";
             stateMachine.reusableData.navSpeed = 4f;
@@ -307,7 +307,7 @@ namespace Alex
 
             yield return new WaitForSeconds(stateMachine.reusableData.invisTime);
             stateMachine.Alex_Bot.smoke.Stop();
-            stateMachine.Alex_Bot.gameObject.GetComponent<MeshRenderer>().material = stateMachine.Alex_Bot.original_mat;
+            stateMachine.Alex_Bot.gameObject.GetComponentInChildren<Material>().mainTexture = stateMachine.Alex_Bot.original_mat.mainTexture;
             stateMachine.Alex_Bot.gameObject.layer = LayerMask.NameToLayer("Player");
             stateMachine.Alex_Bot.gameObject.tag = "Player";
             stateMachine.reusableData.navSpeed = 3.5f;
