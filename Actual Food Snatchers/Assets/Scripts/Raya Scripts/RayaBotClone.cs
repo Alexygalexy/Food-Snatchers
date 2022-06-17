@@ -6,63 +6,82 @@ using TMPro;
 public class RayaBotClone : RayaBot
 {
     protected AudioSource vanish;
+    protected AudioSource baby;
+    protected int parentScore;
+    protected bool stop = false;
 
-    // Start is called before the first frame update
     protected override void Start()
     {
+        //gets the score board
         ScoreBoard = transform.Find("ScoreBoard_Raya_Clone").gameObject;
         player1_scoreText = ScoreBoard.GetComponentInChildren<TextMeshProUGUI>();
 
-        Score = transform.parent.gameObject.GetComponent<RayaBot>().Score;
-        player1_scoreText.text = Score.ToString();
+        timerText = transform.parent.gameObject.GetComponent<RayaBot>().timerText;
 
+        //divides the points between parent and child
+        DividePoints();
+
+        //audio clips
         audioRaya = GetComponents<AudioSource>();
         collect = audioRaya[0];
         vanish = audioRaya[1];
-        vanish.Play();
+        baby = audioRaya[2];
+        baby.Play();
 
-        timeStamp = Time.deltaTime + 15f;
+        //set lifetime
+        timeStamp = 15f;
 
+        //adds camera tracking 
         cam = GameObject.FindObjectOfType<Camera>().transform;
-        cam.GetComponent<MultipleTargetsCamera>().targets.Add(this.transform);
+        cam.GetComponent<MultipleTargetsCamera>().targets.Add(transform);
     }
 
-    // Update is called once per frame
     protected override void Update()
     {
         timer += Time.deltaTime;
-
-        ClosestEnemy = FindClosestEnemy();
-        if (smallestDistance2 < 5f)
-        {
-            
-            StartCoroutine("RunAway");
-        }
+        player1_scoreText.text = Score.ToString();
         scoreBoard();
 
+        //defense
+        ClosestEnemy = FindClosestEnemy();
+        if (smallestDistance2 < 40f)
+        {
+            StartCoroutine("RunAway");
+        }
+
+        //food collection
         ClosestFood = FindClosestFood();
         movePositionTransform = ClosestFood;
         base.GoToPosition();
 
+        //natural death timer
         if (timer > timeStamp)
         {
-            timeStamp += 60f;
-            vanish.Play();
-            cam.GetComponent<MultipleTargetsCamera>().targets.Remove(transform);
-            Destroy(transform.gameObject, 0.2f);
-            transform.parent.gameObject.GetComponent<RayaBot>().Score *= 2;
+            StartCoroutine("CloneVanish");
         }
+
+        //end of game - clone vanishes
+        EndGameScore();
     }
 
-    protected override void OnCollisionEnter(Collision other)
+    //divides the points between parent and child
+    protected void DividePoints()
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player") && other.gameObject.name != "RayaBotTest")
+        parentScore = transform.parent.gameObject.GetComponent<RayaBot>().Score;
+
+        //checks for odd numbers - parent gets more
+        if (parentScore % 2 == 1)
         {
-            vanish.Play();
-            cam.GetComponent<MultipleTargetsCamera>().targets.Remove(transform);
-            Destroy(transform.gameObject, 0.2f);
-            Debug.Log("Clone is gone ;(");
+            Score = parentScore / 2;
+            transform.parent.gameObject.GetComponent<RayaBot>().Score = 1 + parentScore / 2;
         }
+        else
+        {
+            transform.parent.gameObject.GetComponent<RayaBot>().Score = parentScore / 2;
+            Score = parentScore / 2;
+        }
+
+        player1_scoreText.text = Score.ToString();
     }
 
     protected override void OnTriggerEnter(Collider other)
@@ -70,12 +89,47 @@ public class RayaBotClone : RayaBot
         base.OnTriggerEnter(other);
     }
 
-    protected IEnumerator RunAway()
+    //getting killed
+    protected override void OnCollisionEnter(Collision other)
     {
-        navMeshAgent.speed += 3f;
-        navMeshAgent.destination = -ClosestEnemy.transform.position;
-        navMeshAgent.speed -= 3f;
-        yield return new WaitForSecondsRealtime(5f);
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player") && other.gameObject.name != "Raya_Bot")
+        {
+            vanish.PlayDelayed(0.9f);
+            player1_scoreText.color = Color.red;
+            cam.GetComponent<MultipleTargetsCamera>().targets.Remove(transform);
+            Destroy(transform.gameObject, 1f);
+        }
     }
 
+    //natural death
+    protected IEnumerator CloneVanish()
+    {
+        timeStamp += 5f;
+        vanish.Play();
+
+        //get invisible 
+        transform.localScale = new Vector3(0, 0, 0);
+
+        //give the points to the parent
+        transform.parent.gameObject.GetComponent<AI_System>().Score += Score;
+        transform.parent.gameObject.GetComponent<AI_System>().player1_scoreText.color = Color.green;
+
+        //stop tracking with camera
+        cam.GetComponent<MultipleTargetsCamera>().targets.Remove(transform);
+
+        yield return new WaitForSecondsRealtime(2f);
+
+        transform.parent.gameObject.GetComponent<AI_System>().player1_scoreText.color = Color.white;
+        Destroy(transform.gameObject, 2f);
+    }
+
+    protected void EndGameScore()
+    {
+        if (timerText.GetComponent<Timer>().timeLeft < 1.5f && stop == false)
+        {
+            stop = true;
+            Debug.Log("No TIME!!! Vanishing rn");
+            StartCoroutine("CloneVanish");
+        }
+    }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class RayaBot : AI_System, IPauseSystem
 {
@@ -11,66 +12,48 @@ public class RayaBot : AI_System, IPauseSystem
 
     protected float chanceToSnatch;
 
-    protected bool ready = true, pause = false, readyClone = true;
+    protected bool ready = true, pause = false, readyClone = false;
 
     protected float timer, timeStamp;
 
     [SerializeField] protected GameObject myPrefab;
-    //[SerializeField] protected GameObject myPrefabScoreBoard;
 
     protected AudioSource hit;
     protected AudioSource collect;
     protected AudioSource[] audioRaya;
 
-    Raya.StateMachine<RayaBot> stateMachine;
-    //RayaBaseState currentState;
-    Raya.RayaIdleState IdleState = new Raya.RayaIdleState();
-    Raya.RayaDefenseState DefenseState = new Raya.RayaDefenseState();
-    Raya.RayaAttackState AttackState = new Raya.RayaAttackState();
-    Raya.RayaCollectState CollectState = new Raya.RayaCollectState();
-    Raya.RayaCloneState CloneState = new Raya.RayaCloneState();
-
-    //State Machine
-    protected virtual void Start()
-    {
-        audioRaya = GetComponents<AudioSource>();
-        hit = audioRaya[0];
-        collect = audioRaya[1];
-
-
-        stateMachine = new Raya.StateMachine<RayaBot>(this);
-
-        stateMachine.Start();
-
-        //currentState = IdleState;
-        //currentState.EnterState(this);
-    }
+    public TextMeshProUGUI timerText;
 
     protected override void Awake()
     {
         base.Awake();
     }
 
+    protected virtual void Start()
+    {
+        audioRaya = GetComponents<AudioSource>();
+        hit = audioRaya[0];
+        collect = audioRaya[1];
+
+        timeStamp = timer + 10f;
+    }
+
+
     protected override void Update()
     {
         timer += Time.deltaTime;
-
-        //StateMachine
-        stateMachine.Update();
+        player1_scoreText.text = Score.ToString();
 
         scoreBoard();
         ClosestFood = FindClosestFood();
         ClosestEnemy = FindClosestEnemy();
 
-        //IF NOT ATTACKING
+        //cool down - not snatching
         if (ready == false)
         {
-            if (smallestDistance2 < 5f)
+            if (smallestDistance2 < 15f)
             {
-                navMeshAgent.speed += 3f;
-                navMeshAgent.destination = -ClosestEnemy.transform.position;
-                navMeshAgent.speed -= 3f;
-                //AvoidOtherPlayers();
+                StartCoroutine("RunAway");
             }
             else
             {
@@ -79,15 +62,13 @@ public class RayaBot : AI_System, IPauseSystem
             }
         }
 
-        //IF ATTACKING
+        //snatching ready
         else
         {
-            if (smallestDistance1 > (smallestDistance2 / 2f))   //prioritize enemies: if the difference between the two is less than 50% go for the enemy
+            if (smallestDistance1 > (smallestDistance2 / 2f))   //prioritize enemies: go after enemy if it's less than 2 times further than the food
             {
                 movePositionTransform = ClosestEnemy;
                 GoToPosition();
-                //currentState = CollectState;
-                //currentState.EnterState(this);
             }
             else
             {
@@ -96,21 +77,16 @@ public class RayaBot : AI_System, IPauseSystem
             }
         }
 
-        //MAKING A CLONE
-        if (smallestDistance2 > 20f && readyClone == true)
+        //making a clone
+        if (smallestDistance2 > 40f && readyClone == true)
         {
-            Score = Score/2;
-            Instantiate(myPrefab, new Vector3(transform.position.x + 1f, transform.position.y, transform.position.z + 1f), Quaternion.identity, transform);
-            player1_scoreText.text = Score.ToString();
-            readyClone = false;
-            timeStamp = timer + 30f;
+            StartCoroutine("CreateClone");
         }
-        
-        //COOL DOWN CLONE ABILITY
+
+        //cool down after making a clone
         if (timeStamp < timer && readyClone == false)
         {
             readyClone = true;
-            //Debug.Log("NEW CLONE IS READY NEW CLONE IS READY NEW CLONE IS READY");
         }
     }
 
@@ -126,42 +102,47 @@ public class RayaBot : AI_System, IPauseSystem
         }
     }
 
-    //COLLECT
+    //collecting food
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);
         collect.Play();
     }
 
-    //ATTACK
+    //snatching
     protected override void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "Player")
-        {//(other.gameObject.layer == LayerMask.NameToLayer("Player")){
+        {
             if (ready)
             {
                 ready = false;
-                Debug.Log("HitHim");
 
                 chanceToSnatch = Random.Range(0f, 1.0f);
                 if (chanceToSnatch < 0.7)
                 {
-                    other.gameObject.GetComponent<AI_System>().Score -= 10;
-                    Score += 10;
+                    if (other.gameObject.GetComponent<AI_System>().Score >= 5)
+                    {
+                        other.gameObject.GetComponent<AI_System>().Score -= 5;
+                    }
+                    else
+                    {
+                        other.gameObject.GetComponent<AI_System>().Score = 0;
+                    }
+                    Score += 5;
 
-                    player1_scoreText.text = Score.ToString();
                 }
 
                 StartCoroutine("CoolDown");
-
-                navMeshAgent.speed += 3f;
-                navMeshAgent.destination = -other.transform.position;
-                navMeshAgent.speed -= 3f;
+                StartCoroutine("RunAway");
             }
         }
     }
 
-    //---MY FUNCTIONS---
+
+    #region Finding Food and Enemies
+
+    //find all the foods
     public List<GameObject> AllFoods()
     {
         List<GameObject> allFood = new List<GameObject>();
@@ -174,6 +155,7 @@ public class RayaBot : AI_System, IPauseSystem
         return allFood;
     }
 
+    //find all the enemies
     protected List<GameObject> AllPlayers()
     {
         List<GameObject> allPlayers = new List<GameObject>();
@@ -182,6 +164,7 @@ public class RayaBot : AI_System, IPauseSystem
         return allPlayers;
     }
 
+    //which food is the closest
     public Transform FindClosestFood()
     {
         GameObject closestFood = null;
@@ -205,6 +188,7 @@ public class RayaBot : AI_System, IPauseSystem
         return ClosestFoodTransform;
     }
 
+    //which enemy is the closest
     protected Transform FindClosestEnemy()
     {
         GameObject closestEnemy = null;
@@ -215,7 +199,7 @@ public class RayaBot : AI_System, IPauseSystem
         foreach (GameObject enemy in AllPlayers())
         {
             //ALEX CHANGE
-            if (enemy.gameObject.GetComponent<AI_System>().Score >= 5)
+            if (enemy.gameObject.GetComponent<AI_System>().Score >= 0)
             {
                 Vector3 diff = enemy.transform.position - position;
                 float curDistance = diff.sqrMagnitude;
@@ -233,29 +217,47 @@ public class RayaBot : AI_System, IPauseSystem
         return ClosestEnemyTransform;
     }
 
+    #endregion
+
+
+    #region Coroutines 
+
+    //cool down snatching
     protected IEnumerator CoolDown()
     {
         hit.Play();
-        yield return new WaitForSecondsRealtime(5f);
+        yield return new WaitForSecondsRealtime(7f);
         ready = true;
     }
 
-    //protected void CloneAbility()
-    //{
-    //    if(smallestDistance2 > 20f)
-    //    {
-    //        Instantiate(myPrefab, transform.position, Quaternion.identity);
-    //    }
-    //}
+    //avoiding players - used while cool down and in the clone
+    protected IEnumerator RunAway()
+    {
+        navMeshAgent.destination = -ClosestEnemy.transform.position;
+        yield return new WaitForSecondsRealtime(5f);
+    }
 
+    //producing a clone
+    protected IEnumerator CreateClone()
+    {
+        transform.gameObject.GetComponent<MeshRenderer>().material.EnableKeyword("_EMISSION");
+        readyClone = false;
+        timeStamp = timer + 20f;
+
+        yield return new WaitForSecondsRealtime(0.5f);
+
+        Instantiate(myPrefab, new Vector3(transform.position.x + 1f, transform.position.y, transform.position.z + 1f), Quaternion.identity, transform);
+        player1_scoreText.text = Score.ToString();
+        transform.gameObject.GetComponent<MeshRenderer>().material.DisableKeyword("_EMISSION");
+    }
+
+    #endregion
+
+
+    //Sjoeke's script
     public void Pause(float Speed)
     {
         navMeshAgent.speed = Speed;
     }
 
-    //protected void AvoidOtherPlayers()
-    //{
-    //    navMeshAgent.destination = -ClosestEnemy.transform.position;
-    //    Debug.Log("RAYA RUN!!!");
-    //}
 }

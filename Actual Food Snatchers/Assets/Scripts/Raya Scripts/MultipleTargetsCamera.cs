@@ -30,7 +30,6 @@ public class MultipleTargetsCamera : MonoBehaviour
 
         Move();
         Zoom();
-        
     }
 
     void Zoom()
@@ -51,8 +50,6 @@ public class MultipleTargetsCamera : MonoBehaviour
             return bounds.size.x;
         }
         else return bounds.size.y;
-
-
     }
 
     void Move()
