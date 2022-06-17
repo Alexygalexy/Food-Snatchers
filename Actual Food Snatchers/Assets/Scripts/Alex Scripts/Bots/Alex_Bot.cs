@@ -19,6 +19,16 @@ namespace Alex
         [field: Header("Animation")]
         private Animator anim;
 
+        [field: Header("Particles")]
+        [field: SerializeField] private List<ParticleSystem> partics = new List<ParticleSystem>();
+
+        [field: Header("SFX")]
+
+        [field: SerializeField] public AudioSource[] sfx;
+        private AudioSource foodSFX;
+        private AudioSource snatch;
+        public AudioSource invisSFX;
+        
 
         protected override void Awake()
         {
@@ -32,6 +42,11 @@ namespace Alex
             movementStateMachine.reusableData.navSpeed = navMeshAgent.speed;
 
             anim = GetComponentInChildren<Animator>();
+
+            sfx = GetComponents<AudioSource>();
+            foodSFX = sfx[0];
+            snatch = sfx[1];
+            invisSFX = sfx[2];
         }
 
         protected void Start()
@@ -61,15 +76,21 @@ namespace Alex
         protected override void OnTriggerEnter(Collider other)
         {
             base.OnTriggerEnter(other);
+            partics[0].gameObject.transform.position = other.gameObject.transform.position + new Vector3(0f, 0.5f, 0f);
+            partics[0].Play();
+            foodSFX.Play();
         }
 
         protected override void OnCollisionEnter(Collision other)
         {
             //base.OnCollisionEnter(other);
 
-            if (other.gameObject.tag == "Player" && movementStateMachine.reusableData.willSnatch)
+            if (other.gameObject.layer == LayerMask.NameToLayer("Player") && movementStateMachine.reusableData.willSnatch)
             {
                 Debug.Log("SNAAAAAAAAAAAAATCH");
+                partics[1].gameObject.transform.position = other.gameObject.transform.position + new Vector3(0f, 3f, 0f);
+                partics[1].Play();
+                snatch.Play();
 
                 if (other.gameObject.GetComponent<AI_System>().Score >= 5 )
                 {
