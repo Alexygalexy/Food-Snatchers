@@ -1,3 +1,6 @@
+//Camera following multiple targets - players
+//Code base from here: https://youtu.be/aLpixrPvlB8
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +9,8 @@ using UnityEngine;
 public class MultipleTargetsCamera : MonoBehaviour
 {
     public List<Transform> targets;
+
+    private Camera cam;
 
     public Vector3 offset;
 
@@ -16,7 +21,6 @@ public class MultipleTargetsCamera : MonoBehaviour
     public float maxZoom = 30f;
     public float zoomLimiter = 20f;
 
-    private Camera cam;
 
     private void Start()
     {
@@ -26,7 +30,9 @@ public class MultipleTargetsCamera : MonoBehaviour
     private void LateUpdate()
     {
         if (targets.Count == 0)
+        {
             return;
+        }
 
         Move();
         Zoom();
@@ -38,6 +44,7 @@ public class MultipleTargetsCamera : MonoBehaviour
         cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, newZoom, Time.deltaTime);
     }
 
+    //finds the distance between the two furthest players
     float GetGreatestDistance()
     {
         var bounds = new Bounds(targets[0].position, Vector3.zero);
@@ -52,6 +59,7 @@ public class MultipleTargetsCamera : MonoBehaviour
         else return bounds.size.y;
     }
 
+    //smooth movement of the camera
     void Move()
     {
         Vector3 centerPoint = GetCenterPoint();
@@ -61,6 +69,7 @@ public class MultipleTargetsCamera : MonoBehaviour
         transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTime);
     }
 
+    //finds the center for the camera
     Vector3 GetCenterPoint()
     {
         if(targets.Count == 1)
