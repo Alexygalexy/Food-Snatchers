@@ -18984,9 +18984,8 @@ MonoBehaviour:
   PlayersLocation: {fileID: 1140041927}
   Score: 0
   cam: {fileID: 1678761612}
-  myPrefab: {fileID: 4432273675042938657, guid: 7b53f6652845d4046b8b2104a9f32b83,
-    type: 3}
   timerText: {fileID: 400665047}
+  myClone: {fileID: 4432273675042938657, guid: 7b53f6652845d4046b8b2104a9f32b83, type: 3}
 --- !u!54 &1140041922
 Rigidbody:
   m_ObjectHideFlags: 0
