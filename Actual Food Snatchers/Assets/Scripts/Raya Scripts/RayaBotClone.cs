@@ -1,3 +1,7 @@
+//Raya's special ability
+//Sub-class of Raya's AI class
+//Manages the clone prefab
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,9 +46,9 @@ public class RayaBotClone : RayaBot
         player1_scoreText.text = Score.ToString();
         scoreBoard();
 
-        //defense
+        //defense - avoiding other players
         ClosestEnemy = FindClosestEnemy();
-        if (smallestDistance2 < 40f)
+        if (smallestDistanceEnemy < 40f)
         {
             StartCoroutine("RunAway");
         }
@@ -123,12 +127,12 @@ public class RayaBotClone : RayaBot
         Destroy(transform.gameObject, 2f);
     }
 
+    //no clones at the end of the game
     protected void EndGameScore()
     {
         if (timerText.GetComponent<Timer>().timeLeft < 1.5f && stop == false)
         {
             stop = true;
-            Debug.Log("No TIME!!! Vanishing rn");
             StartCoroutine("CloneVanish");
         }
     }

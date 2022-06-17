@@ -1,3 +1,5 @@
+//Raya's AI class
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,24 +7,21 @@ using TMPro;
 
 public class RayaBot : AI_System, IPauseSystem
 {
-    protected float smallestDistance1;
-    protected float smallestDistance2;
     protected Transform ClosestFood;
     protected Transform ClosestEnemy;
+    protected float smallestDistanceFood;
+    protected float smallestDistanceEnemy;
 
     protected float chanceToSnatch;
-
     protected bool ready = true, pause = false, readyClone = false;
-
     protected float timer, timeStamp;
+    public TextMeshProUGUI timerText;
 
-    [SerializeField] protected GameObject myPrefab;
+    [SerializeField] protected GameObject myClone; 
 
     protected AudioSource hit;
     protected AudioSource collect;
     protected AudioSource[] audioRaya;
-
-    public TextMeshProUGUI timerText;
 
     protected override void Awake()
     {
@@ -51,7 +50,7 @@ public class RayaBot : AI_System, IPauseSystem
         //cool down - not snatching
         if (ready == false)
         {
-            if (smallestDistance2 < 15f)
+            if (smallestDistanceEnemy < 15f)
             {
                 StartCoroutine("RunAway");
             }
@@ -65,7 +64,7 @@ public class RayaBot : AI_System, IPauseSystem
         //snatching ready
         else
         {
-            if (smallestDistance1 > (smallestDistance2 / 2f))   //prioritize enemies: go after enemy if it's less than 2 times further than the food
+            if (smallestDistanceFood > (smallestDistanceEnemy / 2f))   //prioritize enemies: go after enemy if it's less than 2 times further than the food
             {
                 movePositionTransform = ClosestEnemy;
                 GoToPosition();
@@ -78,7 +77,7 @@ public class RayaBot : AI_System, IPauseSystem
         }
 
         //making a clone
-        if (smallestDistance2 > 40f && readyClone == true)
+        if (smallestDistanceEnemy > 40f && readyClone == true)
         {
             StartCoroutine("CreateClone");
         }
@@ -118,9 +117,11 @@ public class RayaBot : AI_System, IPauseSystem
             {
                 ready = false;
 
+                //leaving 70% chance for a successful snatching
                 chanceToSnatch = Random.Range(0f, 1.0f);
                 if (chanceToSnatch < 0.7)
                 {
+                    //preventing negative values
                     if (other.gameObject.GetComponent<AI_System>().Score >= 5)
                     {
                         other.gameObject.GetComponent<AI_System>().Score -= 5;
@@ -129,8 +130,8 @@ public class RayaBot : AI_System, IPauseSystem
                     {
                         other.gameObject.GetComponent<AI_System>().Score = 0;
                     }
-                    Score += 5;
 
+                    Score += 5;
                 }
 
                 StartCoroutine("CoolDown");
@@ -183,7 +184,7 @@ public class RayaBot : AI_System, IPauseSystem
             }
         }
         Transform ClosestFoodTransform = closestFood.transform;
-        smallestDistance1 = distance;
+        smallestDistanceFood = distance;
 
         return ClosestFoodTransform;
     }
@@ -198,7 +199,6 @@ public class RayaBot : AI_System, IPauseSystem
 
         foreach (GameObject enemy in AllPlayers())
         {
-            //ALEX CHANGE
             if (enemy.gameObject.GetComponent<AI_System>().Score >= 0)
             {
                 Vector3 diff = enemy.transform.position - position;
@@ -212,7 +212,7 @@ public class RayaBot : AI_System, IPauseSystem
         }
         Transform ClosestEnemyTransform = closestEnemy.transform;
 
-        smallestDistance2 = distance;
+        smallestDistanceEnemy = distance;
 
         return ClosestEnemyTransform;
     }
@@ -246,7 +246,7 @@ public class RayaBot : AI_System, IPauseSystem
 
         yield return new WaitForSecondsRealtime(0.5f);
 
-        Instantiate(myPrefab, new Vector3(transform.position.x + 1f, transform.position.y, transform.position.z + 1f), Quaternion.identity, transform);
+        Instantiate(myClone, new Vector3(transform.position.x + 1f, transform.position.y, transform.position.z + 1f), Quaternion.identity, transform);
         player1_scoreText.text = Score.ToString();
         transform.gameObject.GetComponent<MeshRenderer>().material.DisableKeyword("_EMISSION");
     }
