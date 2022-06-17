@@ -33,7 +33,7 @@ namespace Alex
 
             GoToFood();
 
-            if (FindToSnatch() && stateMachine.reusableData.timeToSnatch > 1 && stateMachine.reusableData.canInvis)
+            if (FindToSnatch() && stateMachine.reusableData.timeToSnatch > 3 && stateMachine.reusableData.canInvis)
             {
                 stateMachine.ChangeState(stateMachine.SnatchingState);
                 return;

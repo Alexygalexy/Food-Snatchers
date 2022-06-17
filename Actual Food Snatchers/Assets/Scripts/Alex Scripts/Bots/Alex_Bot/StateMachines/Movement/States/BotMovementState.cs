@@ -276,7 +276,7 @@ namespace Alex
 
         IEnumerator InvisabilityCooldown()
         {
-            if (stateMachine.reusableData.timeToSnatch <= 1)
+            if (stateMachine.reusableData.timeToSnatch <= 4)
             {
                 stateMachine.reusableData.timeToSnatch++;
                 Debug.Log(stateMachine.reusableData.timeToSnatch);
@@ -295,23 +295,22 @@ namespace Alex
 
         IEnumerator InvisabilityDuration()
         {
-            Debug.Log("Started Invis");
+            
             stateMachine.Alex_Bot.smoke.Play();
-            stateMachine.Alex_Bot.gameObject.GetComponentInChildren<Material>().mainTexture = stateMachine.Alex_Bot.invisability_mat.mainTexture;
-            stateMachine.Alex_Bot.gameObject.layer = LayerMask.NameToLayer("Default");
+            stateMachine.Alex_Bot.gameObject.GetComponentInChildren<Renderer>().material = stateMachine.Alex_Bot.invisability_mat;
+            stateMachine.Alex_Bot.gameObject.layer = LayerMask.NameToLayer("Non-Player");
             stateMachine.Alex_Bot.gameObject.tag = "Untagged";
-            stateMachine.reusableData.navSpeed = 4f;
+            stateMachine.reusableData.navSpeed = 4.5f;
             stateMachine.reusableData.willSnatch = true;
 
-            
+
 
             yield return new WaitForSeconds(stateMachine.reusableData.invisTime);
             stateMachine.Alex_Bot.smoke.Stop();
-            stateMachine.Alex_Bot.gameObject.GetComponentInChildren<Material>().mainTexture = stateMachine.Alex_Bot.original_mat.mainTexture;
+            stateMachine.Alex_Bot.gameObject.GetComponentInChildren<Renderer>().material = stateMachine.Alex_Bot.original_mat;
             stateMachine.Alex_Bot.gameObject.layer = LayerMask.NameToLayer("Player");
             stateMachine.Alex_Bot.gameObject.tag = "Player";
             stateMachine.reusableData.navSpeed = 3.5f;
-            stateMachine.reusableData.willSnatch = false;
             stateMachine.reusableData.isInvis = false;
             stateMachine.reusableData.canInvis = false;
 

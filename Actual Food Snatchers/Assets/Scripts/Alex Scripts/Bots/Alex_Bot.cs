@@ -15,7 +15,6 @@ namespace Alex
         [field: SerializeField] public ParticleSystem smoke;
         [field: SerializeField] public Material invisability_mat;
         [field: SerializeField] public Material original_mat;
-        [field: SerializeField] public Texture texture;
 
         [field: Header("Animation")]
         private Animator anim;
@@ -49,6 +48,8 @@ namespace Alex
 
             anim.SetBool("Move", navMeshAgent.velocity.magnitude > 0.01f);
 
+            //Debug.Log(movementStateMachine.reusableData.willSnatch);
+
             movementStateMachine.Update();
         }
 
@@ -66,16 +67,18 @@ namespace Alex
         {
             //base.OnCollisionEnter(other);
 
-            if (other.gameObject.layer == LayerMask.NameToLayer("Player") && movementStateMachine.reusableData.willSnatch)
+            if (other.gameObject.tag == "Player" && movementStateMachine.reusableData.willSnatch)
             {
-                
+                Debug.Log("SNAAAAAAAAAAAAATCH");
+
                 if (other.gameObject.GetComponent<AI_System>().Score >= 5 )
                 {
                     this.gameObject.GetComponent<AI_System>().Score += 5;
                     this.gameObject.GetComponent<AI_System>().player1_scoreText.text = Score.ToString();
+                    movementStateMachine.reusableData.timeToSnatch = 0;
                     other.gameObject.GetComponent<AI_System>().Score -= 5;
                     other.gameObject.GetComponent<AI_System>().player1_scoreText.text = other.gameObject.GetComponent<AI_System>().Score.ToString();
-                    movementStateMachine.reusableData.timeToSnatch = 0;
+                    movementStateMachine.reusableData.willSnatch = false;
 
                     //player1_scoreText.text = Score.ToString();
                     //other.gameObject.GetComponent<AI_System>().player1_scoreText.text = Score.ToString();
@@ -84,10 +87,10 @@ namespace Alex
                 {
                     this.gameObject.GetComponent<AI_System>().Score += 5;
                     this.gameObject.GetComponent<AI_System>().player1_scoreText.text = Score.ToString();
+                    movementStateMachine.reusableData.timeToSnatch = 0;
                     other.gameObject.GetComponent<AI_System>().Score = 0;
                     other.gameObject.GetComponent<AI_System>().player1_scoreText.text = other.gameObject.GetComponent<AI_System>().Score.ToString();
-                    movementStateMachine.reusableData.timeToSnatch = 0;
-
+                    movementStateMachine.reusableData.willSnatch = false;
                     //player1_scoreText.text = Score.ToString();
                     //other.gameObject.GetComponent<AI_System>().player1_scoreText.text = Score.ToString();
                 }

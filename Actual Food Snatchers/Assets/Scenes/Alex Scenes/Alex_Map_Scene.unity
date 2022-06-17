@@ -14725,6 +14725,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameLabCharacter
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0aa302e7242655e4a8db995b1ce9e110,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 0aa302e7242655e4a8db995b1ce9e110,
         type: 3}
       propertyPath: m_Controller
@@ -26812,7 +26817,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1539211272}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -14.83, y: -3.205, z: 7.69}
+  m_LocalPosition: {x: -13.44, y: -3.205, z: -5.71}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
