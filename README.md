@@ -1,4 +1,4 @@
-# Actual-Food-Snatchers
+# Food-Snatchers
 Food Snatchers
 
 A Programming elective project at Hanze University of Applied Sciences, The Netherlands
